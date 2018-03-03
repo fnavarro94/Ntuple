@@ -99,8 +99,12 @@ class NtupleMaker : public edm::EDAnalyzer {
 		  Double_t track_nHits[entryMax] = {0};
 		  Double_t track_found[entryMax] = {0};
 		  Double_t track_dxy[entryMax] = {0};
+		  Double_t track_dxyError[entryMax] = {0};
 		  Double_t track_dz[entryMax] = {0};
 		  Double_t track_charge[entryMax] = {0};
+		  Bool_t track_highPurity[entryMax] = {0};
+		  Bool_t track_tight[entryMax] = {0};   // quality lower than highPurity
+		  Bool_t track_loose[entryMax] = {0};   // lowest quality
 		// trigger object data (for objects passing filter)
 		  Double_t trigObj_pt[entryMax] = {0};
 		  Double_t trigObj_px[entryMax] = {0};
@@ -109,6 +113,7 @@ class NtupleMaker : public edm::EDAnalyzer {
 		  Double_t trigObj_eta[entryMax] = {0};
 		  Double_t trigObj_phi[entryMax] = {0};
 		  Double_t trigObj_energy[entryMax] = {0};
+		  
 	    // Event data
 		  Bool_t triggerActivated;
 		  
@@ -118,9 +123,20 @@ class NtupleMaker : public edm::EDAnalyzer {
 		  Double_t vertexTrack_nHits[entryMax] = {0};
 		  Double_t vertexTrack_chi2[entryMax] = {0};
 		  
+		  //vertex data
 		  
+		  Double_t vertex[entryMax][6];
 		  
+		/*  Double_t vertex_x[entryMax] = {0};             1
+		  Double_t vertex_y[entryMax] = {0};               2
+ 		  Double_t vertex_z[entryMax] = {0};               3
+		  Double_t vertex_t[entryMax] = {0};               4
+		  Double_t vertex_xError[entryMax] = {0};          5
+		  Double_t vertex_yError[entryMax] = {0};          6
+		  Double_t vertex_zError[entryMax] = {0};          7
+		  Double_t vertex_tError[entryMax] = {0};          8
 		  
+		  */
 		  
 		  
 		  }event,eventReset;
@@ -190,20 +206,24 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    //data process=HLT, MC depends, Spring11 is REDIGI311X
    iEvent.getByLabel(trigResultsTag,trigResults);
    //const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
-   int i;
-   
-      for(reco::VertexCollection::const_iterator itVert = vertHand->begin();
-       itVert != vertHand->begin() +1;
-       ++itVert){
-		   event.numVert++;
-		   
-	   }
-   
+   int i, j;
+   event.numVert=0;
+   j =0;
     for(reco::VertexCollection::const_iterator itVert = vertHand->begin();
-       itVert != vertHand->begin() +1;
+       itVert != vertHand->end();
        ++itVert){
-	   
-		
+		  
+         event.numVert++;
+	     
+	     event.vertex[j][0] = itVert->x();
+	     event.vertex[j][1] = itVert->y();
+	     event.vertex[j][2] = itVert->z();
+	     //event.vertex[j][3] = itVert->t();
+	     event.vertex[j][3] = itVert->xError();
+	     event.vertex[j][4] = itVert->yError();
+	     event.vertex[j][5] = itVert->xError();
+	     //event.vertex[j][7] = itVert->tError();
+		 j++;
          i = 0;
           
 		 event.numVertTrack=0;
@@ -244,9 +264,13 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		   event.track_nHits[i] = itTrack->numberOfValidHits();
 		   event.track_found[i] = itTrack->found();
 		   event.track_dxy[i] = itTrack->dxy();
+		   event.track_dxyError[i] = itTrack->dxyError();
 		   event.track_dz[i] = itTrack->dz();
 		   event.track_charge[i] = itTrack->charge();
-
+		   event.track_highPurity[i] = itTrack->quality(reco::Track::highPurity);
+		   event.track_tight[i] = itTrack->quality(reco::Track::tight);
+		   event.track_loose[i] = itTrack->quality(reco::Track::loose);
+         
         i ++;
         event.numTrack++;
   }
@@ -296,11 +320,11 @@ NtupleMaker::beginJob()
  vuelta = 0;
  mfile = new TFile("tuple.root", "recreate");
  mtree = new TTree("mtree","Ntuple");
- //mtree->Branch("Ev_Branch",&event , "entryMax/I:numTrack/I:numVert/I:vertexTrack_vx[numVertTrack]/D:vertexTrack_vy[numVertTrack]/D:vertexTrack_vz[numVertTrack]/D:vertexTrack_nHits[numVertTrack]/D:vertexTrack_chi2[numVertTrack]/D:numTrigObj/I:track_pt[numTrack]/D:track_px[numTrack]/D:track_pz[numTrack]/D:track_py[numTrack]/D:track_vx[numTrack]/D:track_vy[numTrack]/D:track_vz[numTrack]/D:track_chi2[numTrack]/D:track_eta[numTrack]/D:track_phi[numTrack]/D:track_nHits[numTrack]/D:track_dxy[numTrack]/D:track_dz[numTrack]/D:trigObj_pt[numTrigObj]/D:trigObj_px[numTrigObj]/D:trigObj_pz[numTrigObj]/D:trigObj_py[numTrigObj]/D:trigObj_eta[numTrigObj]/D:trigObj_phi[numTrigObj]/D:trigObj_energy[numTrigObj]/D:triggerActivated/I");
-  //mtree->Branch("Ev_Branch",&event.numTrack ,"numTrack/I:numVert/I:track_pt[numVertTrack]/D");	
-  //mtree->Branch("Ev_Branch",&event ,"entryMax/I");	
-  mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I:track_pt[numTrack]/D:track_px[numTrack]/D:track_pz[numTrack]/D:track_py[numTrack]/D:track_vx[numTrack]/D:track_vy[numTrack]/D:track_vz[numTrack]/D:track_chi2[numTrack]/D:track_ndof[numTrack]/I:track_eta[numTrack]/D:track_phi[numTrack]/D:track_nHits[numTrack]/D:track_found[numTrack]/I:track_dxy[numTrack]/D:track_dz[numTrack]/D:track_charge[numTrack]/D:trigObj_pt[numTrigObj]/D:trigObj_px[numTrigObj]/D:trigObj_pz[numTrigObj]/D:trigObj_py[numTrigObj]/D:trigObj_eta[numTrigObj]/D:trigObj_phi[numTrigObj]/D:trigObj_energy[numTrigObj]/D:triggerActivated/O:vertexTrack_vx[numVertTrack]/D:vertexTrack_vy[numVertTrack]/D:vertexTrack_vz[numVertTrack]/D:vertexTrack_nHits[numVertTrack]/D:vertexTrack_chi2[numVertTrack]/D");
+ 
+ mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I:track_pt[numTrack]/D:track_px[numTrack]/D:track_pz[numTrack]/D:track_py[numTrack]/D:track_vx[numTrack]/D:track_vy[numTrack]/D:track_vz[numTrack]/D:track_chi2[numTrack]/D:track_ndof[numTrack]/I:track_eta[numTrack]/D:track_phi[numTrack]/D:track_nHits[numTrack]/D:track_found[numTrack]/I:track_dxy[numTrack]/D:track_dxyError[numTrack]/D:track_dz[numTrack]/D:track_charge[numTrack]/D:track_highPurity[numTrack]/O:track_tight[numTrack]/O:Bool_t track_loose[numTrack]/O:trigObj_pt[numTrigObj]/D:trigObj_px[numTrigObj]/D:trigObj_pz[numTrigObj]/D:trigObj_py[numTrigObj]/D:trigObj_eta[numTrigObj]/D:trigObj_phi[numTrigObj]/D:trigObj_energy[numTrigObj]/D:triggerActivated/O:vertexTrack_vx[numVertTrack]/D:vertexTrack_vy[numVertTrack]/D:vertexTrack_vz[numVertTrack]/D:vertexTrack_nHits[numVertTrack]/D:vertexTrack_chi2[numVertTrack]/D:Double_t vertex[numVert][6]/D");
 }
+
+
 
 
            
