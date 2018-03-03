@@ -77,12 +77,13 @@ class NtupleMaker : public edm::EDAnalyzer {
       int vuelta;
       struct mEvent {
 
-          static const int entryMax = 1000;
-		  int numTrack =0;
+          static const Int_t entryMax = 1000;
+		  Int_t numTrack =0;
 		  Int_t numTrigObj=0;
 		  Int_t numVertTrack=0;
 		  Int_t numVert=0;
-		
+		  
+		  
 		// track data 
 		  Double_t track_pt[entryMax] = {0};
 		  Double_t track_px[entryMax]= {0};
@@ -92,9 +93,11 @@ class NtupleMaker : public edm::EDAnalyzer {
 		  Double_t track_vy[entryMax]= {0};
 		  Double_t track_vz[entryMax]= {0};
 		  Double_t track_chi2[entryMax] = {0};
+		  Double_t track_ndof[entryMax] = {0};
 		  Double_t track_eta[entryMax]= {0};
 		  Double_t track_phi[entryMax]= {0};
 		  Double_t track_nHits[entryMax] = {0};
+		  Double_t track_found[entryMax] = {0};
 		  Double_t track_dxy[entryMax] = {0};
 		  Double_t track_dz[entryMax] = {0};
 		  Double_t track_charge[entryMax] = {0};
@@ -167,6 +170,7 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
   vuelta++;
+  if (vuelta%1000 ==0){std::cout<<"vuelta: "<<vuelta<<std::endl;}
   event = eventReset;
   using reco::TrackCollection;
  
@@ -234,9 +238,11 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		   event.track_vy[i] = itTrack->vy();
 		   event.track_vz[i] = itTrack->vz();
 		   event.track_chi2[i] = itTrack->chi2(); 
+		   event.track_ndof[i] = itTrack->ndof(); 
 		   event.track_eta[i] = itTrack->eta();
 		   event.track_phi[i] = itTrack->phi();
 		   event.track_nHits[i] = itTrack->numberOfValidHits();
+		   event.track_found[i] = itTrack->found();
 		   event.track_dxy[i] = itTrack->dxy();
 		   event.track_dz[i] = itTrack->dz();
 		   event.track_charge[i] = itTrack->charge();
@@ -244,7 +250,7 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         i ++;
         event.numTrack++;
   }
-  std::cout<<event.numVert<<std::endl;
+  //std::cout<<event.numVert<<std::endl;
   
   std::string e_filterName("hltDoublePhoton33EgammaLHEDoubleFilter"); // dataset photones (para filtrar electrones)
   //std::string e_filterName("hltDoubleEG43HEVTDoubleFilter"); // simulacion
@@ -291,11 +297,13 @@ NtupleMaker::beginJob()
  mfile = new TFile("tuple.root", "recreate");
  mtree = new TTree("mtree","Ntuple");
  //mtree->Branch("Ev_Branch",&event , "entryMax/I:numTrack/I:numVert/I:vertexTrack_vx[numVertTrack]/D:vertexTrack_vy[numVertTrack]/D:vertexTrack_vz[numVertTrack]/D:vertexTrack_nHits[numVertTrack]/D:vertexTrack_chi2[numVertTrack]/D:numTrigObj/I:track_pt[numTrack]/D:track_px[numTrack]/D:track_pz[numTrack]/D:track_py[numTrack]/D:track_vx[numTrack]/D:track_vy[numTrack]/D:track_vz[numTrack]/D:track_chi2[numTrack]/D:track_eta[numTrack]/D:track_phi[numTrack]/D:track_nHits[numTrack]/D:track_dxy[numTrack]/D:track_dz[numTrack]/D:trigObj_pt[numTrigObj]/D:trigObj_px[numTrigObj]/D:trigObj_pz[numTrigObj]/D:trigObj_py[numTrigObj]/D:trigObj_eta[numTrigObj]/D:trigObj_phi[numTrigObj]/D:trigObj_energy[numTrigObj]/D:triggerActivated/I");
-  mtree->Branch("Ev_Branch",&event ,"entryMax/I:numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I:track_pt[entryMax]/D:track_px[entryMax]/D:track_pz[entryMax]/D:track_py[entryMax]/D:track_vx[entryMax]/D:track_vy[entryMax]/D:track_vz[entryMax]/D:track_chi2[entryMax]/D:track_eta[entryMax]/D:track_phi[entryMax]/D:track_nHits[entryMax]/D:track_dxy[entryMax]/D:track_dz[entryMax]/D:track_charge[entryMax]/D:trigObj_pt[entryMax]/D:trigObj_px[entryMax]/D:trigObj_pz[entryMax]/D:trigObj_py[entryMax]/D:trigObj_eta[entryMax]/D:trigObj_phi[entryMax]/D:trigObj_energy[entryMax]/D:triggerActivated/O:vertexTrack_vx[entryMax]/D:vertexTrack_vy[entryMax]/D:vertexTrack_vz[entryMax]/D:vertexTrack_nHits[entryMax]/D:vertexTrack_chi2[entryMax]/D");	
+  //mtree->Branch("Ev_Branch",&event.numTrack ,"numTrack/I:numVert/I:track_pt[numVertTrack]/D");	
+  //mtree->Branch("Ev_Branch",&event ,"entryMax/I");	
+  mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I:track_pt[numTrack]/D:track_px[numTrack]/D:track_pz[numTrack]/D:track_py[numTrack]/D:track_vx[numTrack]/D:track_vy[numTrack]/D:track_vz[numTrack]/D:track_chi2[numTrack]/D:track_ndof[numTrack]/I:track_eta[numTrack]/D:track_phi[numTrack]/D:track_nHits[numTrack]/D:track_found[numTrack]/I:track_dxy[numTrack]/D:track_dz[numTrack]/D:track_charge[numTrack]/D:trigObj_pt[numTrigObj]/D:trigObj_px[numTrigObj]/D:trigObj_pz[numTrigObj]/D:trigObj_py[numTrigObj]/D:trigObj_eta[numTrigObj]/D:trigObj_phi[numTrigObj]/D:trigObj_energy[numTrigObj]/D:triggerActivated/O:vertexTrack_vx[numVertTrack]/D:vertexTrack_vy[numVertTrack]/D:vertexTrack_vz[numVertTrack]/D:vertexTrack_nHits[numVertTrack]/D:vertexTrack_chi2[numVertTrack]/D");
 }
 
 
-
+           
 
 
           
