@@ -45,7 +45,11 @@ void analyzer::SlaveBegin(TTree * /*tree*/)
    // The tree argument is deprecated (on PROOF 0 is passed).
 
    TString option = GetOption();
-
+   
+   file = new TFile("hists.root", "recreate");
+   h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+   //matchedTrack[ = {0};
+   TH1::AddDirectory(true);
 }
 
 Bool_t analyzer::Process(Long64_t entry)
@@ -72,34 +76,36 @@ std::cout<<" "<<endl;
 bool standardCuts = cmsStandardCuts(Ev_Branch_numTrack, Ev_Branch_vertexTrack_vx, Ev_Branch_vertexTrack_vy, Ev_Branch_vertexTrack_vz);
 
 
-int matchedTrack[numTrack] = {0};
+
+ 
 
 if (standardCuts || true)   // quitar true
 {
-	for (int i = 0 ; i< numTrack; i ++)
+	for (int i = 0 ; i< Ev_Branch_numTrack; i++)
 	{
-		for (int j = 0; j< numTrigObj; j++)
+		for (int j = 0; j< Ev_Branch_numTrigObj; j++)
 		{
-		   if (deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 && abs(track_pt[i] -trigObj_pt[j]) < 3)
+		   if (deltaR(Ev_Branch_track_phi[i], Ev_Branch_track_eta[i], Ev_Branch_trigObj_phi[j], Ev_Branch_trigObj_eta[j])< 0.1 && abs(Ev_Branch_track_pt[i] -Ev_Branch_trigObj_pt[j]) < 3)
 		   {
-			   matchedTrack[i] = 1;
+			 //  matchedTrack[1] = 1;
 		   }
 		}
 	}
 	
-	// the following section compares origin of opositly chareged trigger matched leptons to find lepton pairs product of the same decay.
+	// the following section compares vertex of opositly chareged trigger-matched leptons in order to find lepton pairs product of the same decay.
 	
-	for ( int i = 0; int i < numTrack; i++)
+	for ( int i = 0; int i < Ev_Branch_numTrack; i++)
 	{
-		if ( matchedTrack[i] ==1 && track_charge[i] == 1)
+		if ( matchedTrack[i] ==1 && Ev_Branch_track_charge[i] == 1)
 		{
-			for (int j =0; j< numTrack; j++)
-			if ( matchedTrack[j] == 1 && track_charge[j] == -1)
+			for (int j =0; j< Ev_Branch_numTrack; j++)
+			if ( matchedTrack[j] == 1 && Ev_Branch_track_charge[j] == -1)
 			{
-				if ( deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) < 0.1)
+				if ( deltaR(Ev_Branch_track_phi[i], Ev_Branch_track_eta[i], Ev_Branch_track_phi[j], Ev_Branch_track_eta[j]) < 0.1)
 				{
 					double invariantMass;
-					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
+					 invariantMass = invMass(Ev_Branch_track_px[i], Ev_Branch_track_py[i], Ev_Branch_track_pz[i], Ev_Branch_track_px[j], Ev_Branch_track_py[j], Ev_Branch_track_pz[j]);
+					 h_invMass->Fill(invariantMass);
 				}
 			}
 		}
@@ -172,6 +178,9 @@ void analyzer::SlaveTerminate()
 
 void analyzer::Terminate()
 {
+	
+	file->Write();
+	file->Close();
    // The Terminate() function is the last function to be called during
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
