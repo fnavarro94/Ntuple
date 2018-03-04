@@ -101,7 +101,7 @@ class NtupleMaker : public edm::EDAnalyzer {
 		  Double_t track_dxy[entryMax] = {0};
 		  Double_t track_dxyError[entryMax] = {0};
 		  Double_t track_dz[entryMax] = {0};
-		  Double_t track_charge[entryMax] = {0};
+		  Int_t track_charge[entryMax] = {0};
 		  Bool_t track_highPurity[entryMax] = {0};
 		  Bool_t track_tight[entryMax] = {0};   // quality lower than highPurity
 		  Bool_t track_loose[entryMax] = {0};   // lowest quality
@@ -250,10 +250,11 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        ++itTrack) {
         
            event.track_pt[i] = itTrack->pt();
-          
+           //std::cout<<event.track_pt[i]<<std::endl;
 		   event.track_px[i] = itTrack->px();
 		   event.track_py[i] = itTrack->py();
 		   event.track_pz[i] = itTrack->pz();
+		   //std::cout<<event.track_px[i]<<" "<<event.track_py[i]<<" "<<event.track_pz[i]<<std::endl;
 		   event.track_vx[i] = itTrack->vx();
 		   event.track_vy[i] = itTrack->vy();
 		   event.track_vz[i] = itTrack->vz();
@@ -267,6 +268,7 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		   event.track_dxyError[i] = itTrack->dxyError();
 		   event.track_dz[i] = itTrack->dz();
 		   event.track_charge[i] = itTrack->charge();
+		   //std::cout<<event.track_charge[i]<<std::endl;
 		   event.track_highPurity[i] = itTrack->quality(reco::Track::highPurity);
 		   event.track_tight[i] = itTrack->quality(reco::Track::tight);
 		   event.track_loose[i] = itTrack->quality(reco::Track::loose);
@@ -321,7 +323,51 @@ NtupleMaker::beginJob()
  mfile = new TFile("tuple.root", "recreate");
  mtree = new TTree("mtree","Ntuple");
  
- mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I:track_pt[numTrack]/D:track_px[numTrack]/D:track_pz[numTrack]/D:track_py[numTrack]/D:track_vx[numTrack]/D:track_vy[numTrack]/D:track_vz[numTrack]/D:track_chi2[numTrack]/D:track_ndof[numTrack]/I:track_eta[numTrack]/D:track_phi[numTrack]/D:track_nHits[numTrack]/D:track_found[numTrack]/I:track_dxy[numTrack]/D:track_dxyError[numTrack]/D:track_dz[numTrack]/D:track_charge[numTrack]/D:track_highPurity[numTrack]/O:track_tight[numTrack]/O:Bool_t track_loose[numTrack]/O:trigObj_pt[numTrigObj]/D:trigObj_px[numTrigObj]/D:trigObj_pz[numTrigObj]/D:trigObj_py[numTrigObj]/D:trigObj_eta[numTrigObj]/D:trigObj_phi[numTrigObj]/D:trigObj_energy[numTrigObj]/D:triggerActivated/O:vertexTrack_vx[numVertTrack]/D:vertexTrack_vy[numVertTrack]/D:vertexTrack_vz[numVertTrack]/D:vertexTrack_nHits[numVertTrack]/D:vertexTrack_chi2[numVertTrack]/D:vertex[numVert][6]/D");
+ //mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I:track_pt[numTrack]/D:track_px[numTrack]/D:track_pz[numTrack]/D:track_py[numTrack]/D:track_vx[numTrack]/D:track_vy[numTrack]/D:track_vz[numTrack]/D:track_chi2[numTrack]/D:track_ndof[numTrack]/I:track_eta[numTrack]/D:track_phi[numTrack]/D:track_nHits[numTrack]/D:track_found[numTrack]/I:track_dxy[numTrack]/D:track_dxyError[numTrack]/D:track_dz[numTrack]/D:track_charge[numTrack]/I:track_highPurity[numTrack]/O:track_tight[numTrack]/O:track_loose[numTrack]/O:trigObj_pt[numTrigObj]/D:trigObj_px[numTrigObj]/D:trigObj_pz[numTrigObj]/D:trigObj_py[numTrigObj]/D:trigObj_eta[numTrigObj]/D:trigObj_phi[numTrigObj]/D:trigObj_energy[numTrigObj]/D:triggerActivated/O:vertexTrack_vx[numVertTrack]/D:vertexTrack_vy[numVertTrack]/D:vertexTrack_vz[numVertTrack]/D:vertexTrack_nHits[numVertTrack]/D:vertexTrack_chi2[numVertTrack]/D:vertex[numVert][6]/D");
+ //mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I");
+
+ 
+        mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I");
+		   mtree->Branch("track_pt",event.track_pt,"track_pt[numTrack]/D");
+		   mtree->Branch("track_px", event.track_px, "track_px[numTrack]/D");
+           mtree->Branch("track_py", event.track_py, "track_py[numTrack]/D");
+           mtree->Branch("track_pz", event.track_pz, "track_pz[numTrack]/D");
+           mtree->Branch("track_vx", event.track_vx, "track_vx[numTrack]/D");
+           mtree->Branch("track_vy", event.track_vy, "track_vy[numTrack]/D");
+           mtree->Branch("track_vz", event.track_vz, "track_vz[numTrack]/D");
+           mtree->Branch("track_chi2", event.track_chi2, "track_chi2[numTrack]/D");
+           mtree->Branch("track_ndof", event.track_ndof, "track_ndof[numTrack]/I");
+           mtree->Branch("track_eta", event.track_eta, "track_eta[numTrack]/D");
+           mtree->Branch("track_phi", event.track_phi, "track_phi[numTrack]/D");
+           mtree->Branch("track_nHits", event.track_nHits, "track_nHits[numTrack]/I");
+           mtree->Branch("track_found", event.track_found, "track_nfound[numTrack]/I");
+           mtree->Branch("track_dxy", event.track_dxy, "track_dxy[numTrack]/D");
+           mtree->Branch("track_dxyError", event.track_dxyError, "track_dxyError[numTrack]/D");
+           mtree->Branch("track_dz", event.track_dz, "track_dz[numTrack]/D");
+           mtree->Branch("track_charge", event.track_charge, "track_charge[numTrack]/I");
+           mtree->Branch("track_highPurity", event.track_highPurity, "track_highPurity[numTrack]/O");
+           mtree->Branch("track_tight", event.track_tight, "track_tight[numTrack]/O");
+           mtree->Branch("track_loose", event.track_loose, "track_loose[numTrack]/O");
+           mtree->Branch("trigObj_pt", event.trigObj_pt, "trigObj_pt[numTrigObj]/D");
+           mtree->Branch("trigObj_px", event.trigObj_px, "trigObj_px[numTrigObj]/D");
+           mtree->Branch("trigObj_py", event.trigObj_py, "trigObj_py[numTrigObj]/D");
+           mtree->Branch("trigObj_pz", event.trigObj_pz, "trigObj_pz[numTrigObj]/D");
+           mtree->Branch("trigObj_eta", event.trigObj_eta, "trigObj_eta[numTrigObj]/D");
+           mtree->Branch("trigObj_phi", event.trigObj_phi, "trigObj_phi[numTrigObj]/D");
+           mtree->Branch("triggerActivated", &event.triggerActivated, "triggerActivated/O");
+           mtree->Branch("trigObj_energy", event.trigObj_energy, "trigObj_energy[numTrigObj]/O");
+           mtree->Branch("vertexTrack_vx", event.vertexTrack_vx, "vertexTrack_vx[numVertTrack]/D");
+           mtree->Branch("vertexTrack_vy", event.vertexTrack_vy, "vertexTrack_vy[numVertTrack]/D");
+           mtree->Branch("vertexTrack_vz", event.vertexTrack_vz, "vertexTrack_vz[numVertTrack]/D");
+           mtree->Branch("vertexTrack_nHits", event.vertexTrack_nHits, "vertexTrack_nHits[numVertTrack]/I");
+           mtree->Branch("vertexTrack_chi2", event.vertexTrack_chi2, "vertexTrack_chi2[numVertTrack]/D");
+           mtree->Branch("vertex", event.vertex, "vertex[numVert][6]/D");
+		  
+		  
+		  
+	
+		
+		
 }
 
 
