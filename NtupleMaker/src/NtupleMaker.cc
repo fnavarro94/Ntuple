@@ -189,6 +189,19 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   if (vuelta%1000 ==0){std::cout<<"vuelta: "<<vuelta<<std::endl;}
   event = eventReset;
   using reco::TrackCollection;
+  
+  
+  
+  
+  edm::Handle<edm::TriggerResults> trigResults; //Our trigger result object
+edm::InputTag trigResultsTag("TriggerResults","","HLT");
+iEvent.getByLabel(trigResultsTag,trigResults);
+const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
+
+std::string pathName="HLT_DoublePhoton33_v2";  // Trigger Path
+
+bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));
+    event.triggerActivated = passTrig;
  
    Handle<TrackCollection> tracks;
    iEvent.getByLabel(trackTags_,tracks);
@@ -201,10 +214,7 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    edm::Handle<trigger::TriggerEvent> trigEvent; 
    iEvent.getByLabel(trigEventTag,trigEvent);
 
-   edm::Handle<edm::TriggerResults> trigResults; //our trigger result object
-   edm::InputTag trigResultsTag("TriggerResults","","HLT"); //make sure have correct process on MC
-   //data process=HLT, MC depends, Spring11 is REDIGI311X
-   iEvent.getByLabel(trigResultsTag,trigResults);
+  
    //const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
    int i, j;
    event.numVert=0;
@@ -302,7 +312,7 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
  
 }
  
- mtree->Fill();
+}
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
    Handle<ExampleData> pIn;
    iEvent.getByLabel("example",pIn);
@@ -312,7 +322,9 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    ESHandle<SetupData> pSetup;
    iSetup.get<SetupRecord>().get(pSetup);
 #endif
-}
+mtree->Fill();
+
+
 }
 
 // ------------ method called once each job just before starting event loop  ------------
