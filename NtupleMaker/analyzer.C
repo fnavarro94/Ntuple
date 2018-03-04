@@ -50,6 +50,7 @@ void analyzer::SlaveBegin(TTree * /*tree*/)
    h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
    //matchedTrack[ = {0};
    TH1::AddDirectory(true);
+   vuelta = 0;
 }
 
 Bool_t analyzer::Process(Long64_t entry)
@@ -72,9 +73,10 @@ Bool_t analyzer::Process(Long64_t entry)
    //
    // The return value is currently not used.
  fChain->GetTree()->GetEntry(entry);
-std::cout<<" "<<endl;   
-bool standardCuts = cmsStandardCuts(Ev_Branch_numTrack, Ev_Branch_vertexTrack_vx, Ev_Branch_vertexTrack_vy, Ev_Branch_vertexTrack_vz);
+   
+bool standardCuts = cmsStandardCuts(Ev_Branch_numTrack, vertexTrack_vx, vertexTrack_vy, vertexTrack_vz);
 
+//cout<<++vuelta<<endl;
 
 
  
@@ -85,26 +87,33 @@ if (standardCuts || true)   // quitar true
 	{
 		for (int j = 0; j< Ev_Branch_numTrigObj; j++)
 		{
-		   if (deltaR(Ev_Branch_track_phi[i], Ev_Branch_track_eta[i], Ev_Branch_trigObj_phi[j], Ev_Branch_trigObj_eta[j])< 0.1 && abs(Ev_Branch_track_pt[i] -Ev_Branch_trigObj_pt[j]) < 3)
+		   if (deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 && abs(track_pt[i] -trigObj_pt[j]) < 3)
 		   {
-			 //  matchedTrack[1] = 1;
+			   matchedTrack[i] = 1;
+			   //cout<<"matched "<<track_charge[i]<<endl;
+			   vuelta ++;
+		   }
+		   else
+		   {
+			   matchedTrack[i] = 0;
 		   }
 		}
 	}
 	
 	// the following section compares vertex of opositly chareged trigger-matched leptons in order to find lepton pairs product of the same decay.
 	
-	for ( int i = 0; int i < Ev_Branch_numTrack; i++)
+	for ( int i = 0;  i < Ev_Branch_numTrack; i++)
 	{
-		if ( matchedTrack[i] ==1 && Ev_Branch_track_charge[i] == 1)
+		if ( matchedTrack[i] ==1 && track_charge[i] == 1)
 		{
 			for (int j =0; j< Ev_Branch_numTrack; j++)
-			if ( matchedTrack[j] == 1 && Ev_Branch_track_charge[j] == -1)
+			if ( matchedTrack[j] == 1 && track_charge[j] == -1)
 			{
-				if ( deltaR(Ev_Branch_track_phi[i], Ev_Branch_track_eta[i], Ev_Branch_track_phi[j], Ev_Branch_track_eta[j]) < 0.1)
+				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 0.1 && track_pt[i] > 41)
 				{
 					double invariantMass;
-					 invariantMass = invMass(Ev_Branch_track_px[i], Ev_Branch_track_py[i], Ev_Branch_track_pz[i], Ev_Branch_track_px[j], Ev_Branch_track_py[j], Ev_Branch_track_pz[j]);
+					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
+					 count<<invariantMass<<endl;
 					 h_invMass->Fill(invariantMass);
 				}
 			}
@@ -127,13 +136,18 @@ double analyzer::invMass(double px1, double py1, double pz1, double px2 , double
   double E = E1+E2;
   double px = px1 + px2;
   double py = py1 + py2;
-  double py = pz1 + pz2;
+  double pz = pz1 + pz2;
   double mass = sqrt(E*E - px*px - py*py - pz*pz);
   
   return mass;
   
   
 
+	
+}
+
+double analyzer::deltaV(double vx1, double vy1, double vz1, double vx2, double vy2, double vz2)
+{
 	
 }
 
@@ -178,7 +192,7 @@ void analyzer::SlaveTerminate()
 
 void analyzer::Terminate()
 {
-	
+	cout<<vuelta<<endl;
 	file->Write();
 	file->Close();
    // The Terminate() function is the last function to be called during
