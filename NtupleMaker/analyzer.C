@@ -75,6 +75,7 @@ Bool_t analyzer::Process(Long64_t entry)
  fChain->GetTree()->GetEntry(entry);
    
 bool standardCuts = cmsStandardCuts(Ev_Branch_numTrack, vertexTrack_vx, vertexTrack_vy, vertexTrack_vz);
+reset();
 
 //cout<<++vuelta<<endl;
 
@@ -87,16 +88,13 @@ if (standardCuts || true)   // quitar true
 	{
 		for (int j = 0; j< Ev_Branch_numTrigObj; j++)
 		{
-		   if (deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 && abs(track_pt[i] -trigObj_pt[j]) < 3)
+		   if (deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 && deltaP(track_px[i], track_py[i],track_pz[i], trigObj_px[j], trigObj_py[j], trigObj_pz[j]) < 3)
 		   {
 			   matchedTrack[i] = 1;
-			   //cout<<"matched "<<track_charge[i]<<endl;
+			   
 			   vuelta ++;
 		   }
-		   else
-		   {
-			   matchedTrack[i] = 0;
-		   }
+		  
 		}
 	}
 	
@@ -105,15 +103,15 @@ if (standardCuts || true)   // quitar true
 	for ( int i = 0;  i < Ev_Branch_numTrack; i++)
 	{
 		if ( matchedTrack[i] ==1 && track_charge[i] == 1)
-		{
+		{  
 			for (int j =0; j< Ev_Branch_numTrack; j++)
 			if ( matchedTrack[j] == 1 && track_charge[j] == -1)
-			{
+			{  
 				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 0.1 && track_pt[i] > 41)
 				{
 					double invariantMass;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
-					 count<<invariantMass<<endl;
+					 cout<<invariantMass<<endl;
 					 h_invMass->Fill(invariantMass);
 				}
 			}
@@ -125,6 +123,19 @@ if (standardCuts || true)   // quitar true
 
 
    return kTRUE;
+}
+
+
+
+// resets arrays and variables to Null/0
+
+void analyzer::reset()
+{
+	for (int i = 0; i< Ev_Branch_numTrack; i++)
+	{
+		matchedTrack[i] = 0;
+	}
+	
 }
 
 // calculates rest mass of a pair of  leptons
@@ -145,10 +156,28 @@ double analyzer::invMass(double px1, double py1, double pz1, double px2 , double
 
 	
 }
+double deltaP(double px1, double py1, double pz1, double px2, double py2, double pz2)
+{
+	/*double dpx = px1 -px2;
+	double dpy = py1 -py2;
+	double dpz = pz1 -pz2;*/
+	double ptotT = sqrt(px1*px1 + py1*py1 +pz1*pz1);
+	double ptotO = sqrt(px2*px2 + py2*py2 +pz2*pz2);
+	
+    //double dp = sqrt(dpx*dpx + dpy*dpy +dpz*dpz);
+    double dp = abs(ptotT - ptotO);
+    return dp; 
+    
+}
 
 double analyzer::deltaV(double vx1, double vy1, double vz1, double vx2, double vy2, double vz2)
 {
-	
+   double dx = vx1-vx2;
+   double dy = vy1-vy2;
+   double dz = vz1 - vz2;
+   
+   double dv = sqrt(dx*dx +dy*dy +dz*dz);
+   return dv;	
 }
 
 double analyzer::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, double obj2Eta)
