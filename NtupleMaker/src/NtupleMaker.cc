@@ -77,12 +77,12 @@ class NtupleMaker : public edm::EDAnalyzer {
       int vuelta;
       struct mEvent {
 
-          static const Int_t entryMax = 1000;
+          static const Int_t entryMax = 10000;
 		  Int_t numTrack =0;
 		  Int_t numTrigObj=0;
-		  Int_t numVertTrack=0;
+		
 		  Int_t numVert=0;
-		  
+		  Int_t numVertTrack[entryMax]={0};
 		  
 		// track data 
 		  Double_t track_pt[entryMax] = {0};
@@ -117,11 +117,11 @@ class NtupleMaker : public edm::EDAnalyzer {
 	    // Event data
 		  Bool_t triggerActivated;
 		  
-		  Double_t vertexTrack_vx[entryMax] = {0};
-		  Double_t vertexTrack_vy[entryMax] = {0};
-		  Double_t vertexTrack_vz[entryMax] = {0};
-		  Double_t vertexTrack_nHits[entryMax] = {0};
-		  Double_t vertexTrack_chi2[entryMax] = {0};
+		  Double_t vertexTrack_vx[entryMax][entryMax];   //primer indice es del vertice, el segundo es el track;
+		  Double_t vertexTrack_vy[entryMax][entryMax];
+		  Double_t vertexTrack_vz[entryMax][entryMax];
+		  Double_t vertexTrack_nHits[entryMax][entryMax];
+		  Double_t vertexTrack_chi2[entryMax][entryMax];
 		  
 		  //vertex data
 		  
@@ -233,25 +233,26 @@ bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));
 	     event.vertex[j][4] = itVert->yError();
 	     event.vertex[j][5] = itVert->xError();
 	     //event.vertex[j][7] = itVert->tError();
-		 j++;
+		 
          i = 0;
           
-		 event.numVertTrack=0;
+		 
         for(reco::Vertex::trackRef_iterator itTrack = itVert->tracks_begin();
        itTrack != itVert->tracks_end();
        ++itTrack){ 
 		   
-		   event.vertexTrack_vx[i] = (**itTrack).vx();
-	       event.vertexTrack_vy[i] = (**itTrack).vy();
-		   event.vertexTrack_vz[i] = (**itTrack).vz();
-		   event.vertexTrack_nHits[i] = (**itTrack).numberOfValidHits();
-		   event.vertexTrack_chi2[i] =  (**itTrack).chi2();
+		   event.vertexTrack_vx[j][i] = (**itTrack).vx();
+	       event.vertexTrack_vy[j][i] = (**itTrack).vy();
+		   event.vertexTrack_vz[j][i] = (**itTrack).vz();
+		   event.vertexTrack_nHits[j][i] = (**itTrack).numberOfValidHits();
+		   event.vertexTrack_chi2[j][i] =  (**itTrack).chi2();
 
-           event.numVertTrack++;
+           event.numVertTrack[j]++;
            i++;
 		   } 
+		   j++;
    
-   
+}
    
    i=0;
    event.numTrack=0;
@@ -282,7 +283,7 @@ bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));
 		   event.track_highPurity[i] = itTrack->quality(reco::Track::highPurity);
 		   event.track_tight[i] = itTrack->quality(reco::Track::tight);
 		   event.track_loose[i] = itTrack->quality(reco::Track::loose);
-         
+           std::cout<<"track vx "<<event.track_vx[i];
         i ++;
         event.numTrack++;
   }
@@ -312,7 +313,7 @@ bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));
  
 }
  
-}
+
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
    Handle<ExampleData> pIn;
    iEvent.getByLabel("example",pIn);
@@ -339,7 +340,9 @@ NtupleMaker::beginJob()
  //mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I");
 
  
-        mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I");
+           mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVert/I");
+           
+		   mtree->Branch("vert_numTrack",event.numVertTrack,"numVertTrack[numVert]/I");
 		   mtree->Branch("track_pt",event.track_pt,"track_pt[numTrack]/D");
 		   mtree->Branch("track_px", event.track_px, "track_px[numTrack]/D");
            mtree->Branch("track_py", event.track_py, "track_py[numTrack]/D");
@@ -368,11 +371,11 @@ NtupleMaker::beginJob()
            mtree->Branch("trigObj_phi", event.trigObj_phi, "trigObj_phi[numTrigObj]/D");
            mtree->Branch("triggerActivated", &event.triggerActivated, "triggerActivated/O");
            mtree->Branch("trigObj_energy", event.trigObj_energy, "trigObj_energy[numTrigObj]/O");
-           mtree->Branch("vertexTrack_vx", event.vertexTrack_vx, "vertexTrack_vx[numVertTrack]/D");
-           mtree->Branch("vertexTrack_vy", event.vertexTrack_vy, "vertexTrack_vy[numVertTrack]/D");
-           mtree->Branch("vertexTrack_vz", event.vertexTrack_vz, "vertexTrack_vz[numVertTrack]/D");
-           mtree->Branch("vertexTrack_nHits", event.vertexTrack_nHits, "vertexTrack_nHits[numVertTrack]/I");
-           mtree->Branch("vertexTrack_chi2", event.vertexTrack_chi2, "vertexTrack_chi2[numVertTrack]/D");
+           mtree->Branch("vertexTrack_vx", event.vertexTrack_vx, "vertexTrack_vx[numVert][10000]/D");
+           mtree->Branch("vertexTrack_vy", event.vertexTrack_vy, "vertexTrack_vy[numVert][10000]/D");
+           mtree->Branch("vertexTrack_vz", event.vertexTrack_vz, "vertexTrack_vz[numVert][10000]/D");
+           mtree->Branch("vertexTrack_nHits", event.vertexTrack_nHits, "vertexTrack_nHits[numVert][10000]/I");
+           mtree->Branch("vertexTrack_chi2", event.vertexTrack_chi2, "vertexTrack_chi2[numVert][10000]/D");
            mtree->Branch("vertex", event.vertex, "vertex[numVert][6]/D");
 		  
 		  
