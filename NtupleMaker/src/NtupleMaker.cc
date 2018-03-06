@@ -83,7 +83,7 @@ class NtupleMaker : public edm::EDAnalyzer {
 		
 		  Int_t numVert=0;
 		  Bool_t wasTriggerFound = false;
-		  std::string triggerFound = "none";
+		  Int_t triggerFound = 0;
 		  Int_t numVertTrack[entryMax]={0};
 		  
 		  
@@ -254,7 +254,7 @@ for (unsigned int i = 0; i< trigNames.size(); i++)
 		
 		pathName = trig;
 		event.wasTriggerFound = true;
-		event.triggerFound = trig;
+		event.triggerFound = j;
 		i = trigNames.size();
 		j = 2;
 		
@@ -468,7 +468,7 @@ NtupleMaker::beginJob()
  //mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I");
 
  
-           mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVert/I:wasTriggerFound/O:triggerFound/C");
+           mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVert/I:wasTriggerFound/O:triggerFound/I");
            
 		   mtree->Branch("vert_numTrack",event.numVertTrack,"numVertTrack[numVert]/I");
 		   mtree->Branch("track_pt",event.track_pt,"track_pt[numTrack]/D");
