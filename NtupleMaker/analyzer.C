@@ -74,7 +74,7 @@ Bool_t analyzer::Process(Long64_t entry)
    // The return value is currently not used.
  fChain->GetTree()->GetEntry(entry);
    
-bool standardCuts = cmsStandardCuts(Ev_Branch_numTrack, vertexTrack_vx, vertexTrack_vy, vertexTrack_vz);
+bool standardCuts = cmsStandardCuts(Ev_Branch_numTrack, vertex1Track_vx, vertex1Track_vy, vertex1Track_vz);
 reset();
 
 //cout<<++vuelta<<endl;
@@ -210,6 +210,32 @@ bool analyzer::cmsStandardCuts(Int_t numTracks, Double_t vx[], Double_t vy[], Do
 	return ret;
 
 }
+
+bool analyzer::electronCuts(bool highPurity, double pt, int numHits, double eta, double impParamSig)
+{
+ 	bool ret = false;
+	
+	if( highPurity == true && pt > 41 && numHits > 6 && eta < 2 && impParamSig > 3)
+	{
+		ret = true;
+	}
+	
+	
+	return ret;
+}
+bool analyzer::muonCuts(bool highPurity, double pt, int numHits, double eta, double impParamSig)
+{
+ 	bool ret = false;
+	
+	if( highPurity == true && pt > 33 && numHits > 6 && eta < 2 && impParamSig > 2)
+	{
+		ret = true;
+	}
+	
+	
+	return ret;
+}
+
 
 void analyzer::SlaveTerminate()
 {
