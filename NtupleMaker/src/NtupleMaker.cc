@@ -119,7 +119,7 @@ class NtupleMaker : public edm::EDAnalyzer {
 		  Double_t trigObj_energy[entryMax] = {0};
 		  
 	    // Event data
-		  Bool_t triggerActivated;
+		  Bool_t triggerActivated = false;
 		  
 		  Double_t vertex1Track_vx[entryMax];   //primer indice es del vertice, el segundo es el track;
 		  Double_t vertex1Track_vy[entryMax];
@@ -234,35 +234,47 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 edm::InputTag trigResultsTag("TriggerResults","","HLT");
 iEvent.getByLabel(trigResultsTag,trigResults);
 const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
-
+ std::cout<<"antes de path"<<std::endl;
 std::string pathName="HLT_DoublePhoton33_v2";  // Trigger Path
-
-bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));
+ std::cout<<"despues de path"<<std::endl;
+int trigIndex = trigNames.triggerIndex(pathName);
+int trigPathSize = trigNames.size();
+if (trigIndex != trigPathSize)
+{
+bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));   // may cause vector::_M_range_check exeption
+    std::cout<<"despues de bool"<<std::endl;
     event.triggerActivated = passTrig;
- 
+}
+else
+{
+	event.triggerActivated=false;
+}
+ std::cout<<"despues de event.triggerActivated"<<std::endl;
    Handle<TrackCollection> tracks;
    iEvent.getByLabel(trackTags_,tracks);
-   
+   std::cout<<"handle track"<<std::endl;
    Handle<reco::VertexCollection> vertHand;
    iEvent.getByLabel( "offlinePrimaryVertices",vertHand);
-   
+   std::cout<<"handle vertex"<<std::endl;
    edm::InputTag trigEventTag("hltTriggerSummaryAOD","","HLT"); //make sure have correct process on MC
    //data process=HLT, MC depends, Spring11 is REDIGI311X
    edm::Handle<trigger::TriggerEvent> trigEvent; 
    iEvent.getByLabel(trigEventTag,trigEvent);
-
+  std::cout<<"handle trigger"<<std::endl;
   
    //const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
    int i, j;
    event.numVert=0;
    j =0;
+   
+	      std::cout<<"vertex loop begin"<<std::endl;
     for(reco::VertexCollection::const_iterator itVert = vertHand->begin();
        itVert != vertHand->begin()+6 && itVert != vertHand->end();
        ++itVert){
 		  
          event.numVert++;
          
-         std::cout<<"Tracks de vertices "<<itVert->tracksSize()<<std::endl;
+         //std::cout<<"Tracks de vertices "<<itVert->tracksSize()<<std::endl;
 	    
 	       event.vertex_chi2[j] = itVert->chi2();
 		   event.vertex_ndof[j] = itVert->ndof();
@@ -323,8 +335,11 @@ bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));
    
 }
    
+	      std::cout<<"vertex loop  end"<<std::endl;
    i=0;
    event.numTrack=0;
+   
+	      std::cout<<"track loop begin"<<std::endl;
    for(TrackCollection::const_iterator itTrack = tracks->begin();
        itTrack != tracks->end();                      
        ++itTrack) {
@@ -356,20 +371,31 @@ bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));
 		   event.track_highPurity[i] = itTrack->quality(reco::Track::highPurity);
 		   event.track_tight[i] = itTrack->quality(reco::Track::tight);
 		   event.track_loose[i] = itTrack->quality(reco::Track::loose);
-           std::cout<<"track vx "<<event.track_vx[i]<<std::endl;
+           //std::cout<<"track vx "<<event.track_vx[i]<<std::endl;
         i ++;
         event.numTrack++;
   }
-  //std::cout<<event.numVert<<std::endl;
   
+	      std::cout<<"track loop end"<<std::endl;
+  //std::cout<<event.numVert<<std::endl;
+    std::cout<<"trigObj loop begin"<<std::endl;
+    
   std::string e_filterName("hltDoublePhoton33EgammaLHEDoubleFilter"); // dataset photones (para filtrar electrones)
+    std::cout<<"trigObj loop begin"<<std::endl;
   //std::string e_filterName("hltDoubleEG43HEVTDoubleFilter"); // simulacion
   trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filterName,"",trigEventTag.process())); 
+   std::cout<<"trigObj loop begin"<<std::endl;
   if(e_filterIndex<trigEvent->sizeFilters()){ 
+	  
+	  std::cout<<"if(e_filterIndex<trigEvent->sizeFilters()){"<<std::endl;
       const trigger::Keys& trigKeys = trigEvent->filterKeys(e_filterIndex); 
+      std::cout<<"const trigger::Keys& trigKeys = trigEvent->filterKeys(e_filterIndex); "<<std::endl;
       const trigger::TriggerObjectCollection & e_trigObjColl(trigEvent->getObjects());
+      std::cout<<" const trigger::TriggerObjectCollection & e_trigObjColl(trigEvent->getObjects());"<<std::endl;
    i = 0;
    event.numTrigObj=0;
+   
+	      std::cout<<"trigObj loop begin"<<std::endl;
   for(trigger::Keys::const_iterator keyIt=trigKeys.begin();keyIt!=trigKeys.end();++keyIt){ 
 	     const trigger::TriggerObject& obj = e_trigObjColl[*keyIt];
 	      event.trigObj_pt[i] = obj.pt();
@@ -383,8 +409,13 @@ bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));
 	  i++;
 	  event.numTrigObj++;
      }
+     
+     
+	      std::cout<<"trigObj end"<<std::endl;
  
 }
+
+ std::cout<<"final"<<std::endl;
  
 
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
