@@ -234,40 +234,51 @@ NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 edm::InputTag trigResultsTag("TriggerResults","","HLT");
 iEvent.getByLabel(trigResultsTag,trigResults);
 const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
- std::cout<<"antes de path"<<std::endl;
-std::string pathName="HLT_DoublePhoton33_v2";  // Trigger Path
- std::cout<<"despues de path"<<std::endl;
-int trigIndex = trigNames.triggerIndex(pathName);
+ 
+std::string pathName[10]={"HLT_DoublePhoton33_v1","HLT_DoublePhoton33_v2","HLT_DoublePhoton33_v3","HLT_DoublePhoton33_v4","HLT_DoublePhoton33_v5","HLT_DoublePhoton33_v6","HLT_DoublePhoton33_v7","HLT_DoublePhoton33_v8","HLT_DoublePhoton33_v9","HLT_DoublePhoton33_v10"};  // Trigger Path
+
+
+ 
+int trigIndex = trigNames.triggerIndex(pathName[0]);
 int trigPathSize = trigNames.size();
+
+int pathCount = 0;
+while(trigIndex == trigPathSize && pathCount <10)
+{
+	 
+ trigIndex = trigNames.triggerIndex(pathName[pathcount++]);
+ 
+}
+
 if (trigIndex != trigPathSize)
 {
 bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));   // may cause vector::_M_range_check exeption
-    std::cout<<"despues de bool"<<std::endl;
+    
     event.triggerActivated = passTrig;
 }
 else
 {
 	event.triggerActivated=false;
 }
- std::cout<<"despues de event.triggerActivated"<<std::endl;
+ 
    Handle<TrackCollection> tracks;
    iEvent.getByLabel(trackTags_,tracks);
-   std::cout<<"handle track"<<std::endl;
+  
    Handle<reco::VertexCollection> vertHand;
    iEvent.getByLabel( "offlinePrimaryVertices",vertHand);
-   std::cout<<"handle vertex"<<std::endl;
+   
    edm::InputTag trigEventTag("hltTriggerSummaryAOD","","HLT"); //make sure have correct process on MC
    //data process=HLT, MC depends, Spring11 is REDIGI311X
    edm::Handle<trigger::TriggerEvent> trigEvent; 
    iEvent.getByLabel(trigEventTag,trigEvent);
-  std::cout<<"handle trigger"<<std::endl;
+  
   
    //const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
    int i, j;
    event.numVert=0;
    j =0;
    
-	      std::cout<<"vertex loop begin"<<std::endl;
+	     
     for(reco::VertexCollection::const_iterator itVert = vertHand->begin();
        itVert != vertHand->begin()+6 && itVert != vertHand->end();
        ++itVert){
@@ -335,11 +346,11 @@ else
    
 }
    
-	      std::cout<<"vertex loop  end"<<std::endl;
+	      
    i=0;
    event.numTrack=0;
    
-	      std::cout<<"track loop begin"<<std::endl;
+	     
    for(TrackCollection::const_iterator itTrack = tracks->begin();
        itTrack != tracks->end();                      
        ++itTrack) {
@@ -376,26 +387,26 @@ else
         event.numTrack++;
   }
   
-	      std::cout<<"track loop end"<<std::endl;
+	     
   //std::cout<<event.numVert<<std::endl;
-    std::cout<<"trigObj loop begin"<<std::endl;
+   
     
   std::string e_filterName("hltDoublePhoton33EgammaLHEDoubleFilter"); // dataset photones (para filtrar electrones)
-    std::cout<<"trigObj loop begin"<<std::endl;
+   
   //std::string e_filterName("hltDoubleEG43HEVTDoubleFilter"); // simulacion
   trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filterName,"",trigEventTag.process())); 
-   std::cout<<"trigObj loop begin"<<std::endl;
+  
   if(e_filterIndex<trigEvent->sizeFilters()){ 
 	  
-	  std::cout<<"if(e_filterIndex<trigEvent->sizeFilters()){"<<std::endl;
+	 
       const trigger::Keys& trigKeys = trigEvent->filterKeys(e_filterIndex); 
-      std::cout<<"const trigger::Keys& trigKeys = trigEvent->filterKeys(e_filterIndex); "<<std::endl;
+      
       const trigger::TriggerObjectCollection & e_trigObjColl(trigEvent->getObjects());
-      std::cout<<" const trigger::TriggerObjectCollection & e_trigObjColl(trigEvent->getObjects());"<<std::endl;
+     
    i = 0;
    event.numTrigObj=0;
    
-	      std::cout<<"trigObj loop begin"<<std::endl;
+	     
   for(trigger::Keys::const_iterator keyIt=trigKeys.begin();keyIt!=trigKeys.end();++keyIt){ 
 	     const trigger::TriggerObject& obj = e_trigObjColl[*keyIt];
 	      event.trigObj_pt[i] = obj.pt();
@@ -411,11 +422,11 @@ else
      }
      
      
-	      std::cout<<"trigObj end"<<std::endl;
+	     
  
 }
 
- std::cout<<"final"<<std::endl;
+ 
  
 
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
