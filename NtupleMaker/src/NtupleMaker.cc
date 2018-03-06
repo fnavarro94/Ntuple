@@ -239,23 +239,28 @@ iEvent.getByLabel(trigResultsTag,trigResults);
 const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
  
 std::string pathName = "none";
-
+std::string toFind[2] = {"HLT_DoublePhoton33", "HLT_DoublePhoton38"};
  
 
 int trigPathSize = trigNames.size();
 
-
+for(int j = 0; j < 2; j++){
 for (unsigned int i = 0; i< trigNames.size(); i++)
 {
 	
+	
 	std::string trig = trigNames.triggerName(i);
-	if ( trig.find("HLT_DoublePhoton33") !=std::string::npos ){
+	if ( trig.find(toFind[j]) !=std::string::npos ){
 		
 		pathName = trig;
-		wasTriggerFound = true;
-		triggerFound = trig;
+		event.wasTriggerFound = true;
+		event.triggerFound = trig;
 		i = trigNames.size();
+		j = 2;
+		
 		}
+		
+	}
 }
 int trigIndex = trigNames.triggerIndex(pathName);
 if (trigIndex != trigPathSize)
