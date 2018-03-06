@@ -82,7 +82,10 @@ class NtupleMaker : public edm::EDAnalyzer {
 		  Int_t numTrigObj=0;
 		
 		  Int_t numVert=0;
+		  Bool_t wasTriggerFound = false;
+		  std::string triggerFound = "none";
 		  Int_t numVertTrack[entryMax]={0};
+		  
 		  
 		// track data 
 		  Double_t track_pt[entryMax] = {0};
@@ -235,21 +238,26 @@ edm::InputTag trigResultsTag("TriggerResults","","HLT");
 iEvent.getByLabel(trigResultsTag,trigResults);
 const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
  
-std::string pathName[10]={"HLT_DoublePhoton33_v1","HLT_DoublePhoton33_v2","HLT_DoublePhoton33_v3","HLT_DoublePhoton33_v4","HLT_DoublePhoton33_v5","HLT_DoublePhoton33_v6","HLT_DoublePhoton33_v7","HLT_DoublePhoton33_v8","HLT_DoublePhoton33_v9","HLT_DoublePhoton33_v10"};  // Trigger Path
-
+std::string pathName = "none";
 
  
-int trigIndex = trigNames.triggerIndex(pathName[0]);
+
 int trigPathSize = trigNames.size();
 
-int pathCount = 0;
-while(trigIndex == trigPathSize && pathCount <10)
-{
-	 
- trigIndex = trigNames.triggerIndex(pathName[pathcount++]);
- 
-}
 
+for (unsigned int i = 0; i< trigNames.size(); i++)
+{
+	
+	std::string trig = trigNames.triggerName(i);
+	if ( trig.find("HLT_DoublePhoton33") !=std::string::npos ){
+		
+		pathName = trig;
+		wasTriggerFound = true;
+		triggerFound = trig;
+		i = trigNames.size();
+		}
+}
+int trigIndex = trigNames.triggerIndex(pathName);
 if (trigIndex != trigPathSize)
 {
 bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));   // may cause vector::_M_range_check exeption
@@ -455,7 +463,7 @@ NtupleMaker::beginJob()
  //mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I");
 
  
-           mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVert/I");
+           mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVert/I:wasTriggerFound/O:triggerFound/C");
            
 		   mtree->Branch("vert_numTrack",event.numVertTrack,"numVertTrack[numVert]/I");
 		   mtree->Branch("track_pt",event.track_pt,"track_pt[numTrack]/D");
