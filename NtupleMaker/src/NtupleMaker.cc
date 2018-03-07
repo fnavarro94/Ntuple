@@ -71,6 +71,8 @@ class NtupleMaker : public edm::EDAnalyzer {
       virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
       virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
       
+     
+      
       TTree * mtree;
       TFile * mfile;
      // TH1F * h_;
@@ -184,6 +186,7 @@ class NtupleMaker : public edm::EDAnalyzer {
 
       // ----------member data ---------------------------
       edm::InputTag trackTags_; //used to select what tracks to read from configuration file
+       std::string  outFile_;
 };
 
 //
@@ -195,11 +198,12 @@ class NtupleMaker : public edm::EDAnalyzer {
 //
 
 //
-// constructors and destructor
+// constructors and destructor  
 //
 NtupleMaker::NtupleMaker(const edm::ParameterSet& iConfig)
 :
- trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks"))
+ trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks")),
+ outFile_(iConfig.getParameter<std::string>("outFile"))
 
 {
    //now do what ever initialization is needed
@@ -461,7 +465,8 @@ void
 NtupleMaker::beginJob()
 {
  vuelta = 0;
- mfile = new TFile("tuple.root", "recreate");
+ const char* of = outFile_.c_str();
+ mfile = new TFile(of, "recreate");
  mtree = new TTree("mtree","Ntuple");
  
  //mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I:track_pt[numTrack]/D:track_px[numTrack]/D:track_pz[numTrack]/D:track_py[numTrack]/D:track_vx[numTrack]/D:track_vy[numTrack]/D:track_vz[numTrack]/D:track_chi2[numTrack]/D:track_ndof[numTrack]/I:track_eta[numTrack]/D:track_phi[numTrack]/D:track_nHits[numTrack]/D:track_found[numTrack]/I:track_dxy[numTrack]/D:track_dxyError[numTrack]/D:track_dz[numTrack]/D:track_charge[numTrack]/I:track_highPurity[numTrack]/O:track_tight[numTrack]/O:track_loose[numTrack]/O:trigObj_pt[numTrigObj]/D:trigObj_px[numTrigObj]/D:trigObj_pz[numTrigObj]/D:trigObj_py[numTrigObj]/D:trigObj_eta[numTrigObj]/D:trigObj_phi[numTrigObj]/D:trigObj_energy[numTrigObj]/D:triggerActivated/O:vertexTrack_vx[numVertTrack]/D:vertexTrack_vy[numVertTrack]/D:vertexTrack_vz[numVertTrack]/D:vertexTrack_nHits[numVertTrack]/D:vertexTrack_chi2[numVertTrack]/D:vertex[numVert][6]/D");
