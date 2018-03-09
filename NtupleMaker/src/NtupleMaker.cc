@@ -45,6 +45,8 @@
 #include "HLTrigger/HLTcore/interface/HLTConfigData.h"
 #include "DataFormats/JetReco/interface/PFJet.h"
 #include "DataFormats/JetReco/interface/PFJetCollection.h"
+#include "DataFormats/JetReco/interface/Jet.h"
+#include "DataFormats/JetReco/interface/PFJet.h"
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
@@ -178,7 +180,16 @@ class NtupleMaker : public edm::EDAnalyzer {
 		  Int_t vertex_nTracks[entryMax] = {0};      
 		       
 		  
+		  // Jet Data
 		  
+		  Double_t ak5jet_x[entryMax] = {0};
+		  Double_t ak5jet_y[entryMax] = {0};
+		  Double_t ak5jet_z[entryMax] = {0};
+		  Double_t ak5jet_pt[entryMax] = {0};
+		  Double_t ak5jet_pz[entryMax] = {0};
+		  Double_t ak5jet_phi[entryMax] = {0};
+		  Double_t ak5jet_eta[entryMax] = {0};
+		 
 		  
 		  
 		  }event,eventReset;
@@ -245,6 +256,8 @@ const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
 std::string pathName = "none";
 std::string toFind[2] = {"HLT_DoublePhoton33", "HLT_DoublePhoton38"};
  
+ 
+ 
 
 int trigPathSize = trigNames.size();
 
@@ -277,7 +290,10 @@ else
 {
 	event.triggerActivated=false;
 }
- 
+   
+   Handle< 	reco::PFJetCollection > ak5Jets;
+   iEvent.getByLabel("ak5PFJet", ak5Jets);
+   
    Handle<TrackCollection> tracks;
    iEvent.getByLabel(trackTags_,tracks);
   
@@ -443,7 +459,24 @@ else
  
 }
 
- 
+// Jets
+
+i =0;
+for (auto itJet = ak5Jets->begin(); itJet != ak5Jets->end(); ++itJet)
+{
+	event.ak5jet_x[i] = itJet->vx();
+	event.ak5jet_y[i] = itJet->vy();
+	event.ak5jet_z[i] = itJet->vz();
+	event.ak5jet_pt[i] = itJet->pt();
+	event.ak5jet_pz[i] = itJet->pz();
+	event.ak5jet_eta[i] = itJet->eta();
+	event.ak5jet_phi[i] = itJet->phi();
+	//event.ak5jet_chi2[i]= itJet->chi2();
+	//event.ak5jet_ndof[i] = itJet->ndof();
+	
+	
+	i++;
+}
  
 
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
@@ -540,8 +573,17 @@ NtupleMaker::beginJob()
            mtree->Branch("vertex_yError", event.vertex_yError, "vertex_yError[numVert]/D");
            mtree->Branch("vertex_zError", event.vertex_zError, "vertex_zError[numVert]/D");
            mtree->Branch("vertex_nTracks", event.vertex_nTracks, "vertex_nTracks[numVert]/D");
+           
+           mtree->Branch("ak5jet_x", event.ak5jet_x, "ak5jet_x[numJets]/D");
+           mtree->Branch("ak5jet_y", event.ak5jet_y, "ak5jet_y[numJets]/D");
+           mtree->Branch("ak5jet_z", event.ak5jet_z, "ak5jet_z[numJets]/D");
+           mtree->Branch("ak5jet_pt", event.ak5jet_pt, "ak5jet_pt[numJets]/D");
+           mtree->Branch("ak5jet_pz", event.ak5jet_pz, "ak5jet_pz[numJets]/D");
+           mtree->Branch("ak5jet_phi", event.ak5jet_phi, "ak5jet_phi[numJets]/D");
+           mtree->Branch("ak5jet_eta", event.ak5jet_eta, "ak5jet_eta[numJets]/D");
 		  
 		  
+		 
 		  
 	
 		
