@@ -83,6 +83,9 @@ class NtupleMaker : public edm::EDAnalyzer {
       struct mEvent {
 
           static const Int_t entryMax = 10000;
+		  Int_t eventNumer = 0;
+		  Int_t runNumber = 0;
+		  Int_t lumiBlock = 0;
 		  Int_t numTrack =0;
 		  Int_t numTrigObj=0;
 		  Int_t numJets = 0;
@@ -267,7 +270,9 @@ const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
 std::string pathName = "none";
 std::string toFind[2] = {"HLT_DoublePhoton33", "HLT_DoublePhoton38"};
  
- 
+ event.eventNumer= iEvent.id().event();
+ event.runNumber= iEvent.id().run();
+ event.lumiBlock = iEvent.id().luminosityBlock();
  
 
 int trigPathSize = trigNames.size();
@@ -290,6 +295,19 @@ for (unsigned int i = 0; i< trigNames.size(); i++)
 		
 	}
 }
+
+std::string filterName = "none";
+
+if (event.triggerFound == 0)
+{
+	filterName = "hltDoublePhoton38EgammaLHEDoubleFilter";
+}
+else
+{
+	filterName = "hltDoublePhoton33EgammaLHEDoubleFilter";
+}
+
+
 int trigIndex = trigNames.triggerIndex(pathName);
 if (trigIndex != trigPathSize)
 {
@@ -468,7 +486,7 @@ else
   //std::cout<<event.numVert<<std::endl;
    
     
-  std::string e_filterName("hltDoublePhoton33EgammaLHEDoubleFilter"); // dataset photones (para filtrar electrones)
+  std::string e_filterName(filterName); // dataset photones (para filtrar electrones)
    
   //std::string e_filterName("hltDoubleEG43HEVTDoubleFilter"); // simulacion
   trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filterName,"",trigEventTag.process())); 
@@ -550,7 +568,7 @@ NtupleMaker::beginJob()
  //mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I");
 
  
-           mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVert/I:wasTriggerFound/O:triggerFound/I");
+           mtree->Branch("Ev_Branch",&event ,"eventNumber/I:runNumber/I:lumiBlock/I:numTrack/I:numTrigObj/I:numVert/I:wasTriggerFound/O:triggerFound/I");
            
 		   mtree->Branch("vert_numTrack",event.numVertTrack,"numVertTrack[numVert]/I");
 		   mtree->Branch("track_pt",event.track_pt,"track_pt[numTrack]/D");
