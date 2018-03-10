@@ -3,7 +3,7 @@
 // Package:    NtupleMaker_muon
 // Class:      NtupleMaker_muon
 // 
-/**\class NtupleMaker_muon NtupleMaker.cc Ntuple/NtupleMaker/src/NtupleMaker.cc
+/**\class NtupleMaker_muon NtupleMaker_muon.cc Ntuple/NtupleMaker_muon/src/NtupleMaker_muon.cc
 
  Description: [one line class summary]
 
@@ -225,7 +225,7 @@ class NtupleMaker_muon : public edm::EDAnalyzer {
 //
 // constructors and destructor  
 //
-NtupleMaker_muon::NtupleMaker(const edm::ParameterSet& iConfig)
+NtupleMaker_muon::NtupleMaker_muon(const edm::ParameterSet& iConfig)
 :
  trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks")),
  outFile_(iConfig.getParameter<std::string>("outFile"))
@@ -236,7 +236,7 @@ NtupleMaker_muon::NtupleMaker(const edm::ParameterSet& iConfig)
 }
 
 
-NtupleMaker_muon::~NtupleMaker()
+NtupleMaker_muon::~NtupleMaker_muon()
 {
  
    // do anything here that needs to be done at desctruction time
