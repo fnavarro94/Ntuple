@@ -15,11 +15,13 @@ outputFile = "electron"
 count = 0
 for i in range(0,numFiles/100 +1):
 	print i
-	fOutName = outputFile + str(i)+ '_cfg.py'
+	fOutName = outputFile + str(i+1)+ '_cfg.py'
 	fOut = open(fOutName, 'w')
-	
-	print>> fBash, + "cmsRun" fOutName +'> run' +str(i) + '.log & 2>&1'
-	print >> fBash, tailf 'run' +str(i) + '.log & 2>&1'
+	print>> fBash, 'echo "run ' +str(i+1)+ ' of ' +str(numFiles/100 +1) + '"'
+	print>> fBash,  "cmsRun " + fOutName +'> run' + str(i+1) + '.log '
+	#print>> fBash, 'echo tailing file ' +str(i+1)
+	#print >> fBash, 'tailf run' + str(i) + '.log '
+	#print >> fBash, '^C'
 	
 	print>> fOut, 'import FWCore.ParameterSet.Config as cms'	
 	print>> fOut, 'import FWCore.ParameterSet.Config as cms'
