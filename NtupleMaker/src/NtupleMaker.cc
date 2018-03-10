@@ -79,12 +79,13 @@ class NtupleMaker : public edm::EDAnalyzer {
       TFile * mfile;
      // TH1F * h_;
       int vuelta;
+      int vertTracks = 0, tracks = 0;
       struct mEvent {
 
           static const Int_t entryMax = 10000;
 		  Int_t numTrack =0;
 		  Int_t numTrigObj=0;
-		
+		  Int_t numJets = 0;
 		  Int_t numVert=0;
 		  Bool_t wasTriggerFound = false;
 		  Int_t triggerFound = 0;
@@ -112,6 +113,7 @@ class NtupleMaker : public edm::EDAnalyzer {
 		  Double_t track_dxyError[entryMax] = {0};
 		  Double_t track_dz[entryMax] = {0};
 		  Double_t track_dzError[entryMax] = {0};
+		  Int_t track_matchedVertIndex[entryMax] = {0};    
 		  Int_t track_charge[entryMax] = {0};
 		  Bool_t track_highPurity[entryMax] = {0};
 		  Bool_t track_tight[entryMax] = {0};   // quality lower than highPurity
@@ -165,6 +167,15 @@ class NtupleMaker : public edm::EDAnalyzer {
 		  //Double_t vertex6Track_chi2[entryMax];
 		  
 		  //vertex data
+		  
+		  Double_t matchedVertex_x[entryMax] = {0};
+		  Double_t matchedVertex_y[entryMax] = {0};
+		  Double_t matchedVertex_z[entryMax] = {0};
+		  Double_t matchedVertex_chi2[entryMax] = {0};
+		  Double_t matchedVertex_ndof[entryMax] = {0};
+		  Double_t matchedVertex_xError[entryMax] = {0};
+		  Double_t matchedVertex_yError[entryMax] = {0};
+		  Double_t matchedVertex_zError[entryMax] = {0};
 		  
 		  
 		  Double_t vertex_chi2[entryMax] = {0}; 
@@ -291,8 +302,8 @@ else
 	event.triggerActivated=false;
 }
    
-   Handle< 	reco::PFJetCollection > ak5Jets;
-   iEvent.getByLabel("ak5PFJet", ak5Jets);
+   Handle<reco::PFJetCollection> ak5Jets;
+   iEvent.getByLabel("ak5PFJets", ak5Jets);
    
    Handle<TrackCollection> tracks;
    iEvent.getByLabel(trackTags_,tracks);
@@ -339,7 +350,40 @@ else
         for(reco::Vertex::trackRef_iterator itTrack = itVert->tracks_begin();
        itTrack != itVert->tracks_begin() +6 && itTrack != itVert->tracks_end();
        ++itTrack){ 
+		
+		   // matching vertex track to track
+		  // int k = 0;
+		   //int vertexIndex = 0;
+		   /* for(TrackCollection::const_iterator itTrack2 = tracks->begin();
+				itTrack2 != tracks->end();                      
+				++itTrack) 
+				{
+					std::cout<<(&(*itTrack2))<<"  "<<(&(**itTrack))<<std::endl;
+					//reco::TrackRef trkRef(itTrack->castTo<reco::TrackRef>());
+					//reco::TrackRef trkRef2(itTrack2->castTo<reco::TrackRef>());
+					if(true)//(**itTrack) == (*itTrack))
+					{
+						event.matchedVertex_x[vertexIndex] = itVert->x();
+						event.matchedVertex_xError[vertexIndex] = itVert->xError();
+						event.matchedVertex_y[vertexIndex] = itVert->y();
+						event.matchedVertex_yError[vertexIndex] = itVert->yError();
+						event.matchedVertex_z[vertexIndex] = itVert->z();
+						event.matchedVertex_zError[vertexIndex] = itVert->zError();
+						event.matchedVertex_chi2[vertexIndex] = itVert->chi2();
+						event.matchedVertex_ndof[vertexIndex] = itVert->ndof();
+						event.track_matchedVertIndex[k] = vertexIndex;
+						vertexIndex++;
+						
+					}
+					else
+					{
+						event.track_matchedVertIndex[k] = 999999;
+					}
+					k++;
+				}*/
 		   
+		   
+		   // Top 6 vertex with most tracks
 		   if(itTrack == itVert->tracks_begin()){
 		   event.vertex1Track_vx[i] = (**itTrack).vx();
 	       event.vertex1Track_vy[i] = (**itTrack).vy();
@@ -474,7 +518,7 @@ for (auto itJet = ak5Jets->begin(); itJet != ak5Jets->end(); ++itJet)
 	//event.ak5jet_chi2[i]= itJet->chi2();
 	//event.ak5jet_ndof[i] = itJet->ndof();
 	
-	
+	event.numJets++;
 	i++;
 }
  
@@ -533,6 +577,7 @@ NtupleMaker::beginJob()
            mtree->Branch("track_highPurity", event.track_highPurity, "track_highPurity[numTrack]/O");
            mtree->Branch("track_tight", event.track_tight, "track_tight[numTrack]/O");
            mtree->Branch("track_loose", event.track_loose, "track_loose[numTrack]/O");
+           mtree->Branch("track_matchedVertIndex", event.track_matchedVertIndex, "track_matchedVertIndex[numTrack]/I");
            
            mtree->Branch("trigObj_pt", event.trigObj_pt, "trigObj_pt[numTrigObj]/D");
            mtree->Branch("trigObj_px", event.trigObj_px, "trigObj_px[numTrigObj]/D");
@@ -561,6 +606,16 @@ NtupleMaker::beginJob()
             mtree->Branch("vertex6Track_vx", event.vertex6Track_vx, "vertex6Track_vx[numVertTrack]/D");
            mtree->Branch("vertex6Track_vy", event.vertex6Track_vy, "vertex6Track_vy[numVertTrack]/D");
            mtree->Branch("vertex6Track_vz", event.vertex6Track_vz, "vertex6Track_vz[numVertTrack]/D");
+           mtree->Branch("matchedVertex_x", event.matchedVertex_x, "matchedVertex_x[numVertTrack]/D");
+           mtree->Branch("matchedVertex_xError", event.matchedVertex_xError, "matchedVertex_xError[numVertTrack]/D");
+           mtree->Branch("matchedVertex_y", event.matchedVertex_y, "matchedVertex_y[numVertTrack]/D");
+           mtree->Branch("matchedVertex_yError", event.matchedVertex_yError, "matchedVertex_yError[numVertTrack]/D");
+           mtree->Branch("matchedVertex_z", event.matchedVertex_z, "matchedVertex_z[numVertTrack]/D");
+           mtree->Branch("matchedVertex_zError", event.matchedVertex_zError, "matchedVertex_zError[numVertTrack]/D");
+           mtree->Branch("matchedVertex_chi2", event.matchedVertex_chi2, "matchedVertex_chi2[numVertTrack]/D");
+           mtree->Branch("matchedVertex_ndof", event.matchedVertex_ndof, "matchedVertex_ndof[numVertTrack]/D");
+
+
           
            
          
@@ -574,13 +629,13 @@ NtupleMaker::beginJob()
            mtree->Branch("vertex_zError", event.vertex_zError, "vertex_zError[numVert]/D");
            mtree->Branch("vertex_nTracks", event.vertex_nTracks, "vertex_nTracks[numVert]/D");
            
-           mtree->Branch("ak5jet_x", event.ak5jet_x, "ak5jet_x[numJets]/D");
+           /*mtree->Branch("ak5jet_x", event.ak5jet_x, "ak5jet_x[numJets]/D");
            mtree->Branch("ak5jet_y", event.ak5jet_y, "ak5jet_y[numJets]/D");
            mtree->Branch("ak5jet_z", event.ak5jet_z, "ak5jet_z[numJets]/D");
            mtree->Branch("ak5jet_pt", event.ak5jet_pt, "ak5jet_pt[numJets]/D");
            mtree->Branch("ak5jet_pz", event.ak5jet_pz, "ak5jet_pz[numJets]/D");
            mtree->Branch("ak5jet_phi", event.ak5jet_phi, "ak5jet_phi[numJets]/D");
-           mtree->Branch("ak5jet_eta", event.ak5jet_eta, "ak5jet_eta[numJets]/D");
+           mtree->Branch("ak5jet_eta", event.ak5jet_eta, "ak5jet_eta[numJets]/D");*/
 		  
 		  
 		 
