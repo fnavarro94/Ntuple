@@ -4,6 +4,7 @@
 
 <use name="CommonTools/UtilAlgos"/>
 <use name="PhysicsTools/UtilAlgos"/>
+<use name="DataFormats/JetReco"/>
 
 
 
