@@ -217,8 +217,8 @@ class NtupleMaker : public edm::EDAnalyzer {
 		  Double_t ak5jet_pz[entryMax] = {0};
 		  Double_t ak5jet_phi[entryMax] = {0};
 		  Double_t ak5jet_eta[entryMax] = {0};
-		 
-		  
+		  char triggerPath[100];
+		  char filter[100];
 		  
 		  }event,eventReset;
 		  //static const struct  mEvent eventReset ;
@@ -300,6 +300,14 @@ for (unsigned int i = 0; i< trigNames.size(); i++)
 	if ( trig.find(toFind[j]) !=std::string::npos ){
 		
 		pathName = trig;
+		
+		int l = 0;
+        for(std::string::iterator it = pathName.begin(); it != pathName.end(); ++it) 
+        {
+			event.triggerPath[l++] = *it;
+		}
+    
+
 		event.wasTriggerFound = true;
 		event.triggerFound = j;
 		i = trigNames.size();
@@ -326,6 +334,12 @@ else
 	filterName = "hltDoubleEG38HEVTDoubleFilter";
 }
 
+
+int l = 0;
+        for(std::string::iterator it = filterName.begin(); it != filterName.end(); ++it) 
+        {
+			event.filter[l++] = *it;
+		}
 
 int trigIndex = trigNames.triggerIndex(pathName);
 if (trigIndex != trigPathSize)
@@ -707,6 +721,9 @@ NtupleMaker::beginJob()
            mtree->Branch("ak5jet_pz", event.ak5jet_pz, "ak5jet_pz[numJets]/D");
            mtree->Branch("ak5jet_phi", event.ak5jet_phi, "ak5jet_phi[numJets]/D");
            mtree->Branch("ak5jet_eta", event.ak5jet_eta, "ak5jet_eta[numJets]/D");
+           
+           mtree->Branch("triggerPath", event.triggerPath, "triggerPath[100]/C");
+           mtree->Branch("filter", event.filter, "filter[100]/C");
 		  
 		  
 		 
