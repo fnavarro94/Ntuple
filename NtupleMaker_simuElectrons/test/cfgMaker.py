@@ -11,15 +11,13 @@ numFiles = len(fileList)
 	
 print numFiles
 
-groupSize = 3;
-
-outputFile = "electron"
+outputFile = "electronSimu"
 count = 0
-for i in range(0,numFiles/groupSize +1):
+for i in range(0,numFiles/100 +1):
 	print i
 	fOutName = outputFile + str(i+1)+ '_cfg.py'
 	fOut = open(fOutName, 'w')
-	print>> fBash, 'echo "run ' +str(i+1)+ ' of ' +str(numFiles/groupSize +1) + '"'
+	print>> fBash, 'echo "run ' +str(i+1)+ ' of ' +str(numFiles/100 +1) + '"'
 	print>> fBash,  "cmsRun " + fOutName +'> run' + str(i+1) + '.log '
 	#print>> fBash, 'echo tailing file ' +str(i+1)
 	#print >> fBash, 'tailf run' + str(i) + '.log '
@@ -33,23 +31,23 @@ for i in range(0,numFiles/groupSize +1):
 	print>> fOut, 'process.source = cms.Source("PoolSource",'
 	print>> fOut, '  # replace \'myfile.root\' with the source file you want to use'
 	print >> fOut,   'fileNames = cms.untracked.vstring('
-	lim = groupSize
-	if i == numFiles/groupSize:
-		lim = numFiles%groupSize
+	lim = 100
+	if i == numFiles/100:
+		lim = numFiles%100 
 	for j in range(0,lim ):
 		#print j
 		count = count +1
 		if j < lim:
-			print>> fOut, '\''+ fileList[(i*groupSize)+j ][:-1] +'\','
+			print>> fOut, '\''+ fileList[(i*100)+j ][:-1] +'\','
 		else:
 			print j
-			print >> fOut, '\''+ fileList[(i*groupSize)+j ][:-1] +'\''
+			print >> fOut, '\''+ fileList[(i*100)+j ][:-1] +'\''
 			
 	print >> fOut, ' )'
 	print >> fOut,')'
-	print >> fOut,'process.demo = cms.EDAnalyzer(\'NtupleMaker\''
+	print >> fOut,'process.demo = cms.EDAnalyzer(\'NtupleMaker_simuElectrons\''
 	print  >> fOut, ', tracks = cms.untracked.InputTag(\'generalTracks\'),'
-	print  >> fOut, 'outFile = cms.string("'+outputFile+str(i+1)+'.root'+'")'
+	print  >> fOut, 'outFile = cms.string("'+outputFile+str(i)+'.root'+'")'
 	print >> fOut, ')'
 	print>> fOut, 'process.p = cms.Path(process.demo)'
 	

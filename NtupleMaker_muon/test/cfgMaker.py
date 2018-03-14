@@ -13,7 +13,7 @@ print numFiles
 
 groupSize = 3;
 
-outputFile = "electron"
+outputFile = "muon"
 count = 0
 for i in range(0,numFiles/groupSize +1):
 	print i
