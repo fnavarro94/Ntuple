@@ -51,6 +51,7 @@ void analyzer::SlaveBegin(TTree * /*tree*/)
    h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
    h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
    h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
+  // h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
    //matchedTrack[ = {0};
    TH1::AddDirectory(true);
    vuelta = 0;
@@ -125,10 +126,11 @@ if (standardCuts)   // quitar true
 					 h_invMass->Fill(invariantMass);
 					 h_lxy->Fill(track_lxy1[i]);
 					 h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
-					 h_d0_err->Fill(fabs(track_d0[i]/track_dxyError[i]));
+					 //h_d0_err->Fill(fabs(track_d0[i]/track_dxyError[i]));
 					 
-					 sumPt = conePt(i,track_eta[i],track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
-					 h_conePt->Fill(sumPt); 
+					sumPt = conePt(i,track_eta[i],track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
+					cout<<sumPt<<endl;
+					// h_conePt->Fill(sumPt); 
 					 
 				}
 			}
@@ -148,12 +150,12 @@ if (standardCuts)   // quitar true
 
 // calculates sum of pt arround an isolation cone
 
-double analyzer::conePt(int index, double eta, double phi, int numTrack, double track_eta[], double track_phi, double track_pt[])
+double analyzer::conePt(int forbiddenIndex, double eta, double phi, int numTracks, double tracks_eta[], double tracks_phi[], double tracks_pt[])
 {
 	double sumPt = 0.0;
-	for (int i = 0; i < numTrack; i++)
+	for (int i = 0; i < numTracks; i++)
 	{
-		if(deltaR(eta, phi, track_eta[i], track_phi[i]) < 0.3 && deltaR(eta, phi, track_eta[i], track_phi[i]) > 0.03)
+		if(deltaR(eta, phi, tracks_eta[i], tracks_phi[i]) < 0.3 && deltaR(eta, phi, tracks_eta[i], tracks_phi[i]) > 0.03 && i != forbiddenIndex)
 		{
 			sumPt = track_pt[i] +sumPt;
 		}
