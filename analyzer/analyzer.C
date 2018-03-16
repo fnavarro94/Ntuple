@@ -88,7 +88,7 @@ if (standardCuts || true)   // quitar true
 	{
 		for (int j = 0; j< Ev_Branch_numTrigObj; j++)
 		{
-		   if (matchingCuts("muon"))
+		   if (matchingCuts("muon", track_highPurity[i], track_pt[i] , track_nhits[i], abs(track_eta[i]), abs(track_dxy[i]/track_dxyError[i])))
 		   {
 			   if(deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 && deltaP(track_px[i], track_py[i],track_pz[i], trigObj_px[j], trigObj_py[j], trigObj_pz[j]) < 3)
 			   {
@@ -131,6 +131,27 @@ if (standardCuts || true)   // quitar true
 
 
 // resets arrays and variables to Null/0
+
+bool analyzer::matchingCuts(std::string lepton, bool purity, double pt, int hits, int hits3D, double eta, double impSig)
+{
+	bool ret = false;
+	if(lepton == "muon")
+	{
+	  if(purity && pt > 33 && hits >= 6 && hits3D >=2 && eta < 2 && impSig > 2 )
+	  {
+		  ret = true;
+	  }	
+	}
+	if(lepton == "electron")
+	{
+		if(purity && pt > 41 && hits >= 6 && hits3D >=2 && eta < 2 && impSig > 3)
+		{
+			ret = true;
+		}
+	}
+	
+	return ret;
+}
 
 void analyzer::reset()
 {
