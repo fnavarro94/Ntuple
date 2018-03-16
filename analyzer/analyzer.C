@@ -48,8 +48,9 @@ void analyzer::SlaveBegin(TTree * /*tree*/)
    
    file = new TFile("hists.root", "recreate");
    h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
-   h_lxy = new TH1F ("lxy", "Transverse decay length", 100, 0 , 20);
-   h_invMass = new TH1F ("lxy_err", "Transverse decay length significance", 100, 0 , 20);
+   h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
+   h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
+   h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
    //matchedTrack[ = {0};
    TH1::AddDirectory(true);
    vuelta = 0;
@@ -76,7 +77,7 @@ Bool_t analyzer::Process(Long64_t entry)
    // The return value is currently not used.
  fChain->GetTree()->GetEntry(entry);
    
-bool standardCuts = cmsStandardCuts(Ev_Branch_numTrack, vertex1Track_vx, vertex1Track_vy, vertex1Track_vz, track_highPurity);
+bool standardCuts = cmsStandardCuts(vert_numTrack[0], Ev_Branch_numTrack, vertex1Track_vx, vertex1Track_vy, vertex1Track_vz, track_highPurity);
 reset();
 
 
@@ -84,17 +85,16 @@ reset();
 
  
 
-if (standardCuts|| true)   // quitar true
+if (standardCuts)   // quitar true
 {
 	for (int i = 0 ; i< Ev_Branch_numTrack; i++)
 	{
 
 		for (int j = 0; j< Ev_Branch_numTrigObj; j++)
 		{
-			bool lepMatch =matchingCuts( /*track_highPurity[i]*/ true , track_pt[i] , track_found[i], fabs(track_eta[i]), fabs(track_dxy[i]/track_dxyError[i]));
+			bool lepMatch =matchingCuts( track_highPurity[i]  , track_pt[i] , track_found[i], fabs(track_eta[i]), fabs(track_dxy[i]/track_dxyError[i]));
 		
-		   if (!lepMatch)
-		   {cout<< vuelta <<endl;}*/
+		  
 		   if (lepMatch)
 		   {
 			   if(deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 && deltaP(track_px[i], track_py[i],track_pz[i], trigObj_px[j], trigObj_py[j], trigObj_pz[j]) < 3)
@@ -119,12 +119,16 @@ if (standardCuts|| true)   // quitar true
 			{  
 				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 0.1 )
 				{
-					double invariantMass;
+					double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
 					 cout<<invariantMass<<endl;
 					 h_invMass->Fill(invariantMass);
 					 h_lxy->Fill(track_lxy1[i]);
-					 h_lxy_err->Fill(fabs(track_lxy1[i]/track_lxy1Error[i]));
+					 h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
+					 h_d0_err->Fill(fabs(track_d0[i]/track_dxyError[i]));
+					 
+					 sumPt = conePt(i,track_eta[i],track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
+					 h_conePt->Fill(sumPt); 
 					 
 				}
 			}
@@ -142,7 +146,21 @@ if (standardCuts|| true)   // quitar true
    return kTRUE;
 }
 
+// calculates sum of pt arround an isolation cone
 
+double analyzer::conePt(int index, double eta, double phi, int numTrack, double track_eta[], double track_phi, double track_pt[])
+{
+	double sumPt = 0.0;
+	for (int i = 0; i < numTrack; i++)
+	{
+		if(deltaR(eta, phi, track_eta[i], track_phi[i]) < 0.3 && deltaR(eta, phi, track_eta[i], track_phi[i]) > 0.03)
+		{
+			sumPt = track_pt[i] +sumPt;
+		}
+	}
+	
+	return sumPt;
+}
 
 // resets arrays and variables to Null/0
 
@@ -152,7 +170,7 @@ bool analyzer::matchingCuts( bool purity, double pt, int hits, double eta, doubl
 	
 	
 		
-	  if(purity && pt > 0 && hits >= 0   && eta < 999 && impSig > 0 )
+	  if(purity && pt > 33 && hits >= 6   && eta < 2 && impSig > 2 )
 	  {
 		  ret = true;
 
@@ -231,14 +249,14 @@ double analyzer::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, double o
 }
 
 
-bool analyzer::cmsStandardCuts(Int_t numTracks, Double_t vx[], Double_t vy[], Double_t vz[], bool purity[] )
+bool analyzer::cmsStandardCuts(Int_t numVertTracks, Int_t numTracks, Double_t vx[], Double_t vy[], Double_t vz[], bool purity[] )
 {
 	bool ret =  false;
 	int distCount = 0;
 	int highPurity = 0;
 	bool moreThan25percent = false;
 	 
-		for (int i =0; i< numTracks; i ++) 
+		for (int i =0; i< numVertTracks; i ++) 
 		{
 			
 			double vxy = sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
@@ -255,22 +273,26 @@ bool analyzer::cmsStandardCuts(Int_t numTracks, Double_t vx[], Double_t vy[], Do
 	{
 		for (int i = 0; i < numTracks; i++)
 		{
-			if(purity[i]== true)
+			if(purity[i])
 			{
 				highPurity++;
 			}
 		}
-		if ((long)highPurity/numTracks > 25.0)
+		if ((float)highPurity/numTracks > 0.25)
 		{
 			moreThan25percent = true;
 		}
 		
 	}
-	if (numTracks > 4 && distCount > 4 && moreThan25percent)
+	
+	//cout<<numTracks<<" "<< distCount<<" "<<highPurity<<" "<< moreThan25percent<<endl;
+	if (numTracks > 4 && distCount >4 && moreThan25percent)
 	{
 		ret  = true;
 	}
+	
 	return ret;
+	
 
 }
 
