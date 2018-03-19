@@ -121,6 +121,8 @@ public :
  
   // Additional variables
   Int_t 		   matchedTrack[2000];
+  Int_t 		   matchedTrigObj[2000];
+  Int_t 		   trackTrigObjIndex[2000];
   int vuelta;
   // root file
   

@@ -101,7 +101,8 @@ if (standardCuts)   // quitar true
 			   if(deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 && deltaP(track_px[i], track_py[i],track_pz[i], trigObj_px[j], trigObj_py[j], trigObj_pz[j]) < 3)
 			   {
 				   matchedTrack[i] = 1;
-			    
+			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
+			       trackTrigObjIndex[i] = j; 
 			   }
 			   
 		   }
@@ -116,16 +117,20 @@ if (standardCuts)   // quitar true
 	
 	for ( int i = 0;  i < Ev_Branch_numTrack; i++)
 	{
-		if ( matchedTrack[i] ==1 && track_charge[i] == 1)
+		if ( matchedTrack[i] ==1 && track_charge[i] == 1 )
 		{  
 			for (int j =0; j< Ev_Branch_numTrack; j++)
-			if ( matchedTrack[j] == 1 && track_charge[j] == -1)
+			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] && deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) >0.2)
 			{  
 				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 0.1 )
 				{
 					double conePt_var = conePt(i, j, track_eta[i], track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
+					double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
+					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],track_pz[i]+track_pz[j],track_vx[i]-vertex_x[0], track_vy[i] -vertex_y[0], track_vz[i] - vertex_z[0]); 
 					//cout<<conePt_var<<endl;
-					if (conePt_var < 4)
+					//cout<<alpha<<endl;
+					cout<<theta*180/(3.1415)<<endl;
+					if (conePt_var < 4 && alpha > -0.95 && theta < 0.2 /*0.8 para electron*/)
 					{
 						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
@@ -158,6 +163,21 @@ if (standardCuts)   // quitar true
    return kTRUE;
 }
 
+// calculates cosine of the angle between objects
+double analyzer::mTheta(double ax, double ay, double az, double bx, double by, double bz)
+{
+	double cosAlpha = ax*bx + ay*by + az*bz;
+	double theta;
+	cosAlpha = cosAlpha/(sqrt(ax*ax+ay*ay+az*az)*sqrt(bx*bx+by*by+bz*bz));
+	theta  = acos(cosAlpha);
+	return theta;
+}
+
+double analyzer::mCos(double phi1, double eta1, double phi2, double eta2 )
+{double cosAlpha = sin(eta1)*cos(phi1)*sin(eta2)*cos(phi2) + sin(eta1)*sin(phi1)*sin(eta2)*sin(phi2) + cos(eta1)*cos(eta2);
+	
+	return cosAlpha;
+}
 // calculates sum of pt arround an isolation cone
 
 double analyzer::conePt(int forbiddenIndex, double eta, double phi, int numTracks, double tracks_eta[], double tracks_phi[], double tracks_pt[])
@@ -220,6 +240,13 @@ void analyzer::reset()
 	{
 		matchedTrack[i] = 0;
 	}
+	for (int i = 0; i< Ev_Branch_numTrigObj; i++)
+	{
+		matchedTrigObj[i] = 0;
+	}
+	
+	
+	
 	
 }
 
@@ -241,7 +268,7 @@ double analyzer::invMass(double px1, double py1, double pz1, double px2 , double
 
 	
 }
-double deltaP(double px1, double py1, double pz1, double px2, double py2, double pz2)
+double analyzer::deltaP(double px1, double py1, double pz1, double px2, double py2, double pz2)
 {
 	/*double dpx = px1 -px2;
 	double dpy = py1 -py2;
