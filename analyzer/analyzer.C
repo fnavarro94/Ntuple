@@ -109,6 +109,9 @@ if (standardCuts)   // quitar true
 		}
 	}
 	
+	// Eliminate non isolated candidates
+	
+	
 	// the following section compares vertex of opositly chareged trigger-matched leptons in order to find lepton pairs product of the same decay.
 	
 	for ( int i = 0;  i < Ev_Branch_numTrack; i++)
@@ -120,13 +123,20 @@ if (standardCuts)   // quitar true
 			{  
 				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 0.1 )
 				{
-					double invariantMass, sumPt;
+					double conePt_var = conePt(i, j, track_eta[i], track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
+					//cout<<conePt_var<<endl;
+					if (conePt_var < 4)
+					{
+						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
 					 cout<<invariantMass<<endl;
 					 h_invMass->Fill(invariantMass);
 					 h_lxy->Fill(track_lxy1[i]);
 					 h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
 					 h_d0_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
+					}
+					
+					
 					 
 					sumPt = conePt(i,track_eta[i],track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
 					//cout<<sumPt<<endl;
@@ -156,6 +166,19 @@ double analyzer::conePt(int forbiddenIndex, double eta, double phi, int numTrack
 	for (int i = 0; i < numTracks; i++)
 	{
 		if(deltaR(eta, phi, tracks_eta[i], tracks_phi[i]) < 0.3 && deltaR(eta, phi, tracks_eta[i], tracks_phi[i]) > 0.03 && i != forbiddenIndex)
+		{
+			sumPt = track_pt[i] +sumPt;
+		}
+	}
+	
+	return sumPt;
+}
+double analyzer::conePt(int forbiddenIndex1, int forbiddenIndex2, double eta, double phi, int numTracks, double tracks_eta[], double tracks_phi[], double tracks_pt[])
+{
+	double sumPt = 0.0;
+	for (int i = 0; i < numTracks; i++)
+	{
+		if(deltaR(eta, phi, tracks_eta[i], tracks_phi[i]) < 0.3 && deltaR(eta, phi, tracks_eta[i], tracks_phi[i]) > 0.03 && i != forbiddenIndex1 && i != forbiddenIndex2)
 		{
 			sumPt = track_pt[i] +sumPt;
 		}
