@@ -129,8 +129,8 @@ if (standardCuts)   // quitar true
 					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],track_pz[i]+track_pz[j],track_vx[i]-vertex_x[0], track_vy[i] -vertex_y[0], track_vz[i] - vertex_z[0]); 
 					//cout<<conePt_var<<endl;
 					//cout<<alpha<<endl;
-					cout<<theta*180/(3.1415)<<endl;
-					if (conePt_var < 4 && alpha > -0.95 && theta < 0.2 /*0.8 para electron*/)
+				//	cout<<theta*180/(3.1415)<<endl;
+					if (conePt_var < 4 && alpha > -0.95 /*&& /*theta < 0.2 /*0.8 para electron*/)
 					{
 						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
