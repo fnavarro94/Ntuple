@@ -126,10 +126,10 @@ if (standardCuts)   // quitar true
 				{
 					double conePt_var = conePt(i, j, track_eta[i], track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
 					double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
-					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],track_pz[i]+track_pz[j],track_vx[i]-vertex_x[0], track_vy[i] -vertex_y[0], track_vz[i] - vertex_z[0]); 
+					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],track_vx[i]-vertex_x[0], track_vy[i] -vertex_y[0]); 
 					//cout<<conePt_var<<endl;
 					//cout<<alpha<<endl;
-				//	cout<<theta*180/(3.1415)<<endl;
+					//cout<<theta*180/(3.1415)<<endl;
 					if (conePt_var < 4 && alpha > -0.95 /*&& /*theta < 0.2 /*0.8 para electron*/)
 					{
 						double invariantMass, sumPt;
@@ -164,11 +164,11 @@ if (standardCuts)   // quitar true
 }
 
 // calculates cosine of the angle between objects
-double analyzer::mTheta(double ax, double ay, double az, double bx, double by, double bz)
+double analyzer::mTheta(double ax, double ay, double bx, double by)
 {
-	double cosAlpha = ax*bx + ay*by + az*bz;
+	double cosAlpha = ax*bx + ay*by;
 	double theta;
-	cosAlpha = cosAlpha/(sqrt(ax*ax+ay*ay+az*az)*sqrt(bx*bx+by*by+bz*bz));
+	cosAlpha = cosAlpha/(sqrt(ax*ax+ay*ay)*sqrt(bx*bx+by*by));
 	theta  = acos(cosAlpha);
 	return theta;
 }
