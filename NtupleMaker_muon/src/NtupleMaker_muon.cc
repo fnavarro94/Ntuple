@@ -115,6 +115,7 @@ class NtupleMaker_muon : public edm::EDAnalyzer {
 		  Double_t track_phi[entryMax]= {0};
 		  Double_t track_phiError[entryMax]= {0};
 		  Double_t track_nHits[entryMax] = {0};
+		  Int_t track_n3DHits[entryMax] = {0};
 		  Double_t track_found[entryMax] = {0};
 		  Double_t track_dxy[entryMax] = {0};
 		  Double_t track_dxyError[entryMax] = {0};
@@ -517,6 +518,7 @@ else
 		   event.track_phi[i] = itTrack->phi();
 		   event.track_phiError[i] = itTrack->phiError();
 		   event.track_nHits[i] = itTrack->numberOfValidHits();
+		   event.track_n3DHits[i] = itTrack->hitPattern().numberOfValidPixelHits();
 		   event.track_found[i] = itTrack->found();
 		   event.track_dxy[i] = itTrack->dxy();
 		   event.track_dxyError[i] = itTrack->dxyError();
@@ -648,6 +650,7 @@ NtupleMaker_muon::beginJob()
            mtree->Branch("track_phiError", event.track_phiError, "track_phiError[numTrack]/D");
            mtree->Branch("track_nHits", event.track_nHits, "track_nHits[numTrack]/I");
            mtree->Branch("track_found", event.track_found, "track_nfound[numTrack]/I");
+           mtree->Branch("track_n3DHits", event.track_n3DHits, "track_n3DHits[numTrack]/I");
            mtree->Branch("track_dxy", event.track_dxy, "track_dxy[numTrack]/D");
            mtree->Branch("track_dxyError", event.track_dxyError, "track_dxyError[numTrack]/D");
            mtree->Branch("track_lxy1", event.track_lxy1, "track_lxy1[numTrack]/D");
