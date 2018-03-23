@@ -325,12 +325,18 @@ std::string filterName = "none";
 
 if (event.triggerFound == 0)
 {
-	filterName = "hltL2DoubleMu23NoVertexL2PreFiltered";
+	filterName = "hltDoublePhoton33EgammaLHEDoubleFilter";
+}
+else if(event.triggerFound == 1)
+{
+	filterName = "hltDoubleEG33HEVTDoubleFilter";
+	
 }
 else
 {
-	filterName = "hltL2DoubleMu30NoVertexL2PreFiltered";
+	filterName = "hltDoubleEG38HEVTDoubleFilter";
 }
+
 
 
 

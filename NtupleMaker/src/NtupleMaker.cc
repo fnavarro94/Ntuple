@@ -115,6 +115,7 @@ class NtupleMaker : public edm::EDAnalyzer {
 		  Double_t track_phi[entryMax]= {0};
 		  Double_t track_phiError[entryMax]= {0};
 		  Double_t track_nHits[entryMax] = {0};
+		  Int_t track_n3DHits[entryMax] = {0};
 		  Double_t track_found[entryMax] = {0};
 		  Double_t track_dxy[entryMax] = {0};
 		  Double_t track_dxyError[entryMax] = {0};
@@ -285,7 +286,7 @@ const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
  
 std::string pathName = "none";
 std::string toFind[3] = {"HLT_DoublePhoton33_v","HLT_DoublePhoton33_HEVT", "HLT_DoublePhoton38_HEVT"};
- 
+
  event.eventNumer= iEvent.id().event();
  event.runNumber= iEvent.id().run();
  event.lumiBlock = iEvent.id().luminosityBlock();
@@ -324,17 +325,13 @@ std::string filterName = "none";
 
 if (event.triggerFound == 0)
 {
-	filterName = "hltDoublePhoton33EgammaLHEDoubleFilter";
-}
-else if(event.triggerFound == 1)
-{
-	filterName = "hltDoubleEG33HEVTDoubleFilter";
-	
+	filterName = "hltL2DoubleMu23NoVertexL2PreFiltered";
 }
 else
 {
-	filterName = "hltDoubleEG38HEVTDoubleFilter";
+	filterName = "hltL2DoubleMu30NoVertexL2PreFiltered";
 }
+
 
 
 int l = 0;
@@ -521,6 +518,7 @@ else
 		   event.track_phi[i] = itTrack->phi();
 		   event.track_phiError[i] = itTrack->phiError();
 		   event.track_nHits[i] = itTrack->numberOfValidHits();
+		   event.track_n3DHits[i] = itTrack->hitPattern().numberOfValidPixelHits();
 		   event.track_found[i] = itTrack->found();
 		   event.track_dxy[i] = itTrack->dxy();
 		   event.track_dxyError[i] = itTrack->dxyError();
@@ -591,6 +589,8 @@ for (auto itJet = ak5Jets->begin(); itJet != ak5Jets->end(); ++itJet)
 	event.ak5jet_y[i] = itJet->vy();
 	event.ak5jet_z[i] = itJet->vz();
 	event.ak5jet_pt[i] = itJet->pt();
+	event.ak5jet_px[i] = itJet->py();
+	event.ak5jet_py[i] = itJet->px();
 	event.ak5jet_pz[i] = itJet->pz();
 	event.ak5jet_eta[i] = itJet->eta();
 	event.ak5jet_phi[i] = itJet->phi();
@@ -650,6 +650,7 @@ NtupleMaker::beginJob()
            mtree->Branch("track_phiError", event.track_phiError, "track_phiError[numTrack]/D");
            mtree->Branch("track_nHits", event.track_nHits, "track_nHits[numTrack]/I");
            mtree->Branch("track_found", event.track_found, "track_nfound[numTrack]/I");
+           mtree->Branch("track_n3DHits", event.track_n3DHits, "track_n3DHits[numTrack]/I");
            mtree->Branch("track_dxy", event.track_dxy, "track_dxy[numTrack]/D");
            mtree->Branch("track_dxyError", event.track_dxyError, "track_dxyError[numTrack]/D");
            mtree->Branch("track_lxy1", event.track_lxy1, "track_lxy1[numTrack]/D");
