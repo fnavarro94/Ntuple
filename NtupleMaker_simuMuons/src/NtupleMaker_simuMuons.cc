@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    NtupleMaker_simuElectrons
-// Class:      NtupleMaker_simuElectrons
+// Package:    NtupleMaker_simuMuons
+// Class:      NtupleMaker_simuMuons
 // 
-/**\class NtupleMaker_simuElectrons NtupleMaker_simuElectrons.cc Ntuple/NtupleMaker_simuElectrons/src/NtupleMaker_simuElectrons.cc
+/**\class NtupleMaker_simuMuons NtupleMaker_simuMuons.cc Ntuple/NtupleMaker_simuMuons/src/NtupleMaker_simuMuons.cc
 
  Description: [one line class summary]
 
@@ -57,10 +57,10 @@
 // class declaration
 //
 
-class NtupleMaker_simuElectrons : public edm::EDAnalyzer {
+class NtupleMaker_simuMuons : public edm::EDAnalyzer {
    public:
-      explicit NtupleMaker_simuElectrons(const edm::ParameterSet&);
-      ~NtupleMaker_simuElectrons();
+      explicit NtupleMaker_simuMuons(const edm::ParameterSet&);
+      ~NtupleMaker_simuMuons();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -253,7 +253,7 @@ class NtupleMaker_simuElectrons : public edm::EDAnalyzer {
 //
 // constructors and destructor  
 //
-NtupleMaker_simuElectrons::NtupleMaker_simuElectrons(const edm::ParameterSet& iConfig)
+NtupleMaker_simuMuons::NtupleMaker_simuMuons(const edm::ParameterSet& iConfig)
 :
  trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks")),
  outFile_(iConfig.getParameter<std::string>("outFile"))
@@ -264,7 +264,7 @@ NtupleMaker_simuElectrons::NtupleMaker_simuElectrons(const edm::ParameterSet& iC
 }
 
 
-NtupleMaker_simuElectrons::~NtupleMaker_simuElectrons()
+NtupleMaker_simuMuons::~NtupleMaker_simuMuons()
 {
  
    // do anything here that needs to be done at desctruction time
@@ -279,7 +279,7 @@ NtupleMaker_simuElectrons::~NtupleMaker_simuElectrons()
 
 // ------------ method called for each event  ------------
 void
-NtupleMaker_simuElectrons::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+NtupleMaker_simuMuons::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
   vuelta++;
@@ -565,7 +565,7 @@ else
    
   //std::string e_filterName("hltDoubleEG43HEVTDoubleFilter"); // simulacion
   trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filterName,"",trigEventTag.process())); 
-  
+  std::cout<<e_filterIndex<<" "<<trigEvent->sizeFilters()<<std::endl;
   if(e_filterIndex<trigEvent->sizeFilters()){ 
 	  
 	 
@@ -604,6 +604,7 @@ else
   
   if(m_filterIndex<trigEvent->sizeFilters()){ 
 	  
+	  std::cout<<"paso"<<std::endl;
 	 
       const trigger::Keys& trigKeys = trigEvent->filterKeys(m_filterIndex); 
       
@@ -675,7 +676,7 @@ mtree->Fill();
 
 // ------------ method called once each job just before starting event loop  ------------
 void 
-NtupleMaker_simuElectrons::beginJob()
+NtupleMaker_simuMuons::beginJob()
 {
  vuelta = 0;
  const char* of = outFile_.c_str();
@@ -722,23 +723,23 @@ NtupleMaker_simuElectrons::beginJob()
            mtree->Branch("track_loose", event.track_loose, "track_loose[numTrack]/O");
            mtree->Branch("track_matchedVertIndex", event.track_matchedVertIndex, "track_matchedVertIndex[numTrack]/I");
            
-           mtree->Branch("trigObjE_pt", event.trigObjE_pt, "trigObjE_pt[numTrigObj]/D");
-           mtree->Branch("trigObjE_px", event.trigObjE_px, "trigObjE_px[numTrigObj]/D");
-           mtree->Branch("trigObjE_py", event.trigObjE_py, "trigObjE_py[numTrigObj]/D");
-           mtree->Branch("trigObjE_pz", event.trigObjE_pz, "trigObjE_pz[numTrigObj]/D");
-           mtree->Branch("trigObjE_eta", event.trigObjE_eta, "trigObjE_eta[numTrigObj]/D");
-           mtree->Branch("trigObjE_phi", event.trigObjE_phi, "trigObjE_phi[numTrigObj]/D");
+           mtree->Branch("trigObjE_pt", event.trigObjE_pt, "trigObjE_pt[numTrigObjE]/D");
+           mtree->Branch("trigObjE_px", event.trigObjE_px, "trigObjE_px[numTrigObjE]/D");
+           mtree->Branch("trigObjE_py", event.trigObjE_py, "trigObjE_py[numTrigObjE]/D");
+           mtree->Branch("trigObjE_pz", event.trigObjE_pz, "trigObjE_pz[numTrigObjE]/D");
+           mtree->Branch("trigObjE_eta", event.trigObjE_eta, "trigObjE_eta[numTrigObjE]/D");
+           mtree->Branch("trigObjE_phi", event.trigObjE_phi, "trigObjE_phi[numTrigObjE]/D");
            mtree->Branch("triggerEActivated", &event.triggerEActivated, "triggerEActivated/O");
-           mtree->Branch("trigObjE_energy", event.trigObjE_energy, "trigObjE_energy[numTrigObj]/O");
+           mtree->Branch("trigObjE_energy", event.trigObjE_energy, "trigObjE_energy[numTrigObjE]/O");
            
-            mtree->Branch("trigObjM_pt", event.trigObjM_pt, "trigObjM_pt[numTrigObj]/D");
-           mtree->Branch("trigObjM_px", event.trigObjM_px, "trigObjM_px[numTrigObj]/D");
-           mtree->Branch("trigObjM_py", event.trigObjM_py, "trigObjM_py[numTrigObj]/D");
-           mtree->Branch("trigObjM_pz", event.trigObjM_pz, "trigObjM_pz[numTrigObj]/D");
-           mtree->Branch("trigObjM_eta", event.trigObjM_eta, "trigObjM_eta[numTrigObj]/D");
-           mtree->Branch("trigObjM_phi", event.trigObjM_phi, "trigObjM_phi[numTrigObj]/D");
+           mtree->Branch("trigObjM_pt", event.trigObjM_pt, "trigObjM_pt[numTrigObjM]/D");
+           mtree->Branch("trigObjM_px", event.trigObjM_px, "trigObjM_px[numTrigObjM]/D");
+           mtree->Branch("trigObjM_py", event.trigObjM_py, "trigObjM_py[numTrigObjM]/D");
+           mtree->Branch("trigObjM_pz", event.trigObjM_pz, "trigObjM_pz[numTrigObjM]/D");
+           mtree->Branch("trigObjM_eta", event.trigObjM_eta, "trigObjM_eta[numTrigObjM]/D");
+           mtree->Branch("trigObjM_phi", event.trigObjM_phi, "trigObjM_phi[numTrigObjM]/D");
            mtree->Branch("triggerMActivated", &event.triggerMActivated, "triggerMActivated/O");
-           mtree->Branch("trigObjM_energy", event.trigObjM_energy, "trigObjM_energy[numTrigObj]/O");
+           mtree->Branch("trigObjM_energy", event.trigObjM_energy, "trigObjM_energy[numTrigObjM]/O");
            
            mtree->Branch("vertex1Track_vx", event.vertex1Track_vx, "vertex1Track_vx[numVertTrack]/D");
            mtree->Branch("vertex1Track_vy", event.vertex1Track_vy, "vertex1Track_vy[numVertTrack]/D");
@@ -813,7 +814,7 @@ NtupleMaker_simuElectrons::beginJob()
 
 // ------------ method called once each job just after ending the event loop  ------------
 void 
-NtupleMaker_simuElectrons::endJob() {
+NtupleMaker_simuMuons::endJob() {
 
 //mtree->Write();
 std::cout<<"num traks "<<Ntracks<<" num vertTraks "<<NvertTracks<<std::endl;
@@ -823,31 +824,31 @@ mfile->Close();
 
 // ------------ method called when starting to processes a run  ------------
 void 
-NtupleMaker_simuElectrons::beginRun(edm::Run const&, edm::EventSetup const&)
+NtupleMaker_simuMuons::beginRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a run  ------------
 void 
-NtupleMaker_simuElectrons::endRun(edm::Run const&, edm::EventSetup const&)
+NtupleMaker_simuMuons::endRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when starting to processes a luminosity block  ------------
 void 
-NtupleMaker_simuElectrons::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+NtupleMaker_simuMuons::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a luminosity block  ------------
 void 
-NtupleMaker_simuElectrons::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+NtupleMaker_simuMuons::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-NtupleMaker_simuElectrons::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+NtupleMaker_simuMuons::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -862,4 +863,4 @@ NtupleMaker_simuElectrons::fillDescriptions(edm::ConfigurationDescriptions& desc
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(NtupleMaker_simuElectrons);
+DEFINE_FWK_MODULE(NtupleMaker_simuMuons);
