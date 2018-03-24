@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    NtupleMaker_simuMuons
-// Class:      NtupleMaker_simuMuons
+// Package:    NtupleMaker_simuElectrons
+// Class:      NtupleMaker_simuElectrons
 // 
-/**\class NtupleMaker_simuMuons NtupleMaker_simuMuons.cc Ntuple/NtupleMaker_simuMuons/src/NtupleMaker_simuMuons.cc
+/**\class NtupleMaker_simuElectrons NtupleMaker_simuElectrons.cc Ntuple/NtupleMaker_simuElectrons/src/NtupleMaker_simuElectrons.cc
 
  Description: [one line class summary]
 
@@ -22,6 +22,8 @@
 #include<TLorentzVector.h>
 #include<cmath>
 #include <memory>
+#include <Math/GenVector/PxPyPzE4D.h>                                                                                                   
+#include <Math/GenVector/PxPyPzM4D.h>
 #include "vector"
 #include "algorithm"
 #include <TH1.h>
@@ -55,10 +57,10 @@
 // class declaration
 //
 
-class NtupleMaker_simuMuons : public edm::EDAnalyzer {
+class NtupleMaker_simuElectrons : public edm::EDAnalyzer {
    public:
-      explicit NtupleMaker_simuMuons(const edm::ParameterSet&);
-      ~NtupleMaker_simuMuons();
+      explicit NtupleMaker_simuElectrons(const edm::ParameterSet&);
+      ~NtupleMaker_simuElectrons();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -89,7 +91,8 @@ class NtupleMaker_simuMuons : public edm::EDAnalyzer {
 		  Int_t runNumber = 0;
 		  Int_t lumiBlock = 0;
 		  Int_t numTrack =0;
-		  Int_t numTrigObj=0;
+		  Int_t numTrigObjE=0;
+		  Int_t numTrigObjM=0;
 		  Int_t numJets = 0;
 		  Int_t numVert=0;
 		  Bool_t wasTriggerFound = false;
@@ -113,9 +116,16 @@ class NtupleMaker_simuMuons : public edm::EDAnalyzer {
 		  Double_t track_phi[entryMax]= {0};
 		  Double_t track_phiError[entryMax]= {0};
 		  Double_t track_nHits[entryMax] = {0};
+		  Int_t track_n3DHits[entryMax] = {0};
 		  Double_t track_found[entryMax] = {0};
 		  Double_t track_dxy[entryMax] = {0};
 		  Double_t track_dxyError[entryMax] = {0};
+		  Double_t track_lxy1[entryMax] = {0};
+		  Double_t track_lxy1Error[entryMax] = {0};
+		  Double_t track_lxy2[entryMax] = {0};
+		  Double_t track_lxy2Error[entryMax] = {0};
+		  Double_t track_lxy3[entryMax] = {0};
+		  Double_t track_lxy3Error[entryMax] = {0};
 		  Double_t track_dz[entryMax] = {0};
 		  Double_t track_dzError[entryMax] = {0};
 		  Int_t track_matchedVertIndex[entryMax] = {0};    
@@ -124,16 +134,26 @@ class NtupleMaker_simuMuons : public edm::EDAnalyzer {
 		  Bool_t track_tight[entryMax] = {0};   // quality lower than highPurity
 		  Bool_t track_loose[entryMax] = {0};   // lowest quality
 		// trigger object data (for objects passing filter)
-		  Double_t trigObj_pt[entryMax] = {0};
-		  Double_t trigObj_px[entryMax] = {0};
-		  Double_t trigObj_pz[entryMax] = {0};
-		  Double_t trigObj_py[entryMax] = {0};
-		  Double_t trigObj_eta[entryMax] = {0};
-		  Double_t trigObj_phi[entryMax] = {0};
-		  Double_t trigObj_energy[entryMax] = {0};
+		  Double_t trigObjE_pt[entryMax] = {0};
+		  Double_t trigObjE_px[entryMax] = {0};
+		  Double_t trigObjE_pz[entryMax] = {0};
+		  Double_t trigObjE_py[entryMax] = {0};
+		  Double_t trigObjE_eta[entryMax] = {0};
+		  Double_t trigObjE_phi[entryMax] = {0};
+		  Double_t trigObjE_energy[entryMax] = {0};
+		  
+		   Double_t trigObjM_pt[entryMax] = {0};
+		  Double_t trigObjM_px[entryMax] = {0};
+		  Double_t trigObjM_pz[entryMax] = {0};
+		  Double_t trigObjM_py[entryMax] = {0};
+		  Double_t trigObjM_eta[entryMax] = {0};
+		  Double_t trigObjM_phi[entryMax] = {0};
+		  Double_t trigObjM_energy[entryMax] = {0};
+		  
 		  
 	    // Event data
-		  Bool_t triggerActivated = false;
+		  Bool_t triggerEActivated = false;
+		  Bool_t triggerMActivated = false;
 		  
 		  Double_t vertex1Track_vx[entryMax];   //primer indice es del vertice, el segundo es el track;
 		  Double_t vertex1Track_vy[entryMax];
@@ -206,11 +226,13 @@ class NtupleMaker_simuMuons : public edm::EDAnalyzer {
 		  Double_t ak5jet_y[entryMax] = {0};
 		  Double_t ak5jet_z[entryMax] = {0};
 		  Double_t ak5jet_pt[entryMax] = {0};
+		  Double_t ak5jet_px[entryMax] = {0};
+		  Double_t ak5jet_py[entryMax] = {0};
 		  Double_t ak5jet_pz[entryMax] = {0};
 		  Double_t ak5jet_phi[entryMax] = {0};
 		  Double_t ak5jet_eta[entryMax] = {0};
-		 
-		  
+		  char triggerPath[100];
+		 // char filter[100];
 		  
 		  }event,eventReset;
 		  //static const struct  mEvent eventReset ;
@@ -231,7 +253,7 @@ class NtupleMaker_simuMuons : public edm::EDAnalyzer {
 //
 // constructors and destructor  
 //
-NtupleMaker_simuMuons::NtupleMaker_simuMuons(const edm::ParameterSet& iConfig)
+NtupleMaker_simuElectrons::NtupleMaker_simuElectrons(const edm::ParameterSet& iConfig)
 :
  trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks")),
  outFile_(iConfig.getParameter<std::string>("outFile"))
@@ -242,7 +264,7 @@ NtupleMaker_simuMuons::NtupleMaker_simuMuons(const edm::ParameterSet& iConfig)
 }
 
 
-NtupleMaker_simuMuons::~NtupleMaker_simuMuons()
+NtupleMaker_simuElectrons::~NtupleMaker_simuElectrons()
 {
  
    // do anything here that needs to be done at desctruction time
@@ -257,7 +279,7 @@ NtupleMaker_simuMuons::~NtupleMaker_simuMuons()
 
 // ------------ method called for each event  ------------
 void
-NtupleMaker_simuMuons::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+NtupleMaker_simuElectrons::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
   vuelta++;
@@ -273,8 +295,9 @@ edm::InputTag trigResultsTag("TriggerResults","","HLT");
 iEvent.getByLabel(trigResultsTag,trigResults);
 const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
  
-std::string pathName = "none";
-std::string toFind[2] = {"HLT_L2DoubleMu23_NoVertex", "HLT_L2DoubleMu30_NoVertex"};
+std::string pathName_e = "HLT_DoubleEle33_CaloIdL_v8";
+std::string pathName_m = "HLT_L2DoubleMu23_NoVertex_9";
+//std::string toFind[2] = {"HLT_DoubleEle33_CaloIdL_v8", "HLT_L2DoubleMu23_NoVertex_9"}; 
 
  event.eventNumer= iEvent.id().event();
  event.runNumber= iEvent.id().run();
@@ -282,8 +305,8 @@ std::string toFind[2] = {"HLT_L2DoubleMu23_NoVertex", "HLT_L2DoubleMu30_NoVertex
  
 
 int trigPathSize = trigNames.size();
-
-for(int j = 0; j < 2; j++){
+/*
+for(int j = 0; j < 3; j++){
 for (unsigned int i = 0; i< trigNames.size(); i++)
 {
 	
@@ -292,38 +315,58 @@ for (unsigned int i = 0; i< trigNames.size(); i++)
 	if ( trig.find(toFind[j]) !=std::string::npos ){
 		
 		pathName = trig;
+		
+		int l = 0;
+        for(std::string::iterator it = pathName.begin(); it != pathName.end(); ++it) 
+        {
+			event.triggerPath[l++] = *it;
+		}
+    
+
 		event.wasTriggerFound = true;
 		event.triggerFound = j;
 		i = trigNames.size();
-		j = 2;
+		j = 3;
 		
 		}
 		
 	}
-}
+}*/
 
-std::string filterName = "none";
-
-if (event.triggerFound == 0)
-{
-	filterName = "hltL2DoubleMu23NoVertexL2PreFiltered";
-}
-else
-{
-	filterName = "hltL2DoubleMu30NoVertexL2PreFiltered";
-}
+std::string filterName_e = "none";
+std::string filterName_m = "none";
 
 
-int trigIndex = trigNames.triggerIndex(pathName);
+	filterName_e = "hltDiEle33CaloIdLPixelMatchDoubleFilter";
+	filterName_m = "hltL2DoubleMu23NoVertexL2PreFiltered";
+
+
+
+
+
+
+int trigIndex = trigNames.triggerIndex(pathName_e);
 if (trigIndex != trigPathSize)
 {
-bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));   // may cause vector::_M_range_check exeption
+bool passTrig_e=trigResults->accept(trigNames.triggerIndex(pathName_e));   // may cause vector::_M_range_check exeption
     
-    event.triggerActivated = passTrig;
+    event.triggerEActivated = passTrig_e;
 }
 else
 {
-	event.triggerActivated=false;
+	event.triggerEActivated=false;
+}
+
+int trigIndexM = trigNames.triggerIndex(pathName_m);
+if (trigIndexM != trigPathSize)
+{
+bool passTrig_m=trigResults->accept(trigNames.triggerIndex(pathName_m));   // may cause vector::_M_range_check exeption
+    
+    event.triggerMActivated = passTrig_m;
+}
+else
+{
+	event.triggerMActivated=false;
 }
    
    Handle<reco::PFJetCollection> ak5Jets;
@@ -345,13 +388,28 @@ else
    int i, j;
    event.numVert=0;
    j =0;
-   
+  math::XYZPoint  vertex1;
+  math::XYZPoint  vertex2; 
+  math::XYZPoint  vertex3; 
 	     NvertTracks = 0;
     for(reco::VertexCollection::const_iterator itVert = vertHand->begin();
        itVert != vertHand->begin()+6 && itVert != vertHand->end();
        ++itVert){
 		  
          event.numVert++;
+       
+       if(j ==0)
+       {
+		   vertex1 = itVert->position();
+	   }
+	  if (j == 1)
+	  {
+	      vertex2 = itVert->position();
+	  }
+	  if (j ==2)
+	  {
+		  vertex3 = itVert->position();
+	  }
          
          //std::cout<<"Tracks de vertices "<<itVert->tracksSize()<<std::endl;
 	      
@@ -456,6 +514,10 @@ else
        itTrack != tracks->end();                      
        ++itTrack) {
         Ntracks++;
+           //double vx = itTrack->vx();
+           //double vy = itTrack->vy();
+           //double vz = itTrack->vz();
+           
            event.track_pt[i] = itTrack->pt();
            event.track_ptError[i] = itTrack->ptError();
            //std::cout<<event.track_pt[i]<<std::endl;
@@ -473,9 +535,16 @@ else
 		   event.track_phi[i] = itTrack->phi();
 		   event.track_phiError[i] = itTrack->phiError();
 		   event.track_nHits[i] = itTrack->numberOfValidHits();
+		   event.track_n3DHits[i] = itTrack->hitPattern().numberOfValidPixelHits();
 		   event.track_found[i] = itTrack->found();
 		   event.track_dxy[i] = itTrack->dxy();
 		   event.track_dxyError[i] = itTrack->dxyError();
+		   event.track_lxy1[i] = itTrack->dxy(vertex1);
+		   event.track_lxy1Error[i] = itTrack->dxyError();
+		   event.track_lxy2[i] = itTrack->dxy(vertex2);
+		   event.track_lxy2Error[i] = itTrack->dxyError();
+		   event.track_lxy3[i] = itTrack->dxy(vertex3);
+		   event.track_lxy3Error[i] = itTrack->dxyError();
 		   event.track_dz[i] = itTrack->dz();
 		   event.track_dzError[i] = itTrack->dzError();
 		   event.track_charge[i] = itTrack->charge();
@@ -492,7 +561,7 @@ else
   //std::cout<<event.numVert<<std::endl;
    
     
-  std::string e_filterName(filterName); // dataset photones (para filtrar electrones)
+  std::string e_filterName(filterName_e); // dataset photones (para filtrar electrones)
    
   //std::string e_filterName("hltDoubleEG43HEVTDoubleFilter"); // simulacion
   trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filterName,"",trigEventTag.process())); 
@@ -505,27 +574,65 @@ else
       const trigger::TriggerObjectCollection & e_trigObjColl(trigEvent->getObjects());
      
    i = 0;
-   event.numTrigObj=0;
+   event.numTrigObjE=0;
    
 	     
   for(trigger::Keys::const_iterator keyIt=trigKeys.begin();keyIt!=trigKeys.end();++keyIt){ 
 	     const trigger::TriggerObject& obj = e_trigObjColl[*keyIt];
-	      event.trigObj_pt[i] = obj.pt();
-		  event.trigObj_px[i] = obj.px();
-		  event.trigObj_pz[i] = obj.pz();
-		  event.trigObj_py[i] = obj.py();
-		  event.trigObj_eta[i] = obj.eta();
-		  event.trigObj_phi[i] = obj.phi();
-	      event.trigObj_energy[i] = obj.energy();
+	      event.trigObjE_pt[i] = obj.pt();
+		  event.trigObjE_px[i] = obj.px();
+		  event.trigObjE_pz[i] = obj.pz();
+		  event.trigObjE_py[i] = obj.py();
+		  event.trigObjE_eta[i] = obj.eta();
+		  event.trigObjE_phi[i] = obj.phi();
+	      event.trigObjE_energy[i] = obj.energy();
 	  
 	  i++;
-	  event.numTrigObj++;
+	  event.numTrigObjE++;
      }
      
      
 	     
  
 }
+
+
+ std::string m_filterName(filterName_m); // dataset photones (para filtrar electrones)
+   
+  //std::string e_filterName("hltDoubleEG43HEVTDoubleFilter"); // simulacion
+  trigger::size_type m_filterIndex = trigEvent->filterIndex(edm::InputTag(m_filterName,"",trigEventTag.process())); 
+  
+  if(m_filterIndex<trigEvent->sizeFilters()){ 
+	  
+	 
+      const trigger::Keys& trigKeys = trigEvent->filterKeys(m_filterIndex); 
+      
+      const trigger::TriggerObjectCollection & m_trigObjColl(trigEvent->getObjects());
+     
+   i = 0;
+   event.numTrigObjM=0;
+   
+	     
+  for(trigger::Keys::const_iterator keyIt=trigKeys.begin();keyIt!=trigKeys.end();++keyIt){ 
+	     const trigger::TriggerObject& obj = m_trigObjColl[*keyIt];
+	      event.trigObjM_pt[i] = obj.pt();
+		  event.trigObjM_px[i] = obj.px();
+		  event.trigObjM_pz[i] = obj.pz();
+		  event.trigObjM_py[i] = obj.py();
+		  event.trigObjM_eta[i] = obj.eta();
+		  event.trigObjM_phi[i] = obj.phi();
+	      event.trigObjM_energy[i] = obj.energy();
+	  
+	  i++;
+	  event.numTrigObjM++;
+     }
+     
+     
+	     
+ 
+}
+
+
 
 // Jets
 event.numJets = 0;
@@ -537,6 +644,8 @@ for (auto itJet = ak5Jets->begin(); itJet != ak5Jets->end(); ++itJet)
 	event.ak5jet_y[i] = itJet->vy();
 	event.ak5jet_z[i] = itJet->vz();
 	event.ak5jet_pt[i] = itJet->pt();
+	event.ak5jet_px[i] = itJet->py();
+	event.ak5jet_py[i] = itJet->px();
 	event.ak5jet_pz[i] = itJet->pz();
 	event.ak5jet_eta[i] = itJet->eta();
 	event.ak5jet_phi[i] = itJet->phi();
@@ -566,7 +675,7 @@ mtree->Fill();
 
 // ------------ method called once each job just before starting event loop  ------------
 void 
-NtupleMaker_simuMuons::beginJob()
+NtupleMaker_simuElectrons::beginJob()
 {
  vuelta = 0;
  const char* of = outFile_.c_str();
@@ -577,7 +686,7 @@ NtupleMaker_simuMuons::beginJob()
  //mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I");
 
  
-           mtree->Branch("Ev_Branch",&event ,"eventNumber/I:runNumber/I:lumiBlock/I:numTrack/I:numTrigObj/I:numJets/I:numVert/I:wasTriggerFound/O:triggerFound/I");
+           mtree->Branch("Ev_Branch",&event ,"eventNumber/I:runNumber/I:lumiBlock/I:numTrack/I:numTrigObjE/I:numTrigObjM/I:numJets/I:numVert/I:wasTriggerFound/O:triggerFound/I");
            
 		   mtree->Branch("vert_numTrack",event.numVertTrack,"numVertTrack[numVert]/I");
 		   mtree->Branch("track_pt",event.track_pt,"track_pt[numTrack]/D");
@@ -596,8 +705,15 @@ NtupleMaker_simuMuons::beginJob()
            mtree->Branch("track_phiError", event.track_phiError, "track_phiError[numTrack]/D");
            mtree->Branch("track_nHits", event.track_nHits, "track_nHits[numTrack]/I");
            mtree->Branch("track_found", event.track_found, "track_nfound[numTrack]/I");
+           mtree->Branch("track_n3DHits", event.track_n3DHits, "track_n3DHits[numTrack]/I");
            mtree->Branch("track_dxy", event.track_dxy, "track_dxy[numTrack]/D");
            mtree->Branch("track_dxyError", event.track_dxyError, "track_dxyError[numTrack]/D");
+           mtree->Branch("track_lxy1", event.track_lxy1, "track_lxy1[numTrack]/D");
+           mtree->Branch("track_lxy1Error", event.track_lxy1Error, "track_lxy1Error[numTrack]/D");
+           mtree->Branch("track_lxy2", event.track_lxy2, "track_lxy2[numTrack]/D");
+           mtree->Branch("track_lxy2Error", event.track_lxy2Error, "track_lxy2Error[numTrack]/D");
+           mtree->Branch("track_lxy3", event.track_lxy3, "track_lxy3[numTrack]/D");
+           mtree->Branch("track_lxyError", event.track_lxy3Error, "track_lxyError[numTrack]/D");
            mtree->Branch("track_dz", event.track_dz, "track_dz[numTrack]/D");
            mtree->Branch("track_dzError", event.track_dzError, "track_dzError[numTrack]/D");
            mtree->Branch("track_charge", event.track_charge, "track_charge[numTrack]/I");
@@ -606,14 +722,23 @@ NtupleMaker_simuMuons::beginJob()
            mtree->Branch("track_loose", event.track_loose, "track_loose[numTrack]/O");
            mtree->Branch("track_matchedVertIndex", event.track_matchedVertIndex, "track_matchedVertIndex[numTrack]/I");
            
-           mtree->Branch("trigObj_pt", event.trigObj_pt, "trigObj_pt[numTrigObj]/D");
-           mtree->Branch("trigObj_px", event.trigObj_px, "trigObj_px[numTrigObj]/D");
-           mtree->Branch("trigObj_py", event.trigObj_py, "trigObj_py[numTrigObj]/D");
-           mtree->Branch("trigObj_pz", event.trigObj_pz, "trigObj_pz[numTrigObj]/D");
-           mtree->Branch("trigObj_eta", event.trigObj_eta, "trigObj_eta[numTrigObj]/D");
-           mtree->Branch("trigObj_phi", event.trigObj_phi, "trigObj_phi[numTrigObj]/D");
-           mtree->Branch("triggerActivated", &event.triggerActivated, "triggerActivated/O");
-           mtree->Branch("trigObj_energy", event.trigObj_energy, "trigObj_energy[numTrigObj]/O");
+           mtree->Branch("trigObjE_pt", event.trigObjE_pt, "trigObjE_pt[numTrigObj]/D");
+           mtree->Branch("trigObjE_px", event.trigObjE_px, "trigObjE_px[numTrigObj]/D");
+           mtree->Branch("trigObjE_py", event.trigObjE_py, "trigObjE_py[numTrigObj]/D");
+           mtree->Branch("trigObjE_pz", event.trigObjE_pz, "trigObjE_pz[numTrigObj]/D");
+           mtree->Branch("trigObjE_eta", event.trigObjE_eta, "trigObjE_eta[numTrigObj]/D");
+           mtree->Branch("trigObjE_phi", event.trigObjE_phi, "trigObjE_phi[numTrigObj]/D");
+           mtree->Branch("triggerEActivated", &event.triggerEActivated, "triggerEActivated/O");
+           mtree->Branch("trigObjE_energy", event.trigObjE_energy, "trigObjE_energy[numTrigObj]/O");
+           
+            mtree->Branch("trigObjM_pt", event.trigObjM_pt, "trigObjM_pt[numTrigObj]/D");
+           mtree->Branch("trigObjM_px", event.trigObjM_px, "trigObjM_px[numTrigObj]/D");
+           mtree->Branch("trigObjM_py", event.trigObjM_py, "trigObjM_py[numTrigObj]/D");
+           mtree->Branch("trigObjM_pz", event.trigObjM_pz, "trigObjM_pz[numTrigObj]/D");
+           mtree->Branch("trigObjM_eta", event.trigObjM_eta, "trigObjM_eta[numTrigObj]/D");
+           mtree->Branch("trigObjM_phi", event.trigObjM_phi, "trigObjM_phi[numTrigObj]/D");
+           mtree->Branch("triggerMActivated", &event.triggerMActivated, "triggerMActivated/O");
+           mtree->Branch("trigObjM_energy", event.trigObjM_energy, "trigObjM_energy[numTrigObj]/O");
            
            mtree->Branch("vertex1Track_vx", event.vertex1Track_vx, "vertex1Track_vx[numVertTrack]/D");
            mtree->Branch("vertex1Track_vy", event.vertex1Track_vy, "vertex1Track_vy[numVertTrack]/D");
@@ -660,9 +785,14 @@ NtupleMaker_simuMuons::beginJob()
            mtree->Branch("ak5jet_y", event.ak5jet_y, "ak5jet_y[numJets]/D");
            mtree->Branch("ak5jet_z", event.ak5jet_z, "ak5jet_z[numJets]/D");
            mtree->Branch("ak5jet_pt", event.ak5jet_pt, "ak5jet_pt[numJets]/D");
+           mtree->Branch("ak5jet_px", event.ak5jet_px, "ak5jet_px[numJets]/D");
+           mtree->Branch("ak5jet_py", event.ak5jet_py, "ak5jet_py[numJets]/D");
            mtree->Branch("ak5jet_pz", event.ak5jet_pz, "ak5jet_pz[numJets]/D");
            mtree->Branch("ak5jet_phi", event.ak5jet_phi, "ak5jet_phi[numJets]/D");
            mtree->Branch("ak5jet_eta", event.ak5jet_eta, "ak5jet_eta[numJets]/D");
+           
+           mtree->Branch("triggerPath", event.triggerPath, "triggerPath[100]/C");
+          // mtree->Branch("filter", event.filter, "filter[100]/C");
 		  
 		  
 		 
@@ -683,7 +813,7 @@ NtupleMaker_simuMuons::beginJob()
 
 // ------------ method called once each job just after ending the event loop  ------------
 void 
-NtupleMaker_simuMuons::endJob() {
+NtupleMaker_simuElectrons::endJob() {
 
 //mtree->Write();
 std::cout<<"num traks "<<Ntracks<<" num vertTraks "<<NvertTracks<<std::endl;
@@ -693,31 +823,31 @@ mfile->Close();
 
 // ------------ method called when starting to processes a run  ------------
 void 
-NtupleMaker_simuMuons::beginRun(edm::Run const&, edm::EventSetup const&)
+NtupleMaker_simuElectrons::beginRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a run  ------------
 void 
-NtupleMaker_simuMuons::endRun(edm::Run const&, edm::EventSetup const&)
+NtupleMaker_simuElectrons::endRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when starting to processes a luminosity block  ------------
 void 
-NtupleMaker_simuMuons::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+NtupleMaker_simuElectrons::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a luminosity block  ------------
 void 
-NtupleMaker_simuMuons::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+NtupleMaker_simuElectrons::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-NtupleMaker_simuMuons::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+NtupleMaker_simuElectrons::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -732,4 +862,4 @@ NtupleMaker_simuMuons::fillDescriptions(edm::ConfigurationDescriptions& descript
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(NtupleMaker_simuMuons);
+DEFINE_FWK_MODULE(NtupleMaker_simuElectrons);
