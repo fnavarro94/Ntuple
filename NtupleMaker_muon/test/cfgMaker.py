@@ -21,7 +21,8 @@ for i in range(143,166):
 	fOut = open(fOutName, 'w')
 	print>> fBash, 'echo "run ' +str(i+1)+ ' of ' +str(numFiles/groupSize +1) + '"'
 	print>> fBash,  "cmsRun " + fOutName +'> run' + str(i+1) + '.log 2>&1'
-	print>> fBash, "sed -i '/Begin processing the/d' " + fOutName +'> run' + str(i+1) + ".log"
+	print>> fBash, "sed -i '/Begin processing the/d' " + fOutName +'> run' + str(i+1) + ".log" 
+	print>> fBash, "mv " + outputFile+str(i+1)+'.root'+ " /eos/user/f/fnavarro/muon/"
 	#print>> fBash, 'echo tailing file ' +str(i+1)
 	#print >> fBash, 'tailf run' + str(i) + '.log '
 	#print >> fBash, '^C'
