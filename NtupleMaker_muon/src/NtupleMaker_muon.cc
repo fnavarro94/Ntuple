@@ -272,7 +272,7 @@ NtupleMaker_muon::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 {
    using namespace edm;
   vuelta++;
-  if (vuelta%1000 ==0){std::cout<<"vuelta: "<<vuelta<<std::endl;}
+  //if (vuelta%1000 ==0){std::cout<<"vuelta: "<<vuelta<<std::endl;}
   event = eventReset;
   using reco::TrackCollection;
   
@@ -602,7 +602,7 @@ for (auto itJet = ak5Jets->begin(); itJet != ak5Jets->end(); ++itJet)
 	i++;
 }
 numJets2=event.numJets;
-std::cout<<"numjets "<<event.numJets<<std::endl;
+//std::cout<<"numjets "<<event.numJets<<std::endl;
  
 
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
@@ -753,7 +753,7 @@ void
 NtupleMaker_muon::endJob() {
 
 //mtree->Write();
-std::cout<<"num traks "<<Ntracks<<" num vertTraks "<<NvertTracks<<std::endl;
+//std::cout<<"num traks "<<Ntracks<<" num vertTraks "<<NvertTracks<<std::endl;
 mfile->Write();
 mfile->Close();
 }

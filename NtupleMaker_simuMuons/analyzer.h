@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Tue Mar  6 04:48:07 2018 by ROOT version 5.32/00
+// Mon Mar 12 01:54:14 2018 by ROOT version 5.32/00
 // from TTree mtree/Ntuple
-// found on file: tuple.root
+// found on file: muon0.root
 //////////////////////////////////////////////////////////
 
 #ifndef analyzer_h
@@ -22,34 +22,40 @@ public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
 
    // Declaration of leaf types
+   Int_t           Ev_Branch_eventNumber;
+   Int_t           Ev_Branch_runNumber;
+   Int_t           Ev_Branch_lumiBlock;
    Int_t           Ev_Branch_numTrack;
    Int_t           Ev_Branch_numTrigObj;
    Int_t           Ev_Branch_numVert;
-   Int_t           vert_numTrack[6];   //[numVert]
-   Double_t        track_pt[834];   //[numTrack]
-   Double_t        track_ptError[834];   //[numTrack]
-   Double_t        track_px[834];   //[numTrack]
-   Double_t        track_py[834];   //[numTrack]
-   Double_t        track_pz[834];   //[numTrack]
-   Double_t        track_vx[834];   //[numTrack]
-   Double_t        track_vy[834];   //[numTrack]
-   Double_t        track_vz[834];   //[numTrack]
-   Double_t        track_chi2[834];   //[numTrack]
-   Int_t           track_ndof[834];   //[numTrack]
-   Double_t        track_eta[834];   //[numTrack]
-   Double_t        track_etaError[834];   //[numTrack]
-   Double_t        track_phi[834];   //[numTrack]
-   Double_t        track_phiError[834];   //[numTrack]
-   Int_t           track_nHits[834];   //[numTrack]
-   Int_t           track_found[834];   //[numTrack]
-   Double_t        track_dxy[834];   //[numTrack]
-   Double_t        track_dxyError[834];   //[numTrack]
-   Double_t        track_dz[834];   //[numTrack]
-   Double_t        track_dzError[834];   //[numTrack]
-   Int_t           track_charge[834];   //[numTrack]
-   Bool_t          track_highPurity[834];   //[numTrack]
-   Bool_t          track_tight[834];   //[numTrack]
-   Bool_t          track_loose[834];   //[numTrack]
+   Bool_t          Ev_Branch_wasTriggerFound;
+   Int_t           Ev_Branch_triggerFound;
+   Int_t           vert_numTrack[101];   //[numVert]
+   Double_t        track_pt[1095];   //[numTrack]
+   Double_t        track_ptError[1095];   //[numTrack]
+   Double_t        track_px[1095];   //[numTrack]
+   Double_t        track_py[1095];   //[numTrack]
+   Double_t        track_pz[1095];   //[numTrack]
+   Double_t        track_vx[1095];   //[numTrack]
+   Double_t        track_vy[1095];   //[numTrack]
+   Double_t        track_vz[1095];   //[numTrack]
+   Double_t        track_chi2[1095];   //[numTrack]
+   Int_t           track_ndof[1095];   //[numTrack]
+   Double_t        track_eta[1095];   //[numTrack]
+   Double_t        track_etaError[1095];   //[numTrack]
+   Double_t        track_phi[1095];   //[numTrack]
+   Double_t        track_phiError[1095];   //[numTrack]
+   Int_t           track_nHits[1095];   //[numTrack]
+   Int_t           track_found[1095];   //[numTrack]
+   Double_t        track_dxy[1095];   //[numTrack]
+   Double_t        track_dxyError[1095];   //[numTrack]
+   Double_t        track_dz[1095];   //[numTrack]
+   Double_t        track_dzError[1095];   //[numTrack]
+   Int_t           track_charge[1095];   //[numTrack]
+   Bool_t          track_highPurity[1095];   //[numTrack]
+   Bool_t          track_tight[1095];   //[numTrack]
+   Bool_t          track_loose[1095];   //[numTrack]
+   Int_t           track_matchedVertIndex[1095];   //[numTrack]
    Double_t        trigObj_pt[4];   //[numTrigObj]
    Double_t        trigObj_px[4];   //[numTrigObj]
    Double_t        trigObj_py[4];   //[numTrigObj]
@@ -76,15 +82,23 @@ public :
    Double_t        vertex6Track_vx[6];   //[numVertTrack]
    Double_t        vertex6Track_vy[6];   //[numVertTrack]
    Double_t        vertex6Track_vz[6];   //[numVertTrack]
-   Double_t        vertex_chi2[6];   //[numVert]
-   Double_t        vertex_ndof[6];   //[numVert]
-   Double_t        vertex_x[6];   //[numVert]
-   Double_t        vertex_y[6];   //[numVert]
-   Double_t        vertex_z[6];   //[numVert]
-   Double_t        vertex_xError[6];   //[numVert]
-   Double_t        vertex_yError[6];   //[numVert]
-   Double_t        vertex_zError[6];   //[numVert]
-   Double_t        vertex_nTracks[6];   //[numVert]
+   Double_t        matchedVertex_x[6];   //[numVertTrack]
+   Double_t        matchedVertex_xError[6];   //[numVertTrack]
+   Double_t        matchedVertex_y[6];   //[numVertTrack]
+   Double_t        matchedVertex_yError[6];   //[numVertTrack]
+   Double_t        matchedVertex_z[6];   //[numVertTrack]
+   Double_t        matchedVertex_zError[6];   //[numVertTrack]
+   Double_t        matchedVertex_chi2[6];   //[numVertTrack]
+   Double_t        matchedVertex_ndof[6];   //[numVertTrack]
+   Double_t        vertex_chi2[101];   //[numVert]
+   Double_t        vertex_ndof[101];   //[numVert]
+   Double_t        vertex_x[101];   //[numVert]
+   Double_t        vertex_y[101];   //[numVert]
+   Double_t        vertex_z[101];   //[numVert]
+   Double_t        vertex_xError[101];   //[numVert]
+   Double_t        vertex_yError[101];   //[numVert]
+   Double_t        vertex_zError[101];   //[numVert]
+   Double_t        vertex_nTracks[101];   //[numVert]
 
  
   // Additional variables
@@ -124,6 +138,7 @@ public :
    TBranch        *b_track_highPurity;   //!
    TBranch        *b_track_tight;   //!
    TBranch        *b_track_loose;   //!
+   TBranch        *b_track_matchedVertIndex;   //!
    TBranch        *b_trigObj_pt;   //!
    TBranch        *b_trigObj_px;   //!
    TBranch        *b_trigObj_py;   //!
@@ -150,6 +165,14 @@ public :
    TBranch        *b_vertex6Track_vx;   //!
    TBranch        *b_vertex6Track_vy;   //!
    TBranch        *b_vertex6Track_vz;   //!
+   TBranch        *b_matchedVertex_x;   //!
+   TBranch        *b_matchedVertex_xError;   //!
+   TBranch        *b_matchedVertex_y;   //!
+   TBranch        *b_matchedVertex_yError;   //!
+   TBranch        *b_matchedVertex_z;   //!
+   TBranch        *b_matchedVertex_zError;   //!
+   TBranch        *b_matchedVertex_chi2;   //!
+   TBranch        *b_matchedVertex_ndof;   //!
    TBranch        *b_vertex_chi2;   //!
    TBranch        *b_vertex_ndof;   //!
    TBranch        *b_vertex_x;   //!
@@ -197,7 +220,7 @@ void analyzer::Init(TTree *tree)
    fChain = tree;
    fChain->SetMakeClass(1);
 
-   fChain->SetBranchAddress("Ev_Branch", &Ev_Branch_numTrack, &b_Ev_Branch);
+   fChain->SetBranchAddress("Ev_Branch", &Ev_Branch_eventNumber, &b_Ev_Branch);
    fChain->SetBranchAddress("vert_numTrack", vert_numTrack, &b_vert_numTrack);
    fChain->SetBranchAddress("track_pt", track_pt, &b_track_pt);
    fChain->SetBranchAddress("track_ptError", track_ptError, &b_track_ptError);
@@ -223,6 +246,7 @@ void analyzer::Init(TTree *tree)
    fChain->SetBranchAddress("track_highPurity", track_highPurity, &b_track_highPurity);
    fChain->SetBranchAddress("track_tight", track_tight, &b_track_tight);
    fChain->SetBranchAddress("track_loose", track_loose, &b_track_loose);
+   fChain->SetBranchAddress("track_matchedVertIndex", track_matchedVertIndex, &b_track_matchedVertIndex);
    fChain->SetBranchAddress("trigObj_pt", trigObj_pt, &b_trigObj_pt);
    fChain->SetBranchAddress("trigObj_px", trigObj_px, &b_trigObj_px);
    fChain->SetBranchAddress("trigObj_py", trigObj_py, &b_trigObj_py);
@@ -249,6 +273,14 @@ void analyzer::Init(TTree *tree)
    fChain->SetBranchAddress("vertex6Track_vx", vertex6Track_vx, &b_vertex6Track_vx);
    fChain->SetBranchAddress("vertex6Track_vy", vertex6Track_vy, &b_vertex6Track_vy);
    fChain->SetBranchAddress("vertex6Track_vz", vertex6Track_vz, &b_vertex6Track_vz);
+   fChain->SetBranchAddress("matchedVertex_x", matchedVertex_x, &b_matchedVertex_x);
+   fChain->SetBranchAddress("matchedVertex_xError", matchedVertex_xError, &b_matchedVertex_xError);
+   fChain->SetBranchAddress("matchedVertex_y", matchedVertex_y, &b_matchedVertex_y);
+   fChain->SetBranchAddress("matchedVertex_yError", matchedVertex_yError, &b_matchedVertex_yError);
+   fChain->SetBranchAddress("matchedVertex_z", matchedVertex_z, &b_matchedVertex_z);
+   fChain->SetBranchAddress("matchedVertex_zError", matchedVertex_zError, &b_matchedVertex_zError);
+   fChain->SetBranchAddress("matchedVertex_chi2", matchedVertex_chi2, &b_matchedVertex_chi2);
+   fChain->SetBranchAddress("matchedVertex_ndof", matchedVertex_ndof, &b_matchedVertex_ndof);
    fChain->SetBranchAddress("vertex_chi2", vertex_chi2, &b_vertex_chi2);
    fChain->SetBranchAddress("vertex_ndof", vertex_ndof, &b_vertex_ndof);
    fChain->SetBranchAddress("vertex_x", vertex_x, &b_vertex_x);
