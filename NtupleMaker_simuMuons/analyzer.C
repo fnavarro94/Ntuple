@@ -48,6 +48,10 @@ void analyzer::SlaveBegin(TTree * /*tree*/)
    
    file = new TFile("hists.root", "recreate");
    h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+   h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
+   h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
+   h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
+   h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
    //matchedTrack[ = {0};
    TH1::AddDirectory(true);
    vuelta = 0;
@@ -74,45 +78,75 @@ Bool_t analyzer::Process(Long64_t entry)
    // The return value is currently not used.
  fChain->GetTree()->GetEntry(entry);
    
-bool standardCuts = cmsStandardCuts(Ev_Branch_numTrack, vertex1Track_vx, vertex1Track_vy, vertex1Track_vz);
+bool standardCuts = cmsStandardCuts(vert_numTrack[0], Ev_Branch_numTrack, vertex1Track_vx, vertex1Track_vy, vertex1Track_vz, track_highPurity);
 reset();
 
-//cout<<++vuelta<<endl;
+
 
 
  
 
-if (standardCuts || true)   // quitar true
+if (standardCuts)   // quitar true
 {
 	for (int i = 0 ; i< Ev_Branch_numTrack; i++)
 	{
-		for (int j = 0; j< Ev_Branch_numTrigObj; j++)
+
+		for (int j = 0; j< Ev_Branch_numTrigObjM; j++)
 		{
-		   if (deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 && deltaP(track_px[i], track_py[i],track_pz[i], trigObj_px[j], trigObj_py[j], trigObj_pz[j]) < 3)
+			bool lepMatch =matchingCuts( track_highPurity[i]  , track_pt[i] , track_found[i], fabs(track_eta[i]), fabs(track_dxy[i]/track_dxyError[i]));
+		
+		  
+		   if (lepMatch)
 		   {
-			   matchedTrack[i] = 1;
+			   if(deltaR(track_phi[i], track_eta[i], trigObjM_phi[j], trigObjM_eta[j])< 0.1 && deltaP(track_px[i], track_py[i],track_pz[i], trigObjM_px[j], trigObjM_py[j], trigObjM_pz[j]) < 3)
+			   {
+				   matchedTrack[i] = 1;
+			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
+			       trackTrigObjIndex[i] = j; 
+			   }
 			   
-			   vuelta ++;
 		   }
 		  
 		}
 	}
 	
+	// Eliminate non isolated candidates
+	
+	
 	// the following section compares vertex of opositly chareged trigger-matched leptons in order to find lepton pairs product of the same decay.
 	
 	for ( int i = 0;  i < Ev_Branch_numTrack; i++)
 	{
-		if ( matchedTrack[i] ==1 && track_charge[i] == 1)
+		if ( matchedTrack[i] ==1 && track_charge[i] == 1 )
 		{  
 			for (int j =0; j< Ev_Branch_numTrack; j++)
-			if ( matchedTrack[j] == 1 && track_charge[j] == -1)
+			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] && deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) >0.2)
 			{  
-				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 0.1 && track_pt[i] > 41)
+				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 0.1 )
 				{
-					double invariantMass;
+					double conePt_var = conePt(i, j, track_eta[i], track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
+					double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
+					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],track_vx[i]-vertex_x[0], track_vy[i] -vertex_y[0]); 
+					//cout<<conePt_var<<endl;
+					//cout<<alpha<<endl;
+					//cout<<theta*180/(3.1415)<<endl;
+					if (conePt_var < 4 && alpha > -0.95 /*&& /*theta < 0.2 /*0.8 para electron*/)
+					{
+						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
 					 cout<<invariantMass<<endl;
 					 h_invMass->Fill(invariantMass);
+					 h_lxy->Fill(track_lxy1[i]);
+					 h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
+					 h_d0_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
+					}
+					
+					
+					 
+					sumPt = conePt(i,track_eta[i],track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
+					//cout<<sumPt<<endl;
+					 h_conePt->Fill(sumPt); 
+					 
 				}
 			}
 		}
@@ -120,14 +154,85 @@ if (standardCuts || true)   // quitar true
 	
 	
 }
-
+   vuelta ++;
+   if(vuelta%1000 == 0)
+   {
+//cout<<"Vuelta "<<vuelta<<endl;
+   }
 
    return kTRUE;
 }
 
+// calculates cosine of the angle between objects
+double analyzer::mTheta(double ax, double ay, double bx, double by)
+{
+	double cosAlpha = ax*bx + ay*by;
+	double theta;
+	cosAlpha = cosAlpha/(sqrt(ax*ax+ay*ay)*sqrt(bx*bx+by*by));
+	theta  = acos(cosAlpha);
+	return theta;
+}
 
+double analyzer::mCos(double phi1, double eta1, double phi2, double eta2 )
+{double cosAlpha = sin(eta1)*cos(phi1)*sin(eta2)*cos(phi2) + sin(eta1)*sin(phi1)*sin(eta2)*sin(phi2) + cos(eta1)*cos(eta2);
+	
+	return cosAlpha;
+}
+// calculates sum of pt arround an isolation cone
+
+double analyzer::conePt(int forbiddenIndex, double eta, double phi, int numTracks, double tracks_eta[], double tracks_phi[], double tracks_pt[])
+{
+	double sumPt = 0.0;
+	for (int i = 0; i < numTracks; i++)
+	{
+		if(deltaR(eta, phi, tracks_eta[i], tracks_phi[i]) < 0.3 && deltaR(eta, phi, tracks_eta[i], tracks_phi[i]) > 0.03 && i != forbiddenIndex)
+		{
+			sumPt = track_pt[i] +sumPt;
+		}
+	}
+	
+	return sumPt;
+}
+double analyzer::conePt(int forbiddenIndex1, int forbiddenIndex2, double eta, double phi, int numTracks, double tracks_eta[], double tracks_phi[], double tracks_pt[])
+{
+	double sumPt = 0.0;
+	for (int i = 0; i < numTracks; i++)
+	{
+		if(deltaR(eta, phi, tracks_eta[i], tracks_phi[i]) < 0.3 && deltaR(eta, phi, tracks_eta[i], tracks_phi[i]) > 0.03 && i != forbiddenIndex1 && i != forbiddenIndex2)
+		{
+			sumPt = track_pt[i] +sumPt;
+		}
+	}
+	
+	return sumPt;
+}
 
 // resets arrays and variables to Null/0
+
+bool analyzer::matchingCuts( bool purity, double pt, int hits, double eta, double impSig)
+{
+	bool ret = false;
+	
+	
+		
+	  if(purity && pt > 33 && hits >= 6   && eta < 2 && impSig > 2 )
+	  {
+		  ret = true;
+
+	  }	
+	 
+	  
+	
+/*	if(lepton == "electron")
+	{
+		if(purity && pt > 41 && hits >= 6  && eta < 2 && impSig > 3)
+		{
+			ret = true;
+		}
+	}*/
+	
+	return ret;
+}
 
 void analyzer::reset()
 {
@@ -135,6 +240,13 @@ void analyzer::reset()
 	{
 		matchedTrack[i] = 0;
 	}
+	for (int i = 0; i< Ev_Branch_numTrigObjM; i++)
+	{
+		matchedTrigObj[i] = 0;
+	}
+	
+	
+	
 	
 }
 
@@ -156,7 +268,7 @@ double analyzer::invMass(double px1, double py1, double pz1, double px2 , double
 
 	
 }
-double deltaP(double px1, double py1, double pz1, double px2, double py2, double pz2)
+double analyzer::deltaP(double px1, double py1, double pz1, double px2, double py2, double pz2)
 {
 	/*double dpx = px1 -px2;
 	double dpy = py1 -py2;
@@ -165,7 +277,7 @@ double deltaP(double px1, double py1, double pz1, double px2, double py2, double
 	double ptotO = sqrt(px2*px2 + py2*py2 +pz2*pz2);
 	
     //double dp = sqrt(dpx*dpx + dpy*dpy +dpz*dpz);
-    double dp = abs(ptotT - ptotO);
+    double dp = fabs(ptotT - ptotO);
     return dp; 
     
 }
@@ -189,51 +301,51 @@ double analyzer::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, double o
 }
 
 
-bool analyzer::cmsStandardCuts(Int_t numTracks, Double_t vx[], Double_t vy[], Double_t vz[] )
+bool analyzer::cmsStandardCuts(Int_t numVertTracks, Int_t numTracks, Double_t vx[], Double_t vy[], Double_t vz[], bool purity[] )
 {
 	bool ret =  false;
 	int distCount = 0;
+	int highPurity = 0;
+	bool moreThan25percent = false;
 	 
-		for (int i =0; i< numTracks; i ++) 
+		for (int i =0; i< numVertTracks; i ++) 
 		{
 			
 			double vxy = sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
-			if (vxy< 24 && vz[i] < 2)
+			if (vxy< 2 && vz[i] < 24)
 			{
 				distCount ++;
 			}
 		}
-	if (numTracks > 4 && distCount > 4)
+	if(numTracks < 9)
+	{
+		moreThan25percent = true;
+	}
+	else
+	{
+		for (int i = 0; i < numTracks; i++)
+		{
+			if(purity[i])
+			{
+				highPurity++;
+			}
+		}
+		if ((float)highPurity/numTracks > 0.25)
+		{
+			moreThan25percent = true;
+		}
+		
+	}
+	
+	//cout<<numTracks<<" "<< distCount<<" "<<highPurity<<" "<< moreThan25percent<<endl;
+	if (numTracks > 4 && distCount >4 && moreThan25percent)
 	{
 		ret  = true;
 	}
+	
 	return ret;
+	
 
-}
-
-bool analyzer::electronCuts(bool highPurity, double pt, int numHits, double eta, double impParamSig)
-{
- 	bool ret = false;
-	
-	if( highPurity == true && pt > 41 && numHits > 6 && eta < 2 && impParamSig > 3)
-	{
-		ret = true;
-	}
-	
-	
-	return ret;
-}
-bool analyzer::muonCuts(bool highPurity, double pt, int numHits, double eta, double impParamSig)
-{
- 	bool ret = false;
-	
-	if( highPurity == true && pt > 33 && numHits > 6 && eta < 2 && impParamSig > 2)
-	{
-		ret = true;
-	}
-	
-	
-	return ret;
 }
 
 
@@ -247,7 +359,7 @@ void analyzer::SlaveTerminate()
 
 void analyzer::Terminate()
 {
-	cout<<vuelta<<endl;
+	//cout<<vuelta<<endl;
 	file->Write();
 	file->Close();
    // The Terminate() function is the last function to be called during
