@@ -91,14 +91,14 @@ if (standardCuts)   // quitar true
 	for (int i = 0 ; i< Ev_Branch_numTrack; i++)
 	{
 
-		for (int j = 0; j< Ev_Branch_numTrigObj; j++)
+		for (int j = 0; j< Ev_Branch_numTrigObjM; j++)
 		{
 			bool lepMatch =matchingCuts( track_highPurity[i]  , track_pt[i] , track_found[i], fabs(track_eta[i]), fabs(track_dxy[i]/track_dxyError[i]));
 		
 		  
 		   if (lepMatch)
 		   {
-			   if(deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 && deltaP(track_px[i], track_py[i],track_pz[i], trigObj_px[j], trigObj_py[j], trigObj_pz[j]) < 3)
+			   if(deltaR(track_phi[i], track_eta[i], trigObjE_phi[j], trigObjE_eta[j])< 0.1 && deltaP(track_px[i], track_py[i],track_pz[i], trigObjE_px[j], trigObjE_py[j], trigObjE_pz[j]) < 3)
 			   {
 				   matchedTrack[i] = 1;
 			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
@@ -120,7 +120,7 @@ if (standardCuts)   // quitar true
 		if ( matchedTrack[i] ==1 && track_charge[i] == 1 )
 		{  
 			for (int j =0; j< Ev_Branch_numTrack; j++)
-			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] )
+			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] && deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) >0.2)
 			{  
 				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 0.1 )
 				{
@@ -130,7 +130,7 @@ if (standardCuts)   // quitar true
 					//cout<<conePt_var<<endl;
 					//cout<<alpha<<endl;
 					//cout<<theta*180/(3.1415)<<endl;
-					if (conePt_var < 4 && alpha > -0.95 /*&& /*theta < 0.8 /*0.8 para electron*/)
+					if (conePt_var < 4 && alpha > -0.95 /*&& /*theta < 0.2 /*0.8 para electron*/)
 					{
 						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
@@ -215,7 +215,7 @@ bool analyzer::matchingCuts( bool purity, double pt, int hits, double eta, doubl
 	
 	
 		
-	  if(purity && pt > 41 && hits >= 6   && eta < 2 && impSig > 3 )
+	  if(purity && pt > 33 && hits >= 6   && eta < 2 && impSig > 2 )
 	  {
 		  ret = true;
 
@@ -240,7 +240,7 @@ void analyzer::reset()
 	{
 		matchedTrack[i] = 0;
 	}
-	for (int i = 0; i< Ev_Branch_numTrigObj; i++)
+	for (int i = 0; i< Ev_Branch_numTrigObjM; i++)
 	{
 		matchedTrigObj[i] = 0;
 	}

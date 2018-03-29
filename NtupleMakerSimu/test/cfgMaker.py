@@ -22,7 +22,7 @@ for i in range(int(sys.argv[2]), int(sys.argv[3])):
 	print>> fBash, 'echo "run ' +str(i+1)+ ' of ' +str(numFiles/groupSize +1) + '"'
 	print>> fBash,  "cmsRun " + fOutName +'> run' + str(i+1) + '.log 2>&1'
 	print>> fBash, "sed -i '/Begin processing the/d' " + fOutName +'> run' + str(i+1) + ".log" 
-	print>> fBash, "mv " + outputFile+str(i+1)+'.root'+ " /eos/user/f/fnavarro/muon/"
+	print>> fBash, "mv " + outputFile+str(i+1)+'.root'+ " /eos/user/f/fnavarro/simu/"
 	#print>> fBash, 'echo tailing file ' +str(i+1)
 	#print >> fBash, 'tailf run' + str(i) + '.log '
 	#print >> fBash, '^C'
@@ -49,7 +49,7 @@ for i in range(int(sys.argv[2]), int(sys.argv[3])):
 			
 	print >> fOut, ' )'
 	print >> fOut,')'
-	print >> fOut,'process.demo = cms.EDAnalyzer(\'NtupleMaker_simuMuons\''
+	print >> fOut,'process.demo = cms.EDAnalyzer(\'NtupleMakerSimu\''
 	print  >> fOut, ', tracks = cms.untracked.InputTag(\'generalTracks\'),'
 	print  >> fOut, 'outFile = cms.string("'+outputFile+str(i+1)+'.root'+'")'
 	print >> fOut, ')'

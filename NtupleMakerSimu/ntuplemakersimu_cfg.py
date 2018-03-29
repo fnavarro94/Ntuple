@@ -14,7 +14,7 @@ process.source = cms.Source("PoolSource",
     )
 )
 
-process.demo = cms.EDAnalyzer('NtupleMaker_simuMuons'
+process.demo = cms.EDAnalyzer('NtupleMakerSimu'
     , tracks = cms.untracked.InputTag('generalTracks'),
       outFile = cms.string("muonsSimu.root")
 )
