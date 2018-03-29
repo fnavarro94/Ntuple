@@ -49,7 +49,7 @@ for i in range(int(sys.argv[2]), int(sys.argv[3])):
 			
 	print >> fOut, ' )'
 	print >> fOut,')'
-	print >> fOut,'process.demo = cms.EDAnalyzer(\'NtupleMaker_muon\''
+	print >> fOut,'process.demo = cms.EDAnalyzer(\'NtupleMakerMuon\''
 	print  >> fOut, ', tracks = cms.untracked.InputTag(\'generalTracks\'),'
 	print  >> fOut, 'outFile = cms.string("'+outputFile+str(i+1)+'.root'+'")'
 	print >> fOut, ')'

@@ -37,7 +37,7 @@ process.source = cms.Source("PoolSource",
     )
 )
 
-process.demo = cms.EDAnalyzer('NtupleMaker_muon'
+process.demo = cms.EDAnalyzer('NtupleMakerMuon'
     , tracks = cms.untracked.InputTag('generalTracks'),
       outFile = cms.string("muon.root")
 )

@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    NtupleMaker_muon
-// Class:      NtupleMaker_muon
+// Package:    NtupleMakerMuon
+// Class:      NtupleMakerMuon
 // 
-/**\class NtupleMaker_muon NtupleMaker_muon.cc Ntuple/NtupleMaker_muon/src/NtupleMaker_muon.cc
+/**\class NtupleMakerMuon NtupleMakerMuon.cc Ntuple/NtupleMakerMuon/src/NtupleMakerMuon.cc
 
  Description: [one line class summary]
 
@@ -22,6 +22,8 @@
 #include<TLorentzVector.h>
 #include<cmath>
 #include <memory>
+#include <Math/GenVector/PxPyPzE4D.h>                                                                                                   
+#include <Math/GenVector/PxPyPzM4D.h>
 #include "vector"
 #include "algorithm"
 #include <TH1.h>
@@ -55,10 +57,10 @@
 // class declaration
 //
 
-class NtupleMaker_muon : public edm::EDAnalyzer {
+class NtupleMakerMuon : public edm::EDAnalyzer {
    public:
-      explicit NtupleMaker_muon(const edm::ParameterSet&);
-      ~NtupleMaker_muon();
+      explicit NtupleMakerMuon(const edm::ParameterSet&);
+      ~NtupleMakerMuon();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -79,7 +81,9 @@ class NtupleMaker_muon : public edm::EDAnalyzer {
       TFile * mfile;
      // TH1F * h_;
       int vuelta;
-      int vertTracks = 0, tracks = 0;
+      int NvertTracks = 0, Ntracks = 0;
+      int numJets2 = 0;
+      
       struct mEvent {
 
           static const Int_t entryMax = 10000;
@@ -111,9 +115,16 @@ class NtupleMaker_muon : public edm::EDAnalyzer {
 		  Double_t track_phi[entryMax]= {0};
 		  Double_t track_phiError[entryMax]= {0};
 		  Double_t track_nHits[entryMax] = {0};
+		  Int_t track_n3DHits[entryMax] = {0};
 		  Double_t track_found[entryMax] = {0};
 		  Double_t track_dxy[entryMax] = {0};
 		  Double_t track_dxyError[entryMax] = {0};
+		  Double_t track_lxy1[entryMax] = {0};
+		  Double_t track_lxy1Error[entryMax] = {0};
+		  Double_t track_lxy2[entryMax] = {0};
+		  Double_t track_lxy2Error[entryMax] = {0};
+		  Double_t track_lxy3[entryMax] = {0};
+		  Double_t track_lxy3Error[entryMax] = {0};
 		  Double_t track_dz[entryMax] = {0};
 		  Double_t track_dzError[entryMax] = {0};
 		  Int_t track_matchedVertIndex[entryMax] = {0};    
@@ -194,17 +205,23 @@ class NtupleMaker_muon : public edm::EDAnalyzer {
 		  Int_t vertex_nTracks[entryMax] = {0};      
 		       
 		  
+		  // test
+		  
+		  Double_t test_leaf[entryMax] = {0};
+		  
 		  // Jet Data
 		  
 		  Double_t ak5jet_x[entryMax] = {0};
 		  Double_t ak5jet_y[entryMax] = {0};
 		  Double_t ak5jet_z[entryMax] = {0};
 		  Double_t ak5jet_pt[entryMax] = {0};
+		  Double_t ak5jet_px[entryMax] = {0};
+		  Double_t ak5jet_py[entryMax] = {0};
 		  Double_t ak5jet_pz[entryMax] = {0};
 		  Double_t ak5jet_phi[entryMax] = {0};
 		  Double_t ak5jet_eta[entryMax] = {0};
-		 
-		  
+		  char triggerPath[100];
+		  char filter[100];
 		  
 		  }event,eventReset;
 		  //static const struct  mEvent eventReset ;
@@ -225,7 +242,7 @@ class NtupleMaker_muon : public edm::EDAnalyzer {
 //
 // constructors and destructor  
 //
-NtupleMaker_muon::NtupleMaker_muon(const edm::ParameterSet& iConfig)
+NtupleMakerMuon::NtupleMakerMuon(const edm::ParameterSet& iConfig)
 :
  trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks")),
  outFile_(iConfig.getParameter<std::string>("outFile"))
@@ -236,7 +253,7 @@ NtupleMaker_muon::NtupleMaker_muon(const edm::ParameterSet& iConfig)
 }
 
 
-NtupleMaker_muon::~NtupleMaker_muon()
+NtupleMakerMuon::~NtupleMakerMuon()
 {
  
    // do anything here that needs to be done at desctruction time
@@ -251,11 +268,11 @@ NtupleMaker_muon::~NtupleMaker_muon()
 
 // ------------ method called for each event  ------------
 void
-NtupleMaker_muon::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+NtupleMakerMuon::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
   vuelta++;
-  if (vuelta%1000 ==0){std::cout<<"vuelta: "<<vuelta<<std::endl;}
+  //if (vuelta%1000 ==0){std::cout<<"vuelta: "<<vuelta<<std::endl;}
   event = eventReset;
   using reco::TrackCollection;
   
@@ -269,7 +286,7 @@ const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
  
 std::string pathName = "none";
 std::string toFind[2] = {"HLT_L2DoubleMu23_NoVertex", "HLT_L2DoubleMu30_NoVertex"};
- 
+
  event.eventNumer= iEvent.id().event();
  event.runNumber= iEvent.id().run();
  event.lumiBlock = iEvent.id().luminosityBlock();
@@ -277,7 +294,7 @@ std::string toFind[2] = {"HLT_L2DoubleMu23_NoVertex", "HLT_L2DoubleMu30_NoVertex
 
 int trigPathSize = trigNames.size();
 
-for(int j = 0; j < 2; j++){
+for(int j = 0; j < 3; j++){
 for (unsigned int i = 0; i< trigNames.size(); i++)
 {
 	
@@ -286,10 +303,18 @@ for (unsigned int i = 0; i< trigNames.size(); i++)
 	if ( trig.find(toFind[j]) !=std::string::npos ){
 		
 		pathName = trig;
+		
+		int l = 0;
+        for(std::string::iterator it = pathName.begin(); it != pathName.end(); ++it) 
+        {
+			event.triggerPath[l++] = *it;
+		}
+    
+
 		event.wasTriggerFound = true;
 		event.triggerFound = j;
 		i = trigNames.size();
-		j = 2;
+		j = 3;
 		
 		}
 		
@@ -307,6 +332,14 @@ else
 	filterName = "hltL2DoubleMu30NoVertexL2PreFiltered";
 }
 
+
+
+
+int l = 0;
+        for(std::string::iterator it = filterName.begin(); it != filterName.end(); ++it) 
+        {
+			event.filter[l++] = *it;
+		}
 
 int trigIndex = trigNames.triggerIndex(pathName);
 if (trigIndex != trigPathSize)
@@ -339,16 +372,31 @@ else
    int i, j;
    event.numVert=0;
    j =0;
-   
-	     
+  math::XYZPoint  vertex1;
+  math::XYZPoint  vertex2; 
+  math::XYZPoint  vertex3; 
+	     NvertTracks = 0;
     for(reco::VertexCollection::const_iterator itVert = vertHand->begin();
        itVert != vertHand->begin()+6 && itVert != vertHand->end();
        ++itVert){
 		  
          event.numVert++;
+       
+       if(j ==0)
+       {
+		   vertex1 = itVert->position();
+	   }
+	  if (j == 1)
+	  {
+	      vertex2 = itVert->position();
+	  }
+	  if (j ==2)
+	  {
+		  vertex3 = itVert->position();
+	  }
          
          //std::cout<<"Tracks de vertices "<<itVert->tracksSize()<<std::endl;
-	    
+	      
 	       event.vertex_chi2[j] = itVert->chi2();
 		   event.vertex_ndof[j] = itVert->ndof();
 		  
@@ -368,7 +416,7 @@ else
         for(reco::Vertex::trackRef_iterator itTrack = itVert->tracks_begin();
        itTrack != itVert->tracks_begin() +6 && itTrack != itVert->tracks_end();
        ++itTrack){ 
-		
+		NvertTracks++;
 		   // matching vertex track to track
 		  // int k = 0;
 		   //int vertexIndex = 0;
@@ -444,12 +492,16 @@ else
 	      
    i=0;
    event.numTrack=0;
-   
+   Ntracks = 0;
 	     
    for(TrackCollection::const_iterator itTrack = tracks->begin();
        itTrack != tracks->end();                      
        ++itTrack) {
-        
+        Ntracks++;
+           //double vx = itTrack->vx();
+           //double vy = itTrack->vy();
+           //double vz = itTrack->vz();
+           
            event.track_pt[i] = itTrack->pt();
            event.track_ptError[i] = itTrack->ptError();
            //std::cout<<event.track_pt[i]<<std::endl;
@@ -467,9 +519,16 @@ else
 		   event.track_phi[i] = itTrack->phi();
 		   event.track_phiError[i] = itTrack->phiError();
 		   event.track_nHits[i] = itTrack->numberOfValidHits();
+		   event.track_n3DHits[i] = itTrack->hitPattern().numberOfValidPixelHits();
 		   event.track_found[i] = itTrack->found();
 		   event.track_dxy[i] = itTrack->dxy();
 		   event.track_dxyError[i] = itTrack->dxyError();
+		   event.track_lxy1[i] = itTrack->dxy(vertex1);
+		   event.track_lxy1Error[i] = itTrack->dxyError();
+		   event.track_lxy2[i] = itTrack->dxy(vertex2);
+		   event.track_lxy2Error[i] = itTrack->dxyError();
+		   event.track_lxy3[i] = itTrack->dxy(vertex3);
+		   event.track_lxy3Error[i] = itTrack->dxyError();
 		   event.track_dz[i] = itTrack->dz();
 		   event.track_dzError[i] = itTrack->dzError();
 		   event.track_charge[i] = itTrack->charge();
@@ -522,14 +581,17 @@ else
 }
 
 // Jets
-
+event.numJets = 0;
 i =0;
 for (auto itJet = ak5Jets->begin(); itJet != ak5Jets->end(); ++itJet)
 {
-	event.ak5jet_x[i] = itJet->vx();
+	 event.test_leaf[i] = itJet->pt();
+	event.ak5jet_x[i] = itJet->pt();
 	event.ak5jet_y[i] = itJet->vy();
 	event.ak5jet_z[i] = itJet->vz();
 	event.ak5jet_pt[i] = itJet->pt();
+	event.ak5jet_px[i] = itJet->py();
+	event.ak5jet_py[i] = itJet->px();
 	event.ak5jet_pz[i] = itJet->pz();
 	event.ak5jet_eta[i] = itJet->eta();
 	event.ak5jet_phi[i] = itJet->phi();
@@ -539,6 +601,8 @@ for (auto itJet = ak5Jets->begin(); itJet != ak5Jets->end(); ++itJet)
 	event.numJets++;
 	i++;
 }
+numJets2=event.numJets;
+//std::cout<<"numjets "<<event.numJets<<std::endl;
  
 
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
@@ -557,7 +621,7 @@ mtree->Fill();
 
 // ------------ method called once each job just before starting event loop  ------------
 void 
-NtupleMaker_muon::beginJob()
+NtupleMakerMuon::beginJob()
 {
  vuelta = 0;
  const char* of = outFile_.c_str();
@@ -568,7 +632,7 @@ NtupleMaker_muon::beginJob()
  //mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I");
 
  
-           mtree->Branch("Ev_Branch",&event ,"eventNumber/I:runNumber/I:lumiBlock/I:numTrack/I:numTrigObj/I:numVert/I:wasTriggerFound/O:triggerFound/I");
+           mtree->Branch("Ev_Branch",&event ,"eventNumber/I:runNumber/I:lumiBlock/I:numTrack/I:numTrigObj/I:numJets/I:numVert/I:wasTriggerFound/O:triggerFound/I");
            
 		   mtree->Branch("vert_numTrack",event.numVertTrack,"numVertTrack[numVert]/I");
 		   mtree->Branch("track_pt",event.track_pt,"track_pt[numTrack]/D");
@@ -587,8 +651,15 @@ NtupleMaker_muon::beginJob()
            mtree->Branch("track_phiError", event.track_phiError, "track_phiError[numTrack]/D");
            mtree->Branch("track_nHits", event.track_nHits, "track_nHits[numTrack]/I");
            mtree->Branch("track_found", event.track_found, "track_nfound[numTrack]/I");
+           mtree->Branch("track_n3DHits", event.track_n3DHits, "track_n3DHits[numTrack]/I");
            mtree->Branch("track_dxy", event.track_dxy, "track_dxy[numTrack]/D");
            mtree->Branch("track_dxyError", event.track_dxyError, "track_dxyError[numTrack]/D");
+           mtree->Branch("track_lxy1", event.track_lxy1, "track_lxy1[numTrack]/D");
+           mtree->Branch("track_lxy1Error", event.track_lxy1Error, "track_lxy1Error[numTrack]/D");
+           mtree->Branch("track_lxy2", event.track_lxy2, "track_lxy2[numTrack]/D");
+           mtree->Branch("track_lxy2Error", event.track_lxy2Error, "track_lxy2Error[numTrack]/D");
+           mtree->Branch("track_lxy3", event.track_lxy3, "track_lxy3[numTrack]/D");
+           mtree->Branch("track_lxyError", event.track_lxy3Error, "track_lxyError[numTrack]/D");
            mtree->Branch("track_dz", event.track_dz, "track_dz[numTrack]/D");
            mtree->Branch("track_dzError", event.track_dzError, "track_dzError[numTrack]/D");
            mtree->Branch("track_charge", event.track_charge, "track_charge[numTrack]/I");
@@ -634,7 +705,7 @@ NtupleMaker_muon::beginJob()
            mtree->Branch("matchedVertex_ndof", event.matchedVertex_ndof, "matchedVertex_ndof[numVertTrack]/D");
 
 
-          
+           //mtree->Branch("test_leaf", event.test_leaf, "test_leaf[numVert]/D");
            
          
            mtree->Branch("vertex_chi2", event.vertex_chi2, "vertex_chi2[numVert]/D");
@@ -647,13 +718,18 @@ NtupleMaker_muon::beginJob()
            mtree->Branch("vertex_zError", event.vertex_zError, "vertex_zError[numVert]/D");
            mtree->Branch("vertex_nTracks", event.vertex_nTracks, "vertex_nTracks[numVert]/D");
            
-         /*  mtree->Branch("ak5jet_x", event.ak5jet_x, "ak5jet_x[numJets]/D");
+           mtree->Branch("ak5jet_x", event.ak5jet_x, "ak5jet_x[numJets]/D");
            mtree->Branch("ak5jet_y", event.ak5jet_y, "ak5jet_y[numJets]/D");
            mtree->Branch("ak5jet_z", event.ak5jet_z, "ak5jet_z[numJets]/D");
            mtree->Branch("ak5jet_pt", event.ak5jet_pt, "ak5jet_pt[numJets]/D");
+           mtree->Branch("ak5jet_px", event.ak5jet_px, "ak5jet_px[numJets]/D");
+           mtree->Branch("ak5jet_py", event.ak5jet_py, "ak5jet_py[numJets]/D");
            mtree->Branch("ak5jet_pz", event.ak5jet_pz, "ak5jet_pz[numJets]/D");
            mtree->Branch("ak5jet_phi", event.ak5jet_phi, "ak5jet_phi[numJets]/D");
-           mtree->Branch("ak5jet_eta", event.ak5jet_eta, "ak5jet_eta[numJets]/D");*/
+           mtree->Branch("ak5jet_eta", event.ak5jet_eta, "ak5jet_eta[numJets]/D");
+           
+           mtree->Branch("triggerPath", event.triggerPath, "triggerPath[100]/C");
+           mtree->Branch("filter", event.filter, "filter[100]/C");
 		  
 		  
 		 
@@ -674,41 +750,41 @@ NtupleMaker_muon::beginJob()
 
 // ------------ method called once each job just after ending the event loop  ------------
 void 
-NtupleMaker_muon::endJob() {
+NtupleMakerMuon::endJob() {
 
 //mtree->Write();
-
+//std::cout<<"num traks "<<Ntracks<<" num vertTraks "<<NvertTracks<<std::endl;
 mfile->Write();
 mfile->Close();
 }
 
 // ------------ method called when starting to processes a run  ------------
 void 
-NtupleMaker_muon::beginRun(edm::Run const&, edm::EventSetup const&)
+NtupleMakerMuon::beginRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a run  ------------
 void 
-NtupleMaker_muon::endRun(edm::Run const&, edm::EventSetup const&)
+NtupleMakerMuon::endRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when starting to processes a luminosity block  ------------
 void 
-NtupleMaker_muon::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+NtupleMakerMuon::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a luminosity block  ------------
 void 
-NtupleMaker_muon::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+NtupleMakerMuon::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-NtupleMaker_muon::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+NtupleMakerMuon::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -723,4 +799,4 @@ NtupleMaker_muon::fillDescriptions(edm::ConfigurationDescriptions& descriptions)
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(NtupleMaker_muon);
+DEFINE_FWK_MODULE(NtupleMakerMuon);
