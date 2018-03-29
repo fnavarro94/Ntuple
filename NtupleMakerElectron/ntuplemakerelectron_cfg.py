@@ -36,7 +36,7 @@ process.source = cms.Source("PoolSource",
     )
 )
 
-process.demo = cms.EDAnalyzer('NtupleMaker'
+process.demo = cms.EDAnalyzer('NtupleMakerElectron'
     , tracks = cms.untracked.InputTag('generalTracks'),
       outFile = cms.string("electron.root")
 )

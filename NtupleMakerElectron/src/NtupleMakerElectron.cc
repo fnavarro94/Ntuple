@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    NtupleMaker
-// Class:      NtupleMaker
+// Package:    NtupleMakerElectron
+// Class:      NtupleMakerElectron
 // 
-/**\class NtupleMaker NtupleMaker.cc Ntuple/NtupleMaker/src/NtupleMaker.cc
+/**\class NtupleMakerElectron NtupleMakerElectron.cc Ntuple/NtupleMakerElectron/src/NtupleMakerElectron.cc
 
  Description: [one line class summary]
 
@@ -57,10 +57,10 @@
 // class declaration
 //
 
-class NtupleMaker : public edm::EDAnalyzer {
+class NtupleMakerElectron : public edm::EDAnalyzer {
    public:
-      explicit NtupleMaker(const edm::ParameterSet&);
-      ~NtupleMaker();
+      explicit NtupleMakerElectron(const edm::ParameterSet&);
+      ~NtupleMakerElectron();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -242,7 +242,7 @@ class NtupleMaker : public edm::EDAnalyzer {
 //
 // constructors and destructor  
 //
-NtupleMaker::NtupleMaker(const edm::ParameterSet& iConfig)
+NtupleMakerElectron::NtupleMakerElectron(const edm::ParameterSet& iConfig)
 :
  trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks")),
  outFile_(iConfig.getParameter<std::string>("outFile"))
@@ -253,7 +253,7 @@ NtupleMaker::NtupleMaker(const edm::ParameterSet& iConfig)
 }
 
 
-NtupleMaker::~NtupleMaker()
+NtupleMakerElectron::~NtupleMakerElectron()
 {
  
    // do anything here that needs to be done at desctruction time
@@ -268,11 +268,11 @@ NtupleMaker::~NtupleMaker()
 
 // ------------ method called for each event  ------------
 void
-NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+NtupleMakerElectron::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
   vuelta++;
-  if (vuelta%1000 ==0){std::cout<<"vuelta: "<<vuelta<<std::endl;}
+  //if (vuelta%1000 ==0){std::cout<<"vuelta: "<<vuelta<<std::endl;}
   event = eventReset;
   using reco::TrackCollection;
   
@@ -601,7 +601,7 @@ for (auto itJet = ak5Jets->begin(); itJet != ak5Jets->end(); ++itJet)
 	i++;
 }
 numJets2=event.numJets;
-std::cout<<"numjets "<<event.numJets<<std::endl;
+//std::cout<<"numjets "<<event.numJets<<std::endl;
  
 
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
@@ -620,7 +620,7 @@ mtree->Fill();
 
 // ------------ method called once each job just before starting event loop  ------------
 void 
-NtupleMaker::beginJob()
+NtupleMakerElectron::beginJob()
 {
  vuelta = 0;
  const char* of = outFile_.c_str();
@@ -749,41 +749,41 @@ NtupleMaker::beginJob()
 
 // ------------ method called once each job just after ending the event loop  ------------
 void 
-NtupleMaker::endJob() {
+NtupleMakerElectron::endJob() {
 
 //mtree->Write();
-std::cout<<"num traks "<<Ntracks<<" num vertTraks "<<NvertTracks<<std::endl;
+//std::cout<<"num traks "<<Ntracks<<" num vertTraks "<<NvertTracks<<std::endl;
 mfile->Write();
 mfile->Close();
 }
 
 // ------------ method called when starting to processes a run  ------------
 void 
-NtupleMaker::beginRun(edm::Run const&, edm::EventSetup const&)
+NtupleMakerElectron::beginRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a run  ------------
 void 
-NtupleMaker::endRun(edm::Run const&, edm::EventSetup const&)
+NtupleMakerElectron::endRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when starting to processes a luminosity block  ------------
 void 
-NtupleMaker::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+NtupleMakerElectron::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a luminosity block  ------------
 void 
-NtupleMaker::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+NtupleMakerElectron::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-NtupleMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+NtupleMakerElectron::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -798,4 +798,4 @@ NtupleMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(NtupleMaker);
+DEFINE_FWK_MODULE(NtupleMakerElectron);

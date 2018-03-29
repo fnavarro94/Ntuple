@@ -5,7 +5,7 @@ import sys
 fileName = sys.argv[1]
 mfile = open(fileName,'r')
 fileList = mfile.readlines()
-fBash = open("run.sh", 'w')
+fBash = open("run"+str(sys.argv[2])+"-"+str(sys.argv[3])+".sh", 'w')
 print>>fBash, '#!/bin/bash'
 numFiles = len(fileList)
 	
@@ -15,12 +15,14 @@ groupSize = 3;
 
 outputFile = "electron"
 count = 0
-for i in range(0,numFiles/groupSize +1):
+for i in range(int(sys.argv[2]), int(sys.argv[3])):
 	print i
 	fOutName = outputFile + str(i+1)+ '_cfg.py'
 	fOut = open(fOutName, 'w')
 	print>> fBash, 'echo "run ' +str(i+1)+ ' of ' +str(numFiles/groupSize +1) + '"'
-	print>> fBash,  "cmsRun " + fOutName +'> run' + str(i+1) + '.log '
+	print>> fBash,  "cmsRun " + fOutName +'> run' + str(i+1) + '.log 2>&1'
+	print>> fBash, "sed -i '/Begin processing the/d' " + fOutName +'> run' + str(i+1) + ".log" 
+	print>> fBash, "mv " + outputFile+str(i+1)+'.root'+ " /eos/user/f/fnavarro/muon/"
 	#print>> fBash, 'echo tailing file ' +str(i+1)
 	#print >> fBash, 'tailf run' + str(i) + '.log '
 	#print >> fBash, '^C'
@@ -29,7 +31,7 @@ for i in range(0,numFiles/groupSize +1):
 	print>> fOut, 'import FWCore.ParameterSet.Config as cms'
 	print>> fOut, 'process = cms.Process("Demo")'
 	print>> fOut, 'process.load("FWCore.MessageService.MessageLogger_cfi")'
-	print>> fOut, 'process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )'
+	print>> fOut, 'process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )'
 	print>> fOut, 'process.source = cms.Source("PoolSource",'
 	print>> fOut, '  # replace \'myfile.root\' with the source file you want to use'
 	print >> fOut,   'fileNames = cms.untracked.vstring('
@@ -47,7 +49,7 @@ for i in range(0,numFiles/groupSize +1):
 			
 	print >> fOut, ' )'
 	print >> fOut,')'
-	print >> fOut,'process.demo = cms.EDAnalyzer(\'NtupleMaker\''
+	print >> fOut,'process.demo = cms.EDAnalyzer(\'NtupleMakerElectron\''
 	print  >> fOut, ', tracks = cms.untracked.InputTag(\'generalTracks\'),'
 	print  >> fOut, 'outFile = cms.string("'+outputFile+str(i+1)+'.root'+'")'
 	print >> fOut, ')'
