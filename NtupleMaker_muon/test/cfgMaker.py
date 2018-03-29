@@ -5,7 +5,7 @@ import sys
 fileName = sys.argv[1]
 mfile = open(fileName,'r')
 fileList = mfile.readlines()
-fBash = open("run.sh", 'w')
+fBash = open("run"+str(sys.argv[2])+"-"+str(sys.argv[3])+".sh", 'w')
 print>>fBash, '#!/bin/bash'
 numFiles = len(fileList)
 	
@@ -15,7 +15,7 @@ groupSize = 3;
 
 outputFile = "muon"
 count = 0
-for i in range(143,166):
+for i in range(int(sys.argv[2]), int(sys.argv[3])):
 	print i
 	fOutName = outputFile + str(i+1)+ '_cfg.py'
 	fOut = open(fOutName, 'w')
