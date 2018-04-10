@@ -46,13 +46,14 @@ void analyzer::SlaveBegin(TTree * /*tree*/)
 
    TString option = GetOption();
    
-   file = new TFile("hists.root", "recreate");
+   file = new TFile("histsWW.root", "recreate");
    h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
    h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
    h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
    h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
    h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
-   //matchedTrack[ = {0};
+   nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
+  //matchedTrack[ = {0};
    TH1::AddDirectory(true);
    vuelta = 0;
 }
@@ -84,7 +85,7 @@ reset();
 
 
 
- 
+nEvents->Fill(1); 
 
 if (standardCuts)   // quitar true
 {
@@ -98,7 +99,7 @@ if (standardCuts)   // quitar true
 		  
 		   if (lepMatch)
 		   {
-			   if(deltaR(track_phi[i], track_eta[i], trigObjM_phi[j], trigObjM_eta[j])< 0.1 && deltaP(track_px[i], track_py[i],track_pz[i], trigObjM_px[j], trigObjM_py[j], trigObjM_pz[j]) < 3)
+			   if(deltaR(track_phi[i], track_eta[i], trigObjM_phi[j], trigObjM_eta[j])< 0.1 /*&& deltaP(track_px[i], track_py[i],track_pz[i], trigObjM_px[j], trigObjM_py[j], trigObjM_pz[j]) < 3*/)
 			   {
 				   matchedTrack[i] = 1;
 			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
