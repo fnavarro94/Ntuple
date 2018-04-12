@@ -101,7 +101,7 @@ if (standardCuts)   // quitar true
 		  
 		   if (lepMatch)
 		   {
-			   if(deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 && deltaP(track_px[i], track_py[i],track_pz[i], trigObj_px[j], trigObj_py[j], trigObj_pz[j]) < 3)
+			   if(deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 )
 			   {
 				   matchedTrack[i] = 1;
 			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
@@ -218,21 +218,13 @@ bool analyzer::matchingCuts( bool purity, double pt, int hits, double eta, doubl
 	
 	
 		
-	  if(purity && pt > 33 && hits >= 6   && eta < 2 && impSig > 2 )
+	  ifpurity && pt > 41 && hits >= 6  && eta < 2 && impSig > 3) //electron cuts
 	  {
 		  ret = true;
 
 	  }	
 	 
-	  
-	
-/*	if(lepton == "electron")
-	{
-		if(purity && pt > 41 && hits >= 6  && eta < 2 && impSig > 3)
-		{
-			ret = true;
-		}
-	}*/
+
 	
 	return ret;
 }
