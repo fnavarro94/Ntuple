@@ -46,10 +46,11 @@ void analyzer::SlaveBegin(TTree * /*tree*/)
 
    TString option = GetOption();
    
-   file = new TFile("histsWW.root", "recreate");
+   file = new TFile("notStrictDYMuon.root", "recreate");
    h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
    h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
    h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
+   h_lxy2_err = new TH1F ("lxy2_err", "Transverse decay length significance", 20, 0 , 20);
    h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
    h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
    nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
@@ -88,7 +89,8 @@ reset();
 nEvents->Fill(1); 
 
 if (standardCuts)   // quitar true
-{
+{   
+
 	for (int i = 0 ; i< Ev_Branch_numTrack; i++)
 	{
 
@@ -98,9 +100,9 @@ if (standardCuts)   // quitar true
 		
 		  
 		   if (lepMatch)
-		   {
+		   {  
 			   if(deltaR(track_phi[i], track_eta[i], trigObjM_phi[j], trigObjM_eta[j])< 0.1 /*&& deltaP(track_px[i], track_py[i],track_pz[i], trigObjM_px[j], trigObjM_py[j], trigObjM_pz[j]) < 3*/)
-			   {
+			   {   
 				   matchedTrack[i] = 1;
 			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
 			       trackTrigObjIndex[i] = j; 
@@ -127,22 +129,29 @@ if (standardCuts)   // quitar true
 				{
 					double conePt_var = conePt(i, j, track_eta[i], track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
 					double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
-					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],track_vx[i]-vertex_x[0], track_vy[i] -vertex_y[0]); 
+					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]); 
+					double theta2 = mTheta(-track_px[i]-track_px[j], -track_py[i]-track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]);
+                         	   	
 					//cout<<conePt_var<<endl;
 					//cout<<alpha<<endl;
 					//cout<<theta*180/(3.1415)<<endl;
-					if (conePt_var < 4 && alpha > -0.95 /*&& /*theta < 0.2 /*0.8 para electron*/)
+					
+					if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 || theta2 < 0.2 )/*0.8 ipara electron*/)
 					{
 						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
-					 cout<<invariantMass<<endl;
+					 cout<<invariantMass<<" "<<theta*180/(3.1415)<<endl;
+					 //cout<<track_lxy1[i]<<endl;
+					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
+					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
 					 h_invMass->Fill(invariantMass);
 					 h_lxy->Fill(track_lxy1[i]);
 					 h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
 					 h_d0_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
+					 h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
 					}
 					
-					
+	                                //cout<<invariantMass<<endl;				
 					 
 					sumPt = conePt(i,track_eta[i],track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
 					//cout<<sumPt<<endl;
