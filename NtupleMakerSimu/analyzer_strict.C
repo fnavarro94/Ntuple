@@ -1,5 +1,5 @@
-#define analyzer_cxx
-// The class definition in analyzer.h has been generated automatically
+#define analyzer_strict_cxx
+// The class definition in analyzer_strict.h has been generated automatically
 // by the ROOT utility TTree::MakeSelector(). This class is derived
 // from the ROOT class TSelector. For more information on the TSelector
 // framework see $ROOTSYS/README/README.SELECTOR or the ROOT User Manual.
@@ -18,17 +18,17 @@
 //
 // To use this file, try the following session on your Tree T:
 //
-// Root > T->Process("analyzer.C")
-// Root > T->Process("analyzer.C","some options")
-// Root > T->Process("analyzer.C+")
+// Root > T->Process("analyzer_strict.C")
+// Root > T->Process("analyzer_strict.C","some options")
+// Root > T->Process("analyzer_strict.C+")
 //
 
-#include "analyzer.h"
+#include "analyzer_strict.h"
 #include <TH2.h>
 #include <TStyle.h>
 
 
-void analyzer::Begin(TTree * /*tree*/)
+void analyzer_strict::Begin(TTree * /*tree*/)
 {
    // The Begin() function is called at the start of the query.
    // When running with PROOF Begin() is only called on the client.
@@ -38,7 +38,7 @@ void analyzer::Begin(TTree * /*tree*/)
 
 }
 
-void analyzer::SlaveBegin(TTree * /*tree*/)
+void analyzer_strict::SlaveBegin(TTree * /*tree*/)
 {
    // The SlaveBegin() function is called after the Begin() function.
    // When running with PROOF SlaveBegin() is called on each slave server.
@@ -46,7 +46,7 @@ void analyzer::SlaveBegin(TTree * /*tree*/)
 
    TString option = GetOption();
    
-   file = new TFile("notStrictDYMuon.root", "recreate");
+   file = new TFile("strictDYMuone.root", "recreate");
    h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
    h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
    h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
@@ -59,12 +59,12 @@ void analyzer::SlaveBegin(TTree * /*tree*/)
    vuelta = 0;
 }
 
-Bool_t analyzer::Process(Long64_t entry)
+Bool_t analyzer_strict::Process(Long64_t entry)
 {
    // The Process() function is called for each entry in the tree (or possibly
    // keyed object in the case of PROOF) to be processed. The entry argument
    // specifies which entry in the currently loaded tree is to be processed.
-   // It can be passed to either analyzer::GetEntry() or TBranch::GetEntry()
+   // It can be passed to either analyzer_strict::GetEntry() or TBranch::GetEntry()
    // to read either all or the required parts of the data. When processing
    // keyed objects with PROOF, the object is already loaded and is available
    // via the fObject pointer.
@@ -136,7 +136,7 @@ if (standardCuts)   // quitar true
 					//cout<<alpha<<endl;
 					//cout<<theta*180/(3.1415)<<endl;
 					
-					if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 || theta2 < 0.2 )/*0.8 ipara electron*/)
+					if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/)
 					{
 						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
@@ -174,7 +174,7 @@ if (standardCuts)   // quitar true
 }
 
 // calculates cosine of the angle between objects
-double analyzer::mTheta(double ax, double ay, double bx, double by)
+double analyzer_strict::mTheta(double ax, double ay, double bx, double by)
 {
 	double cosAlpha = ax*bx + ay*by;
 	double theta;
@@ -183,14 +183,14 @@ double analyzer::mTheta(double ax, double ay, double bx, double by)
 	return theta;
 }
 
-double analyzer::mCos(double phi1, double eta1, double phi2, double eta2 )
+double analyzer_strict::mCos(double phi1, double eta1, double phi2, double eta2 )
 {double cosAlpha = sin(eta1)*cos(phi1)*sin(eta2)*cos(phi2) + sin(eta1)*sin(phi1)*sin(eta2)*sin(phi2) + cos(eta1)*cos(eta2);
 	
 	return cosAlpha;
 }
 // calculates sum of pt arround an isolation cone
 
-double analyzer::conePt(int forbiddenIndex, double eta, double phi, int numTracks, double tracks_eta[], double tracks_phi[], double tracks_pt[])
+double analyzer_strict::conePt(int forbiddenIndex, double eta, double phi, int numTracks, double tracks_eta[], double tracks_phi[], double tracks_pt[])
 {
 	double sumPt = 0.0;
 	for (int i = 0; i < numTracks; i++)
@@ -203,7 +203,7 @@ double analyzer::conePt(int forbiddenIndex, double eta, double phi, int numTrack
 	
 	return sumPt;
 }
-double analyzer::conePt(int forbiddenIndex1, int forbiddenIndex2, double eta, double phi, int numTracks, double tracks_eta[], double tracks_phi[], double tracks_pt[])
+double analyzer_strict::conePt(int forbiddenIndex1, int forbiddenIndex2, double eta, double phi, int numTracks, double tracks_eta[], double tracks_phi[], double tracks_pt[])
 {
 	double sumPt = 0.0;
 	for (int i = 0; i < numTracks; i++)
@@ -219,7 +219,7 @@ double analyzer::conePt(int forbiddenIndex1, int forbiddenIndex2, double eta, do
 
 // resets arrays and variables to Null/0
 
-bool analyzer::matchingCuts( bool purity, double pt, int hits, double eta, double impSig)
+bool analyzer_strict::matchingCuts( bool purity, double pt, int hits, double eta, double impSig)
 {
 	bool ret = false;
 	
@@ -244,7 +244,7 @@ bool analyzer::matchingCuts( bool purity, double pt, int hits, double eta, doubl
 	return ret;
 }
 
-void analyzer::reset()
+void analyzer_strict::reset()
 {
 	for (int i = 0; i< Ev_Branch_numTrack; i++)
 	{
@@ -261,7 +261,7 @@ void analyzer::reset()
 }
 
 // calculates rest mass of a pair of  leptons
-double analyzer::invMass(double px1, double py1, double pz1, double px2 , double py2,  double pz2)
+double analyzer_strict::invMass(double px1, double py1, double pz1, double px2 , double py2,  double pz2)
 {
   double E1 =  sqrt(px1*px1 + py1*py1 + pz1*pz1);  // asummes rest mass energy to be negligible
   double E2 =  sqrt(px2*px2 + py2*py2 + pz2*pz2);
@@ -278,7 +278,7 @@ double analyzer::invMass(double px1, double py1, double pz1, double px2 , double
 
 	
 }
-double analyzer::deltaP(double px1, double py1, double pz1, double px2, double py2, double pz2)
+double analyzer_strict::deltaP(double px1, double py1, double pz1, double px2, double py2, double pz2)
 {
 	/*double dpx = px1 -px2;
 	double dpy = py1 -py2;
@@ -292,7 +292,7 @@ double analyzer::deltaP(double px1, double py1, double pz1, double px2, double p
     
 }
 
-double analyzer::deltaV(double vx1, double vy1, double vz1, double vx2, double vy2, double vz2)
+double analyzer_strict::deltaV(double vx1, double vy1, double vz1, double vx2, double vy2, double vz2)
 {
    double dx = vx1-vx2;
    double dy = vy1-vy2;
@@ -302,7 +302,7 @@ double analyzer::deltaV(double vx1, double vy1, double vz1, double vx2, double v
    return dv;	
 }
 
-double analyzer::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, double obj2Eta)
+double analyzer_strict::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, double obj2Eta)
 {
 	double dPhi = obj1Phi - obj2Phi;
 	double dEta = obj1Eta - obj2Eta;
@@ -311,7 +311,7 @@ double analyzer::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, double o
 }
 
 
-bool analyzer::cmsStandardCuts(Int_t numVertTracks, Int_t numTracks, Double_t vx[], Double_t vy[], Double_t vz[], bool purity[] )
+bool analyzer_strict::cmsStandardCuts(Int_t numVertTracks, Int_t numTracks, Double_t vx[], Double_t vy[], Double_t vz[], bool purity[] )
 {
 	bool ret =  false;
 	int distCount = 0;
@@ -359,7 +359,7 @@ bool analyzer::cmsStandardCuts(Int_t numVertTracks, Int_t numTracks, Double_t vx
 }
 
 
-void analyzer::SlaveTerminate()
+void analyzer_strict::SlaveTerminate()
 {
    // The SlaveTerminate() function is called after all entries or objects
    // have been processed. When running with PROOF SlaveTerminate() is called
@@ -367,7 +367,7 @@ void analyzer::SlaveTerminate()
 
 }
 
-void analyzer::Terminate()
+void analyzer_strict::Terminate()
 {
 	//cout<<vuelta<<endl;
 	file->Write();
