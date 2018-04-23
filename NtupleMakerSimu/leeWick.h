@@ -126,6 +126,9 @@ public :
    Double_t        ak5jet_phi[78];   //[numJets]
    Double_t        ak5jet_eta[78];   //[numJets]
    Char_t          triggerPath[100];
+   Double_t	d_sigma=30e-3; //20um
+	Float_t sigma=9e-3; //9um
+	Float_t z_sigma=9e-5;
 
   // Additional variables
   Int_t 		   matchedTrack[2000];

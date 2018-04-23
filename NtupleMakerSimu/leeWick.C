@@ -122,7 +122,7 @@ for (int i =0; i < 3; i++)
 {
 	for (int j = i+1; j< 4; j++)
 	{
-		invMassArr[k] = invMass(ak5jet_px[sortedIndex[i]], ak5jet_px[sortedIndex[i]],ak5jet_px[sortedIndex[i]],ak5jet_px[sortedIndex[j]],ak5jet_px[sortedIndex[j]],ak5jet_px[sortedIndex[j]]);
+		invMassArr[k] = invMass(ak5jet_px[sortedIndex[i]], ak5jet_px[sortedIndex[i]],ak5jet_px[sortedIndex[i]],0,ak5jet_px[sortedIndex[j]],ak5jet_px[sortedIndex[j]],ak5jet_px[sortedIndex[j]],0);
 	   
 	    invMassIndexArr[k][0] = i;
 	    invMassIndexArr[k][1] = j;
@@ -137,6 +137,7 @@ double lwMass = 350;
 int sortedInvMassIndex[6];
 double sortedInvMass[6];
 double  dumMass=0;
+
 
 for(int i = 0; i< 6; i++)
 {
@@ -163,6 +164,88 @@ for(int j =0; j<5; j++)
 		
 	}
 }
+
+//check that the same jet does not appear in both selected pairs
+
+bool check = false;
+int count = 1;
+while(!check)
+{
+	if (invMassIndexArr[sortedInvMassIndex[count]][0] == invMassIndexArr[sortedInvMassIndex[0]][0] || invMassIndexArr[sortedInvMassIndex[count]][0] == invMassIndexArr[sortedInvMassIndex[0]][1]
+	    || invMassIndexArr[sortedInvMassIndex[count]][1] == invMassIndexArr[sortedInvMassIndex[0]][0]  || invMassIndexArr[sortedInvMassIndex[count]][1] == invMassIndexArr[sortedInvMassIndex[0]][1])
+	    {
+			count++;
+			cout<<"count: "<<count<<endl;
+		}
+		
+	else 
+	{
+		check = true;
+	}
+}
+
+// if there was repetition, change the first pair with no repeated jets for the previous candidate
+
+sortedInvMassIndex[1] = sortedInvMassIndex[count];
+
+
+
+
+
+// Directon of Z bosons
+double Z_eta[2], Z_eta[2];
+for (int i =0 ; i<2; i++)
+{
+	double px = ak5jet_px[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_px[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]];
+	double py = ak5jet_py[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_px[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][1]]];
+	
+	double tanTheta = px/py;
+	Z_eta[i] = atan(tanTheta);
+	Z_eta[i] = 0;
+}
+
+
+
+// Change the origin of the jets
+for(int i=0; i<4; i++){//******
+	ak5jet_x[sortedIndex[i]] = gRandom -> Gaus(0,sigma);
+	ak5jet_y[sortedIndex[i]] = gRandom -> Gaus(0,sigma);
+	ak5jet_z[sortedIndex[i]] = gRandom -> Gaus(0,sigma);
+	}//end of jeti
+
+
+//create z decay position (average of pair of jets)
+
+double Z_X[2], Z_Y[2], Z_Z[2];
+
+for (int i =0; i < 2; i++)
+{
+	Z_X[i] = (ak5jet_x[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_x[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][1]]]);
+	Z_Y[i] = (ak5jet_y[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_y[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][1]]]);
+	Z_Z[i] = (ak5jet_z[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_z[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][1]]])/2.0;
+	
+}
+
+// create the acausal vertex
+
+float d;
+float theta;
+int aux_mj;
+	while (d<20e-3){
+	d = gRandom -> Gaus(0,d_sigma);
+	}
+	for(int i=0; i<2; i++){//****
+	fPx[ia] = d*cos(Z_Phi[ia])*sin(2*atan(exp(-Z_Eta[ia])));
+	fPy[ia] = d*sin(Z_Phi[ia])*sin(2*atan(exp(-Z_Eta[ia])));
+	fPz[ia] = d*cos(2*atan(exp(-Z_Eta[ia])));
+	LW_X[ia]=Z_X[ia]+fPx[ia];
+	LW_Y[ia]=Z_Y[ia]+fPy[ia];
+	LW_Z[ia]=Z_Z[ia]+fPz[ia];
+	}*/
+
+
+// calculate pseudo impact parameter
+
 
 
 
@@ -269,7 +352,7 @@ void leeWick::reset()
 }
 
 // calculates rest mass of a pair of  leptons
-double leeWick::invMass(double px1, double py1, double pz1, double px2 , double py2,  double pz2)
+double leeWick::invMass(double px1, double py1, double pz1,double mass1, double px2 , double py2,  double pz2, double mass2)
 {
   double E1 =  sqrt(px1*px1 + py1*py1 + pz1*pz1);  // asummes rest mass energy to be negligible
   double E2 =  sqrt(px2*px2 + py2*py2 + pz2*pz2);
