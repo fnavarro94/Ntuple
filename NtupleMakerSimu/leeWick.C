@@ -193,15 +193,18 @@ sortedInvMassIndex[1] = sortedInvMassIndex[count];
 
 
 // Directon of Z bosons
-double Z_eta[2], Z_eta[2];
+double Z_phi[2], Z_eta[2];
 for (int i =0 ; i<2; i++)
 {
 	double px = ak5jet_px[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_px[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]];
 	double py = ak5jet_py[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_px[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][1]]];
-	
+	double pz = ak5jet_pz[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_pz[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][1]]];
+    double pt = sqrt(px*px +py*py);
 	double tanTheta = px/py;
-	Z_eta[i] = atan(tanTheta);
-	Z_eta[i] = 0;
+	double th = atan(pt/pz);
+	
+	Z_phi[i] = atan(tanTheta);
+	Z_eta[i] = -log(tan(th/2));
 }
 
 
@@ -220,31 +223,58 @@ double Z_X[2], Z_Y[2], Z_Z[2];
 
 for (int i =0; i < 2; i++)
 {
-	Z_X[i] = (ak5jet_x[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_x[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][1]]]);
-	Z_Y[i] = (ak5jet_y[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_y[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][1]]]);
-	Z_Z[i] = (ak5jet_z[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_z[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][1]]])/2.0;
+	Z_X[i] = (ak5jet_x[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_x[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][1]]])/2;
+	Z_Y[i] = (ak5jet_y[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_y[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][1]]])/2;
+	Z_Z[i] = (ak5jet_z[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][0]]] + ak5jet_z[sortedIndex[invMassIndexArr[sortedInvMassIndex[i]][1]]])/2;
 	
 }
 
 // create the acausal vertex
 
-float d;
+double LW_X[2];
+double LW_Y[2];
+double LW_Z[2];
+
+double fPx[2], fPy[2], fPz[2];
+
+double d;
 float theta;
 int aux_mj;
 	while (d<20e-3){
-	d = gRandom -> Gaus(0,d_sigma);
+	d = gRandom -> Gaus(0,3e-2);
+	cout<<d<<endl;
 	}
 	for(int i=0; i<2; i++){//****
-	fPx[ia] = d*cos(Z_Phi[ia])*sin(2*atan(exp(-Z_Eta[ia])));
-	fPy[ia] = d*sin(Z_Phi[ia])*sin(2*atan(exp(-Z_Eta[ia])));
-	fPz[ia] = d*cos(2*atan(exp(-Z_Eta[ia])));
-	LW_X[ia]=Z_X[ia]+fPx[ia];
-	LW_Y[ia]=Z_Y[ia]+fPy[ia];
-	LW_Z[ia]=Z_Z[ia]+fPz[ia];
-	}*/
+	fPx[i] = d*cos(Z_phi[i])*sin(2*atan(exp(-Z_eta[i])));
+	fPy[i] = d*sin(Z_phi[i])*sin(2*atan(exp(-Z_eta[i])));
+	fPz[i] = d*cos(2*atan(exp(-Z_eta[i])));
+    LW_X[i]=Z_X[i]+fPx[i];
+	LW_Y[i]=Z_Y[i]+fPy[i];
+	LW_Z[i]=Z_Z[i]+fPz[i];
+	}
 
 
 // calculate pseudo impact parameter
+
+double dx, dy, dz; // 
+
+for (int i =0; i < 4; i++)
+{
+	double Pjx ak5jet_px[sortedIndex[i]];
+	double Pjy ak5jet_py[sortedIndex[i]];
+	double Pjz ak5jet_pz[sortedIndex[i]];
+	double Pj2 = Pjx*Pjx +Pjy*Pjy + Pjz*Pjz;
+	double r0x, r0y, r0z;
+	double rjx, rjy, rjz;
+	
+	rjx = ak5jet_x[sortedIndex[i]];
+	rjy = ak5jet_y[sortedIndex[i]];
+	rjz = ak5jet_z[sortedIndex[i]];
+	
+	r0x = 
+
+	double coef = 
+}
 
 
 
