@@ -793,6 +793,7 @@ NtupleMaker_simuMuons::beginJob()
            mtree->Branch("ak5jet_pz", event.ak5jet_pz, "ak5jet_pz[numJets]/D");
            mtree->Branch("ak5jet_phi", event.ak5jet_phi, "ak5jet_phi[numJets]/D");
            mtree->Branch("ak5jet_eta", event.ak5jet_eta, "ak5jet_eta[numJets]/D");
+           mtree->Branch("ak5jet_mass", event.ak5jet_eta, "ak5jet_mass[numJets]/D");
            
            mtree->Branch("triggerPath", event.triggerPath, "triggerPath[100]/C");
           // mtree->Branch("filter", event.filter, "filter[100]/C");
