@@ -231,6 +231,7 @@ class NtupleMaker_simuMuons : public edm::EDAnalyzer {
 		  Double_t ak5jet_pz[entryMax] = {0};
 		  Double_t ak5jet_phi[entryMax] = {0};
 		  Double_t ak5jet_eta[entryMax] = {0};
+		  Double_t ak5jet_mass[entryMax] = {0};
 		  char triggerPath[100];
 		 // char filter[100];
 		  
@@ -650,6 +651,7 @@ for (auto itJet = ak5Jets->begin(); itJet != ak5Jets->end(); ++itJet)
 	event.ak5jet_pz[i] = itJet->pz();
 	event.ak5jet_eta[i] = itJet->eta();
 	event.ak5jet_phi[i] = itJet->phi();
+	event.ak5jet_mass[i] = itJet->mass();
 	//event.ak5jet_chi2[i]= itJet->chi2();
 	//event.ak5jet_ndof[i] = itJet->ndof();
 	
