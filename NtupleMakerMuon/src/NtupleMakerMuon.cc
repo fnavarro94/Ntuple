@@ -220,6 +220,7 @@ class NtupleMakerMuon : public edm::EDAnalyzer {
 		  Double_t ak5jet_pz[entryMax] = {0};
 		  Double_t ak5jet_phi[entryMax] = {0};
 		  Double_t ak5jet_eta[entryMax] = {0};
+		  Double_t ak5jet_mass[entryMax] = {0};
 		  char triggerPath[100];
 		  char filter[100];
 		  
@@ -595,6 +596,7 @@ for (auto itJet = ak5Jets->begin(); itJet != ak5Jets->end(); ++itJet)
 	event.ak5jet_pz[i] = itJet->pz();
 	event.ak5jet_eta[i] = itJet->eta();
 	event.ak5jet_phi[i] = itJet->phi();
+	event.ak5jet_mass[i] = itJet->mass();
 	//event.ak5jet_chi2[i]= itJet->chi2();
 	//event.ak5jet_ndof[i] = itJet->ndof();
 	
@@ -727,6 +729,7 @@ NtupleMakerMuon::beginJob()
            mtree->Branch("ak5jet_pz", event.ak5jet_pz, "ak5jet_pz[numJets]/D");
            mtree->Branch("ak5jet_phi", event.ak5jet_phi, "ak5jet_phi[numJets]/D");
            mtree->Branch("ak5jet_eta", event.ak5jet_eta, "ak5jet_eta[numJets]/D");
+           mtree->Branch("ak5jet_mass", event.ak5jet_mass, "ak5jet_mass[numJets]/D");
            
            mtree->Branch("triggerPath", event.triggerPath, "triggerPath[100]/C");
            mtree->Branch("filter", event.filter, "filter[100]/C");
