@@ -53,6 +53,7 @@ void vertexDistanceAnalyzer::SlaveBegin(TTree * /*tree*/)
    h_lxy2_err = new TH1F ("lxy2_err", "Transverse decay length significance", 20, 0 , 20);
    h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
    h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
+   h_dv = new TH1F ("h_dv", "Vertex distane between lepton candidates", 100, 0,10);
    nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
   //matchedTrack[ = {0};
    TH1::AddDirectory(true);
@@ -79,7 +80,8 @@ Bool_t vertexDistanceAnalyzer::Process(Long64_t entry)
    //
    // The return value is currently not used.
  fChain->GetTree()->GetEntry(entry);
-   
+   double dv1= 100;
+	double dv2 = 100;
 bool standardCuts = cmsStandardCuts(vert_numTrack[0], Ev_Branch_numTrack, vertex1Track_vx, vertex1Track_vy, vertex1Track_vz, track_highPurity);
 reset();
 
@@ -118,52 +120,35 @@ if (standardCuts)   // quitar true
 	
 	// the following section compares vertex of opositly chareged trigger-matched leptons in order to find lepton pairs product of the same decay.
 	
+	double dvDum = 0;
+	double massDiff = 100;
 	for ( int i = 0;  i < Ev_Branch_numTrack; i++)
 	{
 		if ( matchedTrack[i] ==1 && track_charge[i] == 1 )
 		{ 
-			for (int j =0; j< Ev_Branch_numTrack; j++)
+			for (int j =i+1; j< Ev_Branch_numTrack; j++)
 			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] && deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) >0.2)
 			{  
-				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 3 )
-				{       
-					double conePt_var = conePt(i, j, track_eta[i], track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
-					double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
-					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]); 
-					double theta2 = mTheta(-track_px[i]-track_px[j], -track_py[i]-track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]);
-                         	   	
-					//cout<<conePt_var<<endl;
-					//cout<<alpha<<endl;
-					//cout<<theta*180/(3.1415)<<endl;
-					
-					if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/||true)
-					{
-						double invariantMass, sumPt;
-					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
-					 cout<<invariantMass<<" "<<theta*180/(3.1415)<<endl;
-					 //cout<<track_lxy1[i]<<endl;
-					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
-					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
-					 h_invMass->Fill(invariantMass);
-					 h_lxy->Fill(track_lxy1[i]);
-					 h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
-					 h_d0_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
-					 h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
-					}
-					
-	                                //cout<<invariantMass<<endl;				
+					 dvDum = deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) ;
+				   double  invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
+				      
+				      massDiff= abs(invariantMass - 350);
+				      if (massDiff < 10  )
+				      { h_dv-> Fill(dvDum);
+					  }
 					 
-					sumPt = conePt(i,track_eta[i],track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
-					//cout<<sumPt<<endl;
-					 h_conePt->Fill(sumPt); 
+					
+				    
+					
 					 
-				}
+				
 			}
 		}
 	}
 	
 	
 }
+   h_dv->Fill(dv1);
    vuelta ++;
    if(vuelta%1000 == 0)
    {

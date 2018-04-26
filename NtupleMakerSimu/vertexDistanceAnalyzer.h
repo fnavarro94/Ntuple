@@ -133,7 +133,7 @@ public :
   Int_t 		   trackTrigObjIndex[2000];
   int vuelta;
   // root file
-  
+  TH1F * h_dv;
   TFile * file;
   
   // Histograms
