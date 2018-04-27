@@ -319,15 +319,18 @@ std::string pathName_m = "HLT_L2DoubleMu23_NoVertex_9";
  event.eventNumer= iEvent.id().event();
  event.runNumber= iEvent.id().run();
  event.lumiBlock = iEvent.id().luminosityBlock();
- 
+ int k = 0;
 for (size_t i =0; i< genParticles->size(); i++)
 {
 	const GenParticle & p = (*genParticles)[i];
 	double  id = p.pdgId();
 	
-	int k = 0;
+	if(k >4)
+	{
+		cout<< " WARNING: k couter is greater than 4" << endl;
+	}
 	
-	if(id == 6000111 && p.numberOfDaughters() !=0)
+	if(id == 6000111 && p.numberOfDaughters() !=0 && k < 4)
 	{
 		for (size_t j =0; j< p.numberOfDaughters(); j++)
 		{
