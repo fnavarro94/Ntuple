@@ -6,7 +6,7 @@
 <use name="PhysicsTools/UtilAlgos"/>
 <use name="DataFormats/JetReco"/>
 
-
+<use name="DataFormats/HepMCCandidate"/>
 
 <use name="FWCore/ParameterSet"/>
 <flags EDM_PLUGIN="1"/>
