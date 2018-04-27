@@ -305,7 +305,8 @@ NtupleMakerSimu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
   using reco::TrackCollection;
   
   
-  edm::Handle<GenParticleCollection> genParticles;
+  Handle<GenParticleCollection> genParticles;
+  iEvent.getByLabel("genParticles", genParticles);
   
   edm::Handle<edm::TriggerResults> trigResults; //Our trigger result object
 edm::InputTag trigResultsTag("TriggerResults","","HLT");
