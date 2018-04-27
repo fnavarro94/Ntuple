@@ -53,6 +53,8 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/TrackReco/interface/Track.h"
+
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 //
 // class declaration
 //
@@ -235,6 +237,18 @@ class NtupleMaker_simuMuons : public edm::EDAnalyzer {
 		  char triggerPath[100];
 		 // char filter[100];
 		  
+		  // generated particles data
+		  
+		  Double_t genMu_phi[4] = {0};
+		  Double_t genMu_eta[4] = {0};
+		  Double_t genMu_pt[4] = {0};
+		  Double_t genMu_px[4] = {0};
+		  Double_t genMu_py[4] = {0};
+		  Double_t genMu_pz[4] = {0};
+		  
+		  
+		  
+		  
 		  }event,eventReset;
 		  //static const struct  mEvent eventReset ;
 
@@ -283,13 +297,15 @@ void
 NtupleMaker_simuMuons::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
+   using namespace reco;
+   using namespace std;
   vuelta++;
   if (vuelta%1000 ==0){std::cout<<"vuelta: "<<vuelta<<std::endl;}
   event = eventReset;
   using reco::TrackCollection;
   
   
-  
+  edm::Handle<GenParticleCollection> genParticles;
   
   edm::Handle<edm::TriggerResults> trigResults; //Our trigger result object
 edm::InputTag trigResultsTag("TriggerResults","","HLT");
@@ -304,6 +320,41 @@ std::string pathName_m = "HLT_L2DoubleMu23_NoVertex_9";
  event.runNumber= iEvent.id().run();
  event.lumiBlock = iEvent.id().luminosityBlock();
  
+for (size_t i =0; i< genParticles->size(); i++)
+{
+	const GenParticle & p = (*genParticles)[i];
+	double  id = p.pdgId();
+	
+	int k = 0;
+	
+	if(id == 6000111 && p.numberOfDaughters() !=0)
+	{
+		for (size_t j =0; j< p.numberOfDaughters(); j++)
+		{
+			const Candidate & dp =  *(p.daughter(j));
+			cout<<dp.pt()<<endl;
+			
+			if(abs(dp.pdgId())== 13)
+			{
+				event.genMu_phi[k] = dp.phi();
+				event.genMu_eta[k] = dp.eta();
+				event.genMu_pt[k] = dp.pt();
+				event.genMu_px[k] = dp.px();
+				event.genMu_py[k] = dp.py();
+				event.genMu_pz[k] = dp.pz();
+				
+				
+				k++;
+			}
+		}
+	}
+	
+}
+
+
+
+
+
 
 int trigPathSize = trigNames.size();
 /*
@@ -794,6 +845,15 @@ NtupleMaker_simuMuons::beginJob()
            mtree->Branch("ak5jet_phi", event.ak5jet_phi, "ak5jet_phi[numJets]/D");
            mtree->Branch("ak5jet_eta", event.ak5jet_eta, "ak5jet_eta[numJets]/D");
            mtree->Branch("ak5jet_mass", event.ak5jet_eta, "ak5jet_mass[numJets]/D");
+           
+           
+           
+           mtree->Branch("genMu_phi", event.genMu_phi, "genMu_phi[4]/D");
+           mtree->Branch("genMu_eta", event.genMu_eta, "genMu_eta[4]/D");
+           mtree->Branch("genMu_pt", event.genMu_pt, "genMu_pt[4]/D");
+           mtree->Branch("genMu_px", event.genMu_px, "genMu_px[4]/D");
+           mtree->Branch("genMu_py", event.genMu_py, "genMu_py[4]/D");
+           mtree->Branch("genMu_pz", event.genMu_pz, "genMu_pz[4]/D");
            
            mtree->Branch("triggerPath", event.triggerPath, "triggerPath[100]/C");
           // mtree->Branch("filter", event.filter, "filter[100]/C");
