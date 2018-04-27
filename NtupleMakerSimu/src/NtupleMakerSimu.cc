@@ -239,12 +239,19 @@ class NtupleMakerSimu : public edm::EDAnalyzer {
 		  
 		  // generated particles data
 		  
-		  Double_t genMu_phi[4] = {0};
-		  Double_t genMu_eta[4] = {0};
-		  Double_t genMu_pt[4] = {0};
-		  Double_t genMu_px[4] = {0};
-		  Double_t genMu_py[4] = {0};
-		  Double_t genMu_pz[4] = {0};
+		  Double_t genMu_phi[2] = {0};
+		  Double_t genMu_eta[2] = {0};
+		  Double_t genMu_pt[2] = {0};
+		  Double_t genMu_px[2] = {0};
+		  Double_t genMu_py[2] = {0};
+		  Double_t genMu_pz[2] = {0};
+		  
+		  Double_t genMuBar_phi[2] = {0};
+		  Double_t genMuBar_eta[2] = {0};
+		  Double_t genMuBar_pt[2] = {0};
+		  Double_t genMuBar_px[2] = {0};
+		  Double_t genMuBar_py[2] = {0};
+		  Double_t genMuBar_pz[2] = {0};
 		  
 		  
 		  
@@ -321,12 +328,13 @@ std::string pathName_m = "HLT_L2DoubleMu23_NoVertex_9";
  event.runNumber= iEvent.id().run();
  event.lumiBlock = iEvent.id().luminosityBlock();
  int k = 0;
+ int kBar = 0;
 for (size_t i =0; i< genParticles->size(); i++)
 {
 	const GenParticle & p = (*genParticles)[i];
 	double  id = p.pdgId();
 	
-	if(k >4)
+	if(k >2 ||kBar > 2)
 	{
 		cout<< " WARNING: k couter is greater than 4" << endl;
 	}
@@ -338,7 +346,7 @@ for (size_t i =0; i< genParticles->size(); i++)
 			const Candidate & dp =  *(p.daughter(j));
 			cout<<dp.pt()<<endl;
 			
-			if(abs(dp.pdgId())== 13)
+			if(dp.pdgId()== 13)
 			{
 				event.genMu_phi[k] = dp.phi();
 				event.genMu_eta[k] = dp.eta();
@@ -347,8 +355,20 @@ for (size_t i =0; i< genParticles->size(); i++)
 				event.genMu_py[k] = dp.py();
 				event.genMu_pz[k] = dp.pz();
 				
-				
 				k++;
+				
+			}
+			if(dp.pdgId()== -13)
+			{
+				event.genMuBar_phi[kBar] = dp.phi();
+				event.genMuBar_eta[kBar] = dp.eta();
+				event.genMuBar_pt[kBar] = dp.pt();
+				event.genMuBar_px[kBar] = dp.px();
+				event.genMuBar_py[kBar] = dp.py();
+				event.genMuBar_pz[kBar] = dp.pz();
+				
+				
+				kBar++;
 			}
 		}
 	}
@@ -852,12 +872,19 @@ NtupleMakerSimu::beginJob()
            
            
            
-           mtree->Branch("genMu_phi", event.genMu_phi, "genMu_phi[4]/D");
-           mtree->Branch("genMu_eta", event.genMu_eta, "genMu_eta[4]/D");
-           mtree->Branch("genMu_pt", event.genMu_pt, "genMu_pt[4]/D");
-           mtree->Branch("genMu_px", event.genMu_px, "genMu_px[4]/D");
-           mtree->Branch("genMu_py", event.genMu_py, "genMu_py[4]/D");
-           mtree->Branch("genMu_pz", event.genMu_pz, "genMu_pz[4]/D");
+           mtree->Branch("genMu_phi", event.genMu_phi, "genMu_phi[2]/D");
+           mtree->Branch("genMu_eta", event.genMu_eta, "genMu_eta[2]/D");
+           mtree->Branch("genMu_pt", event.genMu_pt, "genMu_pt[2]/D");
+           mtree->Branch("genMu_px", event.genMu_px, "genMu_px[2]/D");
+           mtree->Branch("genMu_py", event.genMu_py, "genMu_py[2]/D");
+           mtree->Branch("genMu_pz", event.genMu_pz, "genMu_pz[2]/D");
+           
+           mtree->Branch("genMuBar_phi", event.genMuBar_phi, "genMuBar_phi[2]/D");
+           mtree->Branch("genMuBar_eta", event.genMuBar_eta, "genMuBar_eta[2]/D");
+           mtree->Branch("genMuBar_pt", event.genMuBar_pt, "genMuBar_pt[2]/D");
+           mtree->Branch("genMuBar_px", event.genMuBar_px, "genMuBar_px[2]/D");
+           mtree->Branch("genMuBar_py", event.genMuBar_py, "genMuBar_py[2]/D");
+           mtree->Branch("genMuBar_pz", event.genMuBar_pz, "genMuBar_pz[2]/D");
            
            mtree->Branch("triggerPath", event.triggerPath, "triggerPath[100]/C");
           // mtree->Branch("filter", event.filter, "filter[100]/C");
