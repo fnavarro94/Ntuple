@@ -54,7 +54,29 @@ void vertexDistanceAnalyzer::SlaveBegin(TTree * /*tree*/)
    h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
    h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
    h_dv = new TH1F ("h_dv", "Vertex distane between lepton candidates", 100, 0,10);
+   h_dx = new TH1F ("h_dx", "Vertex distane between lepton candidates", 100, -10,10);
+   h_dy = new TH1F ("h_dy", "Vertex distane between lepton candidates", 100, -10,10);
+   h_dz = new TH1F ("h_dz", "Vertex distane between lepton candidates", 100, -10,10);
+   h_mpt = new TH1F ("h_mpt", "Vertex distane between lepton candidates", 100, -100,100);
+   h_dm = new TH1F ("h_dm", "Vertex distane between lepton candidates", 100, 0,600);
    nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
+   
+   // Histograms with cuts
+   
+   c_invMass = new TH1F ("c_invMass", "Lepton Pair Invariant Mass (with some cut)", 100, 0 , 600);
+   c_pt = new TH1F ("c_mpt", "Vertex distane between lepton candidates (with some cut) ", 100, -100,100);
+   c_phi = new TH1F ("c_phi","#phi (whith some cut)", 100, -4, 4);
+   c_eta = new TH1F ("c_eta","#eta (whith some cut)", 100, -4, 4);
+   c_dv = new TH1F ("c_dv","Distance between track vertices (whith some cut)", 100, -4, 4);
+   
+   cc_invMass = new TH1F ("cc_invMass", "Lepton Pair Invariant Mass (complementary cut)", 100, 0 , 600);
+   cc_pt = new TH1F ("cc_mpt", "Vertex distane between lepton candidates (complementary cut) ", 100, -100,100);
+   cc_phi = new TH1F ("cc_phi","#phi (complementary cut)", 100, -4, 4);
+   cc_eta = new TH1F ("cc_eta","#eta (complementery cut)", 100, -4, 4);
+   cc_dv = new TH1F ("cc_dv","Distance between track vertices (complementary cut)", 100, -4, 4);
+   
+   
+   
   //matchedTrack[ = {0};
    TH1::AddDirectory(true);
    vuelta = 0;
@@ -86,9 +108,58 @@ bool standardCuts = cmsStandardCuts(vert_numTrack[0], Ev_Branch_numTrack, vertex
 reset();
 
 
+
+
+// find index of tracks with highest pt
+int nTGPt = 4;  // number of tracks with greatest pt to use afterwards
+int gPtIndex[4];
+
+for (int i = 0; i < nTGPt; i++)
+{
+	gPtIndex[i] = -1;
+}
+
+
+for (int i = 0; i <nTGPt ; i++)
+{
+	int candidate = 0;
+	int dumCanPt = 0;
+	for (int j =0; j < Ev_Branch_numTrack; j ++ )
+	{
+		if ( j != gPtIndex[0] &&  j != gPtIndex[1] &&  j != gPtIndex[2] &&  j != gPtIndex[3] )
+		{
+			if (track_pt[j] > dumCanPt)
+			{
+				dumCanPt = track_pt[j];
+				candidate = j;
+			}
+		}		
+	}
+	gPtIndex[i] = candidate;
+}
+
+
+
 //cout<<"number of trigger objects "<<Ev_Branch_numTrigObjM<<endl;
 
 nEvents->Fill(1); 
+
+for(int  i = 0 ; i< 2; i++)
+{
+	double px1,py1, pz1, px2, py2, pz2, m;
+	
+	px1 = genMu_px[i];
+	py1 = genMu_py[i];
+	pz1 = genMu_pz[i];
+	px2 = genMuBar_px[i];
+	py2 = genMuBar_py[i];
+	pz2 = genMuBar_pz[i];
+	
+    m = invMass(px1,py1,pz1,px2,py2,pz2);
+    h_dm->Fill(m);
+	
+}
+
 
 if (standardCuts)   // quitar true
 {   
@@ -120,6 +191,103 @@ if (standardCuts)   // quitar true
 	
 	// the following section compares vertex of opositly chareged trigger-matched leptons in order to find lepton pairs product of the same decay.
 	
+	
+	//
+	
+	//pair gen muons and antimuons with traks
+	
+	int pairedMuonIndex[2];
+	int pairedMuonBarIndex[2];
+	pairedMuonIndex[0] = 0;
+	pairedMuonIndex[1] = 0;
+	pairedMuonBarIndex[0] = 0;
+	pairedMuonBarIndex[1] = 0;
+	int removedMu = -1;
+	
+	int removedMuBar = -1;
+	
+	for (int k =0; k <2; k++)
+	{double eta1, eta2, phi1, phi2, dum=100, dr=100;
+		for ( int i = 0;  i < nTGPt; i++)
+		{
+		if ( matchedTrack[gPtIndex[i]] ==1 && track_charge[gPtIndex[i]] == 1 )
+			{ eta1 = track_eta[i];
+			 phi1 = track_phi[i];
+			  eta2 = genMu_eta[k];
+			  phi2 = genMu_phi[k];
+			  
+				
+				dum = deltaR(phi1, eta1, phi2, eta2);
+				if(dum < dr)
+				{
+					dr = dum;
+					pairedMuonIndex[k]= gPtIndex[i];
+					
+					cout<<"num tracks1 "<<Ev_Branch_numTrack<<" i "<<i<<endl;
+				}
+			}
+		
+		
+		}
+	}
+	
+	cout<<"Number of tracks1: "<<Ev_Branch_numTrack<<" Index "<<pairedMuonIndex[0]<<", "<<pairedMuonIndex[1]<<endl; 
+		
+	for (int k =0; k <2; k++)
+	{double eta1, eta2, phi1, phi2, dum=100, dr=100;
+		for ( int i = 0;  i < nTGPt; i++)
+		{
+		if ( matchedTrack[gPtIndex[i]] ==1 && track_charge[gPtIndex[i]] == -1  )
+			{ 
+				eta1 = track_eta[i];
+			 phi1 = track_phi[i];
+			  eta2 = genMuBar_eta[k];
+			  phi2 = genMuBar_phi[k];
+				dum = deltaR(phi1, eta1, phi2, eta2);
+				if(dum < dr)
+				{
+					dr = dum;
+					
+					
+					pairedMuonBarIndex[k]= gPtIndex[i];
+					
+				cout<<"num tracks2 "<<Ev_Branch_numTrack<<" i "<<i<<endl;
+				}
+			}
+		
+		
+		}
+	}
+	cout<<"Number of tracks2: "<<Ev_Branch_numTrack<<" Index "<<pairedMuonBarIndex[0]<<", "<<pairedMuonBarIndex[1]<<endl; 
+	
+	for (int i =0; i< 2; i++)
+	{
+		double dvtemp;
+		double  invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
+       dvtemp = deltaV(track_vx[pairedMuonIndex[i]],track_vy[pairedMuonIndex[i]],track_vz[pairedMuonIndex[i]],track_vx[pairedMuonBarIndex[i]],track_vy[pairedMuonBarIndex[i]],track_vz[pairedMuonBarIndex[i]]);
+      invariantMass = abs(invariantMass -350);
+      if (invariantMass<50|| true)
+      {
+		h_dv->Fill(dvtemp);
+		h_dx->Fill(track_vx[pairedMuonIndex[i]]-track_vx[pairedMuonBarIndex[i]]);
+		h_dy->Fill(track_vy[pairedMuonIndex[i]]-track_vy[pairedMuonBarIndex[i]]);
+		h_dz->Fill(track_vz[pairedMuonIndex[i]]-track_vz[pairedMuonBarIndex[i]]);
+		
+		h_mpt->Fill(track_pt[pairedMuonIndex[i]]-track_pt[pairedMuonBarIndex[i]]);
+		
+		//Fill histograms with cuts
+		
+		if (dvtemp < 0.5 ||true)
+		{
+			c_invMass->Fill(invariantMass);
+			c_pt->Fill(track_pt[pairedMuonIndex[i]]-track_pt[pairedMuonBarIndex[i]]);
+			c_dv->Fill(dvtemp);
+		}
+		
+		
+      } 	
+	}
+	
 	double dvDum = 0;
 	double massDiff = 100;
 	for ( int i = 0;  i < Ev_Branch_numTrack; i++)
@@ -131,13 +299,22 @@ if (standardCuts)   // quitar true
 			{  
 					 dvDum = deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) ;
 				   double  invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
+				   
+				   double conePt_var = conePt(i, j, track_eta[i], track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
+					double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
+					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]); 
+					double theta2 = mTheta(-track_px[i]-track_px[j], -track_py[i]-track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]);
+					
+					
+					
+					if (/*conePt_var < 4 && alpha > -0.95 && */(theta <  1.2 )){
 				      
 				      massDiff= abs(invariantMass - 350);
 				      if (massDiff < 10  )
-				      { h_dv-> Fill(dvDum);
+				      { //h_dv-> Fill(dvDum);
 					  }
 					 
-					
+					}
 				    
 					
 					 
@@ -290,6 +467,10 @@ double vertexDistanceAnalyzer::deltaV(double vx1, double vy1, double vz1, double
 double vertexDistanceAnalyzer::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, double obj2Eta)
 {
 	double dPhi = obj1Phi - obj2Phi;
+	if(dPhi > (3.1415)/2)
+	{
+		dPhi =  3.1415 - dPhi;
+	}
 	double dEta = obj1Eta - obj2Eta;
 	double dR = sqrt(dPhi*dPhi + dEta*dEta);
 	return dR;
