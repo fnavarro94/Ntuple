@@ -111,10 +111,20 @@ reset();
 
 
 // find index of tracks with highest pt
-int nTGPt = 4;  // number of tracks with greatest pt to use afterwards
-int gPtIndex[4];
+int nTGPt = 2;  // number of tracks with greatest pt to use afterwards
+int gPtIndexPos[2];
+int gPtIndexNeg[2];
+int gPtIndex[2];
 
 for (int i = 0; i < nTGPt; i++)
+{
+	gPtIndexPos[i] = -1;
+}
+for (int i = 0; i < nTGPt; i++)
+{
+	gPtIndexNeg[i] = -1;
+}
+for (int i = 0; i < 4; i++)
 {
 	gPtIndex[i] = -1;
 }
@@ -126,7 +136,44 @@ for (int i = 0; i <nTGPt ; i++)
 	int dumCanPt = 0;
 	for (int j =0; j < Ev_Branch_numTrack; j ++ )
 	{
-		if ( j != gPtIndex[0] &&  j != gPtIndex[1] &&  j != gPtIndex[2] &&  j != gPtIndex[3] )
+		if ( j != gPtIndexPos[0] &&  j != gPtIndexPos[1] && track_charge[i] ==1 )
+		{
+			if (track_pt[j] > dumCanPt)
+			{
+				dumCanPt = track_pt[j];
+				candidate = j;
+			}
+		}		
+	}
+	gPtIndexPos[i] = candidate;
+}
+
+
+for (int i = 0; i <nTGPt ; i++)
+{
+	int candidate = 0;
+	int dumCanPt = 0;
+	for (int j =0; j < Ev_Branch_numTrack; j ++ )
+	{
+		if ( j != gPtIndexNeg[0] &&  j != gPtIndexNeg[1] && track_charge[i] == -1 )
+		{
+			if (track_pt[j] > dumCanPt)
+			{
+				dumCanPt = track_pt[j];
+				candidate = j;
+			}
+		}		
+	}
+	gPtIndexNeg[i] = candidate;
+}
+
+for (int i = 0; i <4 ; i++)
+{
+	int candidate = 0;
+	int dumCanPt = 0;
+	for (int j =0; j < Ev_Branch_numTrack; j ++ )
+	{
+		if ( j != gPtIndex[0] &&  j != gPtIndex[1]&&  j != gPtIndex[2]&&  j != gPtIndex[3] )
 		{
 			if (track_pt[j] > dumCanPt)
 			{
@@ -138,6 +185,42 @@ for (int i = 0; i <nTGPt ; i++)
 	gPtIndex[i] = candidate;
 }
 
+
+
+// Ordeno a los muones generados de acuerdo a Pt (de mayor pt a menor pt)
+double dumGenMuPt;
+if (genMu_pt[0] < genMu_pt[1])
+{
+	dumGenMuPt =  genMu_pt[0];
+	genMu_pt[0] = genMu_pt[1];
+	genMu_pt[1] = dumGenMuPt;
+	
+	dumGenMuPt =  genMuBar_pt[0];
+	genMuBar_pt[0] = genMuBar_pt[1];
+	genMuBar_pt[1] = dumGenMuPt;
+	
+}
+
+for (int i =0; i < 2; i++)
+{
+	cout<<"pos track "<< track_pt[gPtIndexPos[i]]<<endl;
+}
+for (int i =0; i < 2; i++)
+{
+	cout<<"neg track "<<  track_pt[gPtIndexNeg[i]]<<endl;
+}
+for (int i =0; i < 4; i++)
+{
+	cout<<"sorted track "<<track_pt[gPtIndex[i]]<<"charge "<<track_charge[gPtIndex[i]]<<endl;
+}
+for (int i =0; i < 2; i++)
+{
+	cout<<"gen mu " <<genMu_pt[i]<<endl;
+}
+for (int i =0; i < 2; i++)
+{
+	cout<<"gen muBar "<<genMuBar_pt[i]<<endl;
+}
 
 
 //cout<<"number of trigger objects "<<Ev_Branch_numTrigObjM<<endl;
@@ -206,7 +289,7 @@ if (standardCuts)   // quitar true
 	
 	int removedMuBar = -1;
 	
-	for (int k =0; k <2; k++)
+	/*for (int k =0; k <2; k++)
 	{double eta1, eta2, phi1, phi2, dum=100, dr=100;
 		for ( int i = 0;  i < nTGPt; i++)
 		{
@@ -223,17 +306,17 @@ if (standardCuts)   // quitar true
 					dr = dum;
 					pairedMuonIndex[k]= gPtIndex[i];
 					
-					cout<<"num tracks1 "<<Ev_Branch_numTrack<<" i "<<i<<endl;
+					//cout<<"num tracks1 "<<Ev_Branch_numTrack<<" i "<<i<<endl;
 				}
 			}
 		
 		
 		}
-	}
+	}*/
 	
-	cout<<"Number of tracks1: "<<Ev_Branch_numTrack<<" Index "<<pairedMuonIndex[0]<<", "<<pairedMuonIndex[1]<<endl; 
+	//cout<<"Number of tracks1: "<<Ev_Branch_numTrack<<" Index "<<pairedMuonIndex[0]<<", "<<pairedMuonIndex[1]<<endl; 
 		
-	for (int k =0; k <2; k++)
+	/*for (int k =0; k <2; k++)
 	{double eta1, eta2, phi1, phi2, dum=100, dr=100;
 		for ( int i = 0;  i < nTGPt; i++)
 		{
@@ -251,16 +334,16 @@ if (standardCuts)   // quitar true
 					
 					pairedMuonBarIndex[k]= gPtIndex[i];
 					
-				cout<<"num tracks2 "<<Ev_Branch_numTrack<<" i "<<i<<endl;
+				//cout<<"num tracks2 "<<Ev_Branch_numTrack<<" i "<<i<<endl;
 				}
 			}
 		
 		
 		}
-	}
-	cout<<"Number of tracks2: "<<Ev_Branch_numTrack<<" Index "<<pairedMuonBarIndex[0]<<", "<<pairedMuonBarIndex[1]<<endl; 
+	}*/
+	//cout<<"Number of tracks2: "<<Ev_Branch_numTrack<<" Index "<<pairedMuonBarIndex[0]<<", "<<pairedMuonBarIndex[1]<<endl; 
 	
-	for (int i =0; i< 2; i++)
+/*for (int i =0; i< 2; i++)
 	{
 		double dvtemp;
 		double  invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
@@ -286,7 +369,7 @@ if (standardCuts)   // quitar true
 		
 		
       } 	
-	}
+	}*/
 	
 	double dvDum = 0;
 	double massDiff = 100;
