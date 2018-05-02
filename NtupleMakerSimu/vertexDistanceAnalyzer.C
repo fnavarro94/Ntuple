@@ -61,6 +61,10 @@ void vertexDistanceAnalyzer::SlaveBegin(TTree * /*tree*/)
    h_dm = new TH1F ("h_dm", "Vertex distane between lepton candidates", 100, 0,600);
    nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
    
+   //Histograms for track pairs
+   t_invMass = new TH1F ("t_invMass", "track pair Invariant Mass (with some cut)", 100, 0 , 600);
+   t_dv = new TH1F ("t_dv","Distance between track vertices ", 100, -20,20);
+   
    // Histograms with cuts
    
    c_invMass = new TH1F ("c_invMass", "Lepton Pair Invariant Mass (with some cut)", 100, 0 , 600);
@@ -114,16 +118,20 @@ reset();
 int nTGPt = 2;  // number of tracks with greatest pt to use afterwards
 int gPtIndexPos[2];
 int gPtIndexNeg[2];
-int gPtIndex[2];
+int gPtIndex[4];
 
 for (int i = 0; i < nTGPt; i++)
 {
 	gPtIndexPos[i] = -1;
 }
+
+
 for (int i = 0; i < nTGPt; i++)
 {
 	gPtIndexNeg[i] = -1;
 }
+
+
 for (int i = 0; i < 4; i++)
 {
 	gPtIndex[i] = -1;
@@ -136,7 +144,7 @@ for (int i = 0; i <nTGPt ; i++)
 	int dumCanPt = 0;
 	for (int j =0; j < Ev_Branch_numTrack; j ++ )
 	{
-		if ( j != gPtIndexPos[0] &&  j != gPtIndexPos[1] && track_charge[i] ==1 )
+		if ( j != gPtIndexPos[0] &&  j != gPtIndexPos[1] && (int)track_charge[j] ==1 )
 		{
 			if (track_pt[j] > dumCanPt)
 			{
@@ -155,7 +163,7 @@ for (int i = 0; i <nTGPt ; i++)
 	int dumCanPt = 0;
 	for (int j =0; j < Ev_Branch_numTrack; j ++ )
 	{
-		if ( j != gPtIndexNeg[0] &&  j != gPtIndexNeg[1] && track_charge[i] == -1 )
+		if ( j != gPtIndexNeg[0] &&  j != gPtIndexNeg[1] && (int)track_charge[j] == -1 )
 		{
 			if (track_pt[j] > dumCanPt)
 			{
@@ -200,7 +208,7 @@ if (genMu_pt[0] < genMu_pt[1])
 	genMuBar_pt[1] = dumGenMuPt;
 	
 }
-
+cout<<"***********************************************************"<<endl;
 for (int i =0; i < 2; i++)
 {
 	cout<<"pos track "<< track_pt[gPtIndexPos[i]]<<endl;
@@ -211,7 +219,7 @@ for (int i =0; i < 2; i++)
 }
 for (int i =0; i < 4; i++)
 {
-	cout<<"sorted track "<<track_pt[gPtIndex[i]]<<"charge "<<track_charge[gPtIndex[i]]<<endl;
+	cout<<"sorted track "<<track_pt[gPtIndex[i]]<<" charge "<<(int)track_charge[gPtIndex[i]]<<endl;
 }
 for (int i =0; i < 2; i++)
 {
@@ -223,6 +231,41 @@ for (int i =0; i < 2; i++)
 }
 
 
+
+bool altCompare = false;
+
+if (genMuBar_pt[0] < genMuBar_pt[1])
+{
+	altCompare = true;
+}
+double iM, dV;
+if (! altCompare)
+{   
+	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass->Fill(iM);
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass->Fill(iM);
+	
+    dV = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[0]], track_vy[gPtIndexNeg[0]], track_vz[gPtIndexNeg[0]]);
+    t_dv->Fill(dV);
+	dV = deltaV(track_vx[gPtIndexPos[1]], track_vy[gPtIndexPos[1]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[1]], track_vy[gPtIndexNeg[1]], track_vz[gPtIndexNeg[1]]); 
+	  t_dv->Fill(dV);
+	
+	
+}
+/* if (altCompare)
+{  
+	
+    iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass->Fill(iM);
+    iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass->Fill(iM);
+		
+	dV = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[1]], track_vy[gPtIndexNeg[1]], track_vz[gPtIndexNeg[1]]);
+	dV = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[0]], track_vy[gPtIndexNeg[0]], track_vz[gPtIndexNeg[0]]); 
+	
+}
+*/
 //cout<<"number of trigger objects "<<Ev_Branch_numTrigObjM<<endl;
 
 nEvents->Fill(1); 
