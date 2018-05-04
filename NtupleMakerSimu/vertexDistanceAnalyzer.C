@@ -64,20 +64,13 @@ void vertexDistanceAnalyzer::SlaveBegin(TTree * /*tree*/)
    //Histograms for track pairs
    t_invMass = new TH1F ("t_invMass", "track pair Invariant Mass (with some cut)", 100, 0 , 600);
    t_dv = new TH1F ("t_dv","Distance between track vertices ", 100, -20,20);
+   t_dx = new TH1F ("t_dx","Distance between track vertices ", 100, -20,20);
+   t_dy = new TH1F ("t_dy","Distance between track vertices ", 100, -20,20);
+   t_dz = new TH1F ("t_dz","Distance between track vertices ", 100, -20,20);
    
    // Histograms with cuts
    
-   c_invMass = new TH1F ("c_invMass", "Lepton Pair Invariant Mass (with some cut)", 100, 0 , 600);
-   c_pt = new TH1F ("c_mpt", "Vertex distane between lepton candidates (with some cut) ", 100, -100,100);
-   c_phi = new TH1F ("c_phi","#phi (whith some cut)", 100, -4, 4);
-   c_eta = new TH1F ("c_eta","#eta (whith some cut)", 100, -4, 4);
-   c_dv = new TH1F ("c_dv","Distance between track vertices (whith some cut)", 100, -4, 4);
-   
-   cc_invMass = new TH1F ("cc_invMass", "Lepton Pair Invariant Mass (complementary cut)", 100, 0 , 600);
-   cc_pt = new TH1F ("cc_mpt", "Vertex distane between lepton candidates (complementary cut) ", 100, -100,100);
-   cc_phi = new TH1F ("cc_phi","#phi (complementary cut)", 100, -4, 4);
-   cc_eta = new TH1F ("cc_eta","#eta (complementery cut)", 100, -4, 4);
-   cc_dv = new TH1F ("cc_dv","Distance between track vertices (complementary cut)", 100, -4, 4);
+  
    
    
    
@@ -238,7 +231,10 @@ if (genMuBar_pt[0] < genMuBar_pt[1])
 {
 	altCompare = true;
 }
-double iM, dV;
+double iM, iM2, vertDis;
+
+
+
 if (! altCompare)
 {   
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
@@ -246,26 +242,31 @@ if (! altCompare)
 	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
 	t_invMass->Fill(iM);
 	
-    dV = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[0]], track_vy[gPtIndexNeg[0]], track_vz[gPtIndexNeg[0]]);
-    t_dv->Fill(dV);
-	dV = deltaV(track_vx[gPtIndexPos[1]], track_vy[gPtIndexPos[1]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[1]], track_vy[gPtIndexNeg[1]], track_vz[gPtIndexNeg[1]]); 
-	  t_dv->Fill(dV);
-	
-	
+    vertDis = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[0]], track_vy[gPtIndexNeg[0]], track_vz[gPtIndexNeg[0]]);
+    t_dv->Fill(vertDis);
+	vertDis = deltaV(track_vx[gPtIndexPos[1]], track_vy[gPtIndexPos[1]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[1]], track_vy[gPtIndexNeg[1]], track_vz[gPtIndexNeg[1]]); 
+	 
+	 if(iM> 250 && iM < 450 || true){
+	  t_dv->Fill(vertDis);
+	 
+	t_dx->Fill(track_vx[gPtIndexPos[0]]-track_vx[gPtIndexNeg[0]]);
+	t_dy->Fill(track_vy[gPtIndexPos[0]]-track_vy[gPtIndexNeg[0]]);
+	t_dz->Fill(track_vz[gPtIndexPos[0]]-track_vz[gPtIndexNeg[0]]);
+			}
 }
-/* if (altCompare)
+/*else 
 {  
 	
     iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
 	t_invMass->Fill(iM);
-    iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
-	t_invMass->Fill(iM);
+    iM2 = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass->Fill(iM2);
 		
-	dV = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[1]], track_vy[gPtIndexNeg[1]], track_vz[gPtIndexNeg[1]]);
-	dV = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[0]], track_vy[gPtIndexNeg[0]], track_vz[gPtIndexNeg[0]]); 
+	/*vertDis = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[1]], track_vy[gPtIndexNeg[1]], track_vz[gPtIndexNeg[1]]);
+	vertDis = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[0]], track_vy[gPtIndexNeg[0]], track_vz[gPtIndexNeg[0]]); 
 	
-}
-*/
+}*/
+
 //cout<<"number of trigger objects "<<Ev_Branch_numTrigObjM<<endl;
 
 nEvents->Fill(1); 
@@ -427,9 +428,9 @@ if (standardCuts)   // quitar true
 				   double  invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
 				   
 				   double conePt_var = conePt(i, j, track_eta[i], track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
-					double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
-					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]); 
-					double theta2 = mTheta(-track_px[i]-track_px[j], -track_py[i]-track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]);
+				   double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
+				   double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]); 
+				   double theta2 = mTheta(-track_px[i]-track_px[j], -track_py[i]-track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]);
 					
 					
 					

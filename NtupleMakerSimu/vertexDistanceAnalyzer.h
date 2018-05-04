@@ -166,7 +166,16 @@ public :
   TH1F * h_conePt;
   
   // histograms with cuts
-  
+
+  TH1F * t_invMass;
+  TH1F * t_pt;
+  TH1F * t_phi;
+  TH1F * t_eta;
+  TH1F * t_dv;
+  TH1F * t_dx;
+  TH1F * t_dy;
+  TH1F * t_dz;
+
   TH1F * c_invMass;
   TH1F * c_pt;
   TH1F * c_phi;
