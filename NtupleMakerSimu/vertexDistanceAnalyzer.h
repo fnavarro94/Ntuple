@@ -139,6 +139,40 @@ public :
    Double_t        genMuBar_px[2];
    Double_t        genMuBar_py[2];
    Double_t        genMuBar_pz[2];
+   
+   Double_t        genVert[3];
+   
+   Double_t        ZZgenMu_phi[2];
+   Double_t        ZZgenMu_eta[2];
+   Double_t        ZZgenMu_pt[2];
+   Double_t        ZZgenMu_px[2];
+   Double_t        ZZgenMu_py[2];
+   Double_t        ZZgenMu_pz[2];
+   Double_t        ZZgenMuBar_phi[2];
+   Double_t        ZZgenMuBar_eta[2];
+   Double_t        ZZgenMuBar_pt[2];
+   Double_t        ZZgenMuBar_px[2];
+   Double_t        ZZgenMuBar_py[2];
+   Double_t        ZZgenMuBar_pz[2];
+   
+   Double_t        WWgenVert[3];
+   
+   Double_t        WWgenMu_phi[2];
+   Double_t        WWgenMu_eta[2];
+   Double_t        WWgenMu_pt[2];
+   Double_t        WWgenMu_px[2];
+   Double_t        WWgenMu_py[2];
+   Double_t        WWgenMu_pz[2];
+   Double_t        WWgenMuBar_phi[2];
+   Double_t        WWgenMuBar_eta[2];
+   Double_t        WWgenMuBar_pt[2];
+   Double_t        WWgenMuBar_px[2];
+   Double_t        WWgenMuBar_py[2];
+   Double_t        WWgenMuBar_pz[2];
+   
+   Double_t        WWgenVert[3];
+   
+   
    Char_t          triggerPath[100];
 
 
@@ -175,18 +209,37 @@ public :
   TH1F * t_dx;
   TH1F * t_dy;
   TH1F * t_dz;
-
-  TH1F * c_invMass;
-  TH1F * c_pt;
-  TH1F * c_phi;
-  TH1F * c_eta;
-  TH1F * c_dv;
   
-  TH1F * cc_invMass;
-  TH1F * cc_pt;
-  TH1F * cc_phi;
-  TH1F * cc_eta;
-  TH1F * cc_dv;
+  TH1F * t_dot;
+  TH1F * t_dotLeeWick;
+  
+  
+  TH1F * ZZ_invMass;
+  TH1F * ZZ_pt;
+  TH1F * ZZ_phi;
+  TH1F * ZZ_eta;
+  TH1F * ZZ_dv;
+  TH1F * ZZ_dx;
+  TH1F * ZZ_dy;
+  TH1F * ZZ_dz;
+  
+  TH1F * ZZ_dot;
+  TH1F * ZZ_dotLeeWick;
+  
+  
+  
+  TH1F * WW_invMass;
+  TH1F * WW_pt;
+  TH1F * WW_phi;
+  TH1F * WW_eta;
+  TH1F * WW_dv;
+  TH1F * WW_dx;
+  TH1F * WW_dy;
+  TH1F * WW_dz;
+  
+  TH1F * WW_dot;
+  TH1F * WW_dotLeeWick;
+ 
 
 
    // List of branches
@@ -285,6 +338,7 @@ public :
    TBranch        *b_ak5jet_phi;   //!
    TBranch        *b_ak5jet_eta;   //!
    TBranch        *b_ak5jet_mass;   //!
+   
    TBranch        *b_genMu_phi;   //!
    TBranch        *b_genMu_eta;   //!
    TBranch        *b_genMu_pt;   //!
@@ -297,6 +351,40 @@ public :
    TBranch        *b_genMuBar_px;   //!
    TBranch        *b_genMuBar_py;   //!
    TBranch        *b_genMuBar_pz;   //!
+   TBranch        *b_genVert;   //!
+   
+   TBranch        *b_ZZgenVert;   //!
+   TBranch        *b_ZZgenMu_phi;   //!
+   TBranch        *b_ZZgenMu_eta;   //!
+   TBranch        *b_ZZgenMu_pt;   //!
+   TBranch        *b_ZZgenMu_px;   //!
+   TBranch        *b_ZZgenMu_py;   //!
+   TBranch        *b_ZZgenMu_pz;   //!
+   TBranch        *b_ZZgenMuBar_phi;   //!
+   TBranch        *b_ZZgenMuBar_eta;   //!
+   TBranch        *b_ZZgenMuBar_pt;   //!
+   TBranch        *b_ZZgenMuBar_px;   //!
+   TBranch        *b_ZZgenMuBar_py;   //!
+   TBranch        *b_ZZgenMuBar_pz;   //!
+   
+   TBranch        *b_ZZgenVert;   //!
+   
+   TBranch        *b_WWgenMu_phi;   //!
+   TBranch        *b_WWgenMu_eta;   //!
+   TBranch        *b_WWgenMu_pt;   //!
+   TBranch        *b_WWgenMu_px;   //!
+   TBranch        *b_WWgenMu_py;   //!
+   TBranch        *b_WWgenMu_pz;   //!
+   TBranch        *b_WWgenMuBar_phi;   //!
+   TBranch        *b_WWgenMuBar_eta;   //!
+   TBranch        *b_WWgenMuBar_pt;   //!
+   TBranch        *b_WWgenMuBar_px;   //!
+   TBranch        *b_WWgenMuBar_py;   //!
+   TBranch        *b_WWgenMuBar_pz;   //!
+   
+   TBranch        *b_WWgenVert;   //!
+   
+   
    TBranch        *b_triggerPath;   //!
 
    vertexDistanceAnalyzer(TTree * /*tree*/ =0) : fChain(0) { }
@@ -431,6 +519,7 @@ void vertexDistanceAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ak5jet_phi", ak5jet_phi, &b_ak5jet_phi);
    fChain->SetBranchAddress("ak5jet_eta", ak5jet_eta, &b_ak5jet_eta);
    fChain->SetBranchAddress("ak5jet_mass", ak5jet_mass, &b_ak5jet_mass);
+   
    fChain->SetBranchAddress("genMu_phi", genMu_phi, &b_genMu_phi);
    fChain->SetBranchAddress("genMu_eta", genMu_eta, &b_genMu_eta);
    fChain->SetBranchAddress("genMu_pt", genMu_pt, &b_genMu_pt);
@@ -443,6 +532,36 @@ void vertexDistanceAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("genMuBar_px", genMuBar_px, &b_genMuBar_px);
    fChain->SetBranchAddress("genMuBar_py", genMuBar_py, &b_genMuBar_py);
    fChain->SetBranchAddress("genMuBar_pz", genMuBar_pz, &b_genMuBar_pz);
+   fChain->SetBranchAddress("genVert", genVert, &b_genVert);
+   
+   fChain->SetBranchAddress("ZZgenMu_phi", ZZgenMu_phi, &b_ZZgenMu_phi);
+   fChain->SetBranchAddress("ZZgenMu_eta", ZZgenMu_eta, &b_ZZgenMu_eta);
+   fChain->SetBranchAddress("ZZgenMu_pt", ZZgenMu_pt, &b_ZZgenMu_pt);
+   fChain->SetBranchAddress("ZZgenMu_px", ZZgenMu_px, &b_ZZgenMu_px);
+   fChain->SetBranchAddress("ZZgenMu_py", ZZgenMu_py, &b_ZZgenMu_py);
+   fChain->SetBranchAddress("ZZgenMu_pz", ZZgenMu_pz, &b_ZZgenMu_pz);
+   fChain->SetBranchAddress("ZZgenMuBar_phi", ZZgenMuBar_phi, &b_ZZgenMuBar_phi);
+   fChain->SetBranchAddress("ZZgenMuBar_eta", ZZgenMuBar_eta, &b_ZZgenMuBar_eta);
+   fChain->SetBranchAddress("ZZgenMuBar_pt", ZZgenMuBar_pt, &b_ZZgenMuBar_pt);
+   fChain->SetBranchAddress("ZZgenMuBar_px", ZZgenMuBar_px, &b_ZZgenMuBar_px);
+   fChain->SetBranchAddress("ZZgenMuBar_py", ZZgenMuBar_py, &b_ZZgenMuBar_py);
+   fChain->SetBranchAddress("ZZgenMuBar_pz", ZZgenMuBar_pz, &b_ZZgenMuBar_pz);
+   fChain->SetBranchAddress("ZZgenVert", ZZgenVert, &b_ZZgenVert);
+   
+   fChain->SetBranchAddress("WWgenMu_phi", WWgenMu_phi, &b_WWgenMu_phi);
+   fChain->SetBranchAddress("WWgenMu_eta", WWgenMu_eta, &b_WWgenMu_eta);
+   fChain->SetBranchAddress("WWgenMu_pt", WWgenMu_pt, &b_WWgenMu_pt);
+   fChain->SetBranchAddress("WWgenMu_px", WWgenMu_px, &b_WWgenMu_px);
+   fChain->SetBranchAddress("WWgenMu_py", WWgenMu_py, &b_WWgenMu_py);
+   fChain->SetBranchAddress("WWgenMu_pz", WWgenMu_pz, &b_WWgenMu_pz);
+   fChain->SetBranchAddress("WWgenMuBar_phi", WWgenMuBar_phi, &b_WWgenMuBar_phi);
+   fChain->SetBranchAddress("WWgenMuBar_eta", WWgenMuBar_eta, &b_WWgenMuBar_eta);
+   fChain->SetBranchAddress("WWgenMuBar_pt", WWgenMuBar_pt, &b_WWgenMuBar_pt);
+   fChain->SetBranchAddress("WWgenMuBar_px", WWgenMuBar_px, &b_WWgenMuBar_px);
+   fChain->SetBranchAddress("WWgenMuBar_py", WWgenMuBar_py, &b_WWgenMuBar_py);
+   fChain->SetBranchAddress("WWgenMuBar_pz", WWgenMuBar_pz, &b_WWgenMuBar_pz);
+   fChain->SetBranchAddress("WWgenVert", WWgenVert, &b_WWgenVert);
+   
    fChain->SetBranchAddress("triggerPath", triggerPath, &b_triggerPath);
 }
 

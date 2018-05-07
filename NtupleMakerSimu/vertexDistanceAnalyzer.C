@@ -47,18 +47,7 @@ void vertexDistanceAnalyzer::SlaveBegin(TTree * /*tree*/)
    TString option = GetOption();
    
    file = new TFile("exotic.root", "recreate");
-   h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
-   h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
-   h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
-   h_lxy2_err = new TH1F ("lxy2_err", "Transverse decay length significance", 20, 0 , 20);
-   h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
-   h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
-   h_dv = new TH1F ("h_dv", "Vertex distane between lepton candidates", 100, 0,10);
-   h_dx = new TH1F ("h_dx", "Vertex distane between lepton candidates", 100, -10,10);
-   h_dy = new TH1F ("h_dy", "Vertex distane between lepton candidates", 100, -10,10);
-   h_dz = new TH1F ("h_dz", "Vertex distane between lepton candidates", 100, -10,10);
-   h_mpt = new TH1F ("h_mpt", "Vertex distane between lepton candidates", 100, -100,100);
-   h_dm = new TH1F ("h_dm", "Vertex distane between lepton candidates", 100, 0,600);
+  
    nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
    
    //Histograms for track pairs
@@ -67,6 +56,24 @@ void vertexDistanceAnalyzer::SlaveBegin(TTree * /*tree*/)
    t_dx = new TH1F ("t_dx","Distance between track vertices ", 100, -20,20);
    t_dy = new TH1F ("t_dy","Distance between track vertices ", 100, -20,20);
    t_dz = new TH1F ("t_dz","Distance between track vertices ", 100, -20,20);
+   t_dot = new TH1F ("t_dot","Dot product between lepton pair momentum and secVert-primVert distance vector ", 100, -20,20);
+   t_dotLeeWick = new TH1F ("t_dotLeeWick","Dot product between lepton pair momentum and secVert-primVert distance vector (with lee-wick modification) ", 100, -20,20);
+   
+   ZZ_invMass = new TH1F ("ZZ_invMass", "track pair Invariant Mass (with some cut)", 100, 0 , 600);
+   ZZ_dv = new TH1F ("ZZ_dv","Distance between track vertices ", 100, -20,20);
+   ZZ_dx = new TH1F ("ZZ_dx","Distance between track vertices ", 100, -20,20);
+   ZZ_dy = new TH1F ("ZZ_dy","Distance between track vertices ", 100, -20,20);
+   ZZ_dz = new TH1F ("ZZ_dz","Distance between track vertices ", 100, -20,20);
+   ZZ_dot = new TH1F ("ZZ_dot","Dot product between lepton pair momentum and secVert-primVert distance vector ", 100, -20,20);
+   ZZ_dotLeeWick = new TH1F ("ZZ_dotLeeWick","Dot product between lepton pair momentum and secVert-primVert distance vector (with lee-wick modification) ", 100, -20,20);
+   
+   WW_invMass = new TH1F ("WW_invMass", "track pair Invariant Mass (with some cut)", 100, 0 , 600);
+   WW_dv = new TH1F ("WW_dv","Distance between track vertices ", 100, -20,20);
+   WW_dx = new TH1F ("WW_dx","Distance between track vertices ", 100, -20,20);
+   WW_dy = new TH1F ("WW_dy","Distance between track vertices ", 100, -20,20);
+   WW_dz = new TH1F ("WW_dz","Distance between track vertices ", 100, -20,20);
+   WW_dot = new TH1F ("WW_dot","Dot product between lepton pair momentum and secVert-primVert distance vector ", 100, -20,20);
+   WW_dotLeeWick = new TH1F ("WW_dotLeeWick","Dot product between lepton pair momentum and secVert-primVert distance vector (with lee-wick modification) ", 100, -20,20);
    
    // Histograms with cuts
    
@@ -201,6 +208,32 @@ if (genMu_pt[0] < genMu_pt[1])
 	genMuBar_pt[1] = dumGenMuPt;
 	
 }
+//repito para ZZ
+double ZZdumGenMuPt;
+if (ZZgenMu_pt[0] < ZZgenMu_pt[1])
+{
+	ZZdumGenMuPt =  ZZgenMu_pt[0];
+	ZZgenMu_pt[0] = ZZgenMu_pt[1];
+	ZZgenMu_pt[1] = ZZdumGenMuPt;
+	
+	ZZdumGenMuPt =  ZZgenMuBar_pt[0];
+	ZZgenMuBar_pt[0] = ZZgenMuBar_pt[1];
+	ZZgenMuBar_pt[1] = ZZdumGenMuPt;
+	
+}
+//repito para WW
+double WWdumGenMuPt;
+if (WWgenMu_pt[0] < WWgenMu_pt[1])
+{
+	WWdumGenMuPt =  WWgenMu_pt[0];
+	WWgenMu_pt[0] = WWgenMu_pt[1];
+	WWgenMu_pt[1] = WWdumGenMuPt;
+	
+	WWdumGenMuPt =  WWgenMuBar_pt[0];
+	WWgenMuBar_pt[0] = WWgenMuBar_pt[1];
+	WWgenMuBar_pt[1] = WWdumGenMuPt;
+	
+}
 cout<<"***********************************************************"<<endl;
 for (int i =0; i < 2; i++)
 {
@@ -231,7 +264,7 @@ if (genMuBar_pt[0] < genMuBar_pt[1])
 {
 	altCompare = true;
 }
-double iM, iM2, vertDis;
+double iM, iM2, vertDis, dot;
 
 
 
@@ -252,9 +285,23 @@ if (! altCompare)
 	t_dx->Fill(track_vx[gPtIndexPos[0]]-track_vx[gPtIndexNeg[0]]);
 	t_dy->Fill(track_vy[gPtIndexPos[0]]-track_vy[gPtIndexNeg[0]]);
 	t_dz->Fill(track_vz[gPtIndexPos[0]]-track_vz[gPtIndexNeg[0]]);
+	
+	t_dx->Fill(track_vx[gPtIndexPos[1]]-track_vx[gPtIndexNeg[1]]);
+	t_dy->Fill(track_vy[gPtIndexPos[1]]-track_vy[gPtIndexNeg[1]]);
+	t_dz->Fill(track_vz[gPtIndexPos[1]]-track_vz[gPtIndexNeg[1]]);
+	
+	/*double p1[3], p2[3], pV[3], sV[3];
+	
+	p1[0] = track_px[
+    */
+    
+		
+	
+	
+	
 			}
 }
-/*else 
+else 
 {  
 	
     iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
@@ -262,197 +309,29 @@ if (! altCompare)
     iM2 = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass->Fill(iM2);
 		
-	/*vertDis = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[1]], track_vy[gPtIndexNeg[1]], track_vz[gPtIndexNeg[1]]);
-	vertDis = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[0]], track_vy[gPtIndexNeg[0]], track_vz[gPtIndexNeg[0]]); 
+	vertDis = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[1]], track_vy[gPtIndexNeg[1]], track_vz[gPtIndexNeg[1]]);
+	 t_dv->Fill(vertDis);
+	vertDis = deltaV(track_vx[gPtIndexPos[1]], track_vy[gPtIndexPos[1]], track_vz[gPtIndexPos[1]],track_vx[gPtIndexNeg[0]], track_vy[gPtIndexNeg[0]], track_vz[gPtIndexNeg[0]]); 
+	 t_dv->Fill(vertDis);
+	 
+	  if(iM> 250 && iM < 450 || true){
+	  t_dv->Fill(vertDis);
+	 
+	t_dx->Fill(track_vx[gPtIndexPos[1]]-track_vx[gPtIndexNeg[0]]);
+	t_dy->Fill(track_vy[gPtIndexPos[1]]-track_vy[gPtIndexNeg[0]]);
+	t_dz->Fill(track_vz[gPtIndexPos[1]]-track_vz[gPtIndexNeg[0]]);
 	
-}*/
+	t_dx->Fill(track_vx[gPtIndexPos[0]]-track_vx[gPtIndexNeg[1]]);
+	t_dy->Fill(track_vy[gPtIndexPos[0]]-track_vy[gPtIndexNeg[1]]);
+	t_dz->Fill(track_vz[gPtIndexPos[0]]-track_vz[gPtIndexNeg[1]]);
+	
+}
+}
 
 //cout<<"number of trigger objects "<<Ev_Branch_numTrigObjM<<endl;
 
 nEvents->Fill(1); 
 
-for(int  i = 0 ; i< 2; i++)
-{
-	double px1,py1, pz1, px2, py2, pz2, m;
-	
-	px1 = genMu_px[i];
-	py1 = genMu_py[i];
-	pz1 = genMu_pz[i];
-	px2 = genMuBar_px[i];
-	py2 = genMuBar_py[i];
-	pz2 = genMuBar_pz[i];
-	
-    m = invMass(px1,py1,pz1,px2,py2,pz2);
-    h_dm->Fill(m);
-	
-}
-
-
-if (standardCuts)   // quitar true
-{   
-
-	for (int i = 0 ; i< Ev_Branch_numTrack; i++)
-	{
-
-		for (int j = 0; j< Ev_Branch_numTrigObjM; j++)
-		{
-			bool lepMatch =matchingCuts( track_highPurity[i]  , track_pt[i] , track_found[i], fabs(track_eta[i]), fabs(track_dxy[i]/track_dxyError[i]));
-		
-		  
-		   if (lepMatch||true)
-		   {  
-			   if(deltaR(track_phi[i], track_eta[i], trigObjM_phi[j], trigObjM_eta[j])< 0.1 /*&& deltaP(track_px[i], track_py[i],track_pz[i], trigObjM_px[j], trigObjM_py[j], trigObjM_pz[j]) < 3*/)
-			   {   
-				   matchedTrack[i] = 1;
-			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
-			       trackTrigObjIndex[i] = j;
-			   }
-			   
-		   }
-		  
-		}
-	}
-	
-	// Eliminate non isolated candidates
-	
-	
-	// the following section compares vertex of opositly chareged trigger-matched leptons in order to find lepton pairs product of the same decay.
-	
-	
-	//
-	
-	//pair gen muons and antimuons with traks
-	
-	int pairedMuonIndex[2];
-	int pairedMuonBarIndex[2];
-	pairedMuonIndex[0] = 0;
-	pairedMuonIndex[1] = 0;
-	pairedMuonBarIndex[0] = 0;
-	pairedMuonBarIndex[1] = 0;
-	int removedMu = -1;
-	
-	int removedMuBar = -1;
-	
-	/*for (int k =0; k <2; k++)
-	{double eta1, eta2, phi1, phi2, dum=100, dr=100;
-		for ( int i = 0;  i < nTGPt; i++)
-		{
-		if ( matchedTrack[gPtIndex[i]] ==1 && track_charge[gPtIndex[i]] == 1 )
-			{ eta1 = track_eta[i];
-			 phi1 = track_phi[i];
-			  eta2 = genMu_eta[k];
-			  phi2 = genMu_phi[k];
-			  
-				
-				dum = deltaR(phi1, eta1, phi2, eta2);
-				if(dum < dr)
-				{
-					dr = dum;
-					pairedMuonIndex[k]= gPtIndex[i];
-					
-					//cout<<"num tracks1 "<<Ev_Branch_numTrack<<" i "<<i<<endl;
-				}
-			}
-		
-		
-		}
-	}*/
-	
-	//cout<<"Number of tracks1: "<<Ev_Branch_numTrack<<" Index "<<pairedMuonIndex[0]<<", "<<pairedMuonIndex[1]<<endl; 
-		
-	/*for (int k =0; k <2; k++)
-	{double eta1, eta2, phi1, phi2, dum=100, dr=100;
-		for ( int i = 0;  i < nTGPt; i++)
-		{
-		if ( matchedTrack[gPtIndex[i]] ==1 && track_charge[gPtIndex[i]] == -1  )
-			{ 
-				eta1 = track_eta[i];
-			 phi1 = track_phi[i];
-			  eta2 = genMuBar_eta[k];
-			  phi2 = genMuBar_phi[k];
-				dum = deltaR(phi1, eta1, phi2, eta2);
-				if(dum < dr)
-				{
-					dr = dum;
-					
-					
-					pairedMuonBarIndex[k]= gPtIndex[i];
-					
-				//cout<<"num tracks2 "<<Ev_Branch_numTrack<<" i "<<i<<endl;
-				}
-			}
-		
-		
-		}
-	}*/
-	//cout<<"Number of tracks2: "<<Ev_Branch_numTrack<<" Index "<<pairedMuonBarIndex[0]<<", "<<pairedMuonBarIndex[1]<<endl; 
-	
-/*for (int i =0; i< 2; i++)
-	{
-		double dvtemp;
-		double  invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
-       dvtemp = deltaV(track_vx[pairedMuonIndex[i]],track_vy[pairedMuonIndex[i]],track_vz[pairedMuonIndex[i]],track_vx[pairedMuonBarIndex[i]],track_vy[pairedMuonBarIndex[i]],track_vz[pairedMuonBarIndex[i]]);
-      invariantMass = abs(invariantMass -350);
-      if (invariantMass<50|| true)
-      {
-		h_dv->Fill(dvtemp);
-		h_dx->Fill(track_vx[pairedMuonIndex[i]]-track_vx[pairedMuonBarIndex[i]]);
-		h_dy->Fill(track_vy[pairedMuonIndex[i]]-track_vy[pairedMuonBarIndex[i]]);
-		h_dz->Fill(track_vz[pairedMuonIndex[i]]-track_vz[pairedMuonBarIndex[i]]);
-		
-		h_mpt->Fill(track_pt[pairedMuonIndex[i]]-track_pt[pairedMuonBarIndex[i]]);
-		
-		//Fill histograms with cuts
-		
-		if (dvtemp < 0.5 ||true)
-		{
-			c_invMass->Fill(invariantMass);
-			c_pt->Fill(track_pt[pairedMuonIndex[i]]-track_pt[pairedMuonBarIndex[i]]);
-			c_dv->Fill(dvtemp);
-		}
-		
-		
-      } 	
-	}*/
-	
-	double dvDum = 0;
-	double massDiff = 100;
-	for ( int i = 0;  i < Ev_Branch_numTrack; i++)
-	{
-		if ( matchedTrack[i] ==1 && track_charge[i] == 1 )
-		{ 
-			for (int j =i+1; j< Ev_Branch_numTrack; j++)
-			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] && deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) >0.2)
-			{  
-					 dvDum = deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) ;
-				   double  invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
-				   
-				   double conePt_var = conePt(i, j, track_eta[i], track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
-				   double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
-				   double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]); 
-				   double theta2 = mTheta(-track_px[i]-track_px[j], -track_py[i]-track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]);
-					
-					
-					
-					if (/*conePt_var < 4 && alpha > -0.95 && */(theta <  1.2 )){
-				      
-				      massDiff= abs(invariantMass - 350);
-				      if (massDiff < 10  )
-				      { //h_dv-> Fill(dvDum);
-					  }
-					 
-					}
-				    
-					
-					 
-				
-			}
-		}
-	}
-	
-	
-}
-   h_dv->Fill(dv1);
    vuelta ++;
    if(vuelta%1000 == 0)
    {
@@ -463,6 +342,33 @@ if (standardCuts)   // quitar true
 }
 
 // calculates cosine of the angle between objects
+
+double vertexDistanceAnalyzer::dotP(double pV[3], double sV[3], double p1[3], double p2[3])
+{
+	double pAv[3], vertV[3], dot;
+	for (int i; i< 3; i++)
+	{
+		pAv[i] = (p1[i] + p2[i])*0.5;
+		vertV[i] = sV[i] - pV[i];
+	}
+	// normalize pAv
+	for (int i = 0; i<3; i++)
+	{
+		pAv[i] = pAv[i]/norm(pAv[1],pAv[2], pAv[3]);
+		vertV[i] = vertV[i]/norm(vertV[1], vertV[2], vertV[3]);
+	}
+	
+	
+	dot = pAv[1]*vertV[1] +pAv[2]*vertV[2] + pAv[3]*vertV[3];
+	return dot;
+	
+}
+
+double vertexDistanceAnalyzer::norm(double x, double y, double  z)
+{
+	return sqrt(x*x+y*y+z*z);
+}
+
 double vertexDistanceAnalyzer::mTheta(double ax, double ay, double bx, double by)
 {
 	double cosAlpha = ax*bx + ay*by;
