@@ -253,6 +253,8 @@ class NtupleMakerSimu : public edm::EDAnalyzer {
 		  Double_t genMuBar_py[2] = {0};
 		  Double_t genMuBar_pz[2] = {0};
 		  
+		  Double_t genVert[3] = {0};
+		  
 		  
 		  
 		  
@@ -341,6 +343,12 @@ for (size_t i =0; i< genParticles->size(); i++)
 	
 	if(id == 6000111 && p.numberOfDaughters() !=0 && k < 4)
 	{
+		
+		
+			event.genVert[0] = p.vx();
+			event.genVert[1] = p.vy();
+			event.genVert[2] = p.vz();
+		
 		for (size_t j =0; j< p.numberOfDaughters(); j++)
 		{
 			const Candidate & dp =  *(p.daughter(j));
@@ -885,6 +893,8 @@ NtupleMakerSimu::beginJob()
            mtree->Branch("genMuBar_px", event.genMuBar_px, "genMuBar_px[2]/D");
            mtree->Branch("genMuBar_py", event.genMuBar_py, "genMuBar_py[2]/D");
            mtree->Branch("genMuBar_pz", event.genMuBar_pz, "genMuBar_pz[2]/D");
+           
+           mtree->Branch("genVert", event.genVert, "genVert[3]/D");
            
            mtree->Branch("triggerPath", event.triggerPath, "triggerPath[100]/C");
           // mtree->Branch("filter", event.filter, "filter[100]/C");
