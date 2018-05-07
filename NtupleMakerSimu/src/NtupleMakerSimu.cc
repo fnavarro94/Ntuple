@@ -1006,6 +1006,13 @@ NtupleMakerSimu::beginJob()
            mtree->Branch("genVert", event.genVert, "genVert[3]/D");
            
            
+            mtree->Branch("ZZgenMu_phi", event.ZZgenMu_phi, "ZZgenMu_phi[2]/D");
+           mtree->Branch("ZZgenMu_eta", event.ZZgenMu_eta, "ZZgenMu_eta[2]/D");
+           mtree->Branch("ZZgenMu_pt", event.ZZgenMu_pt, "ZZgenMu_pt[2]/D");
+           mtree->Branch("ZZgenMu_px", event.ZZgenMu_px, "ZZgenMu_px[2]/D");
+           mtree->Branch("ZZgenMu_py", event.ZZgenMu_py, "ZZgenMu_py[2]/D");
+           mtree->Branch("ZZgenMu_pz", event.ZZgenMu_pz, "ZZgenMu_pz[2]/D");
+           
             mtree->Branch("ZZgenMuBar_phi", event.ZZgenMuBar_phi, "ZZgenMuBar_phi[2]/D");
            mtree->Branch("ZZgenMuBar_eta", event.ZZgenMuBar_eta, "ZZgenMuBar_eta[2]/D");
            mtree->Branch("ZZgenMuBar_pt", event.ZZgenMuBar_pt, "ZZgenMuBar_pt[2]/D");
@@ -1014,6 +1021,13 @@ NtupleMakerSimu::beginJob()
            mtree->Branch("ZZgenMuBar_pz", event.ZZgenMuBar_pz, "ZZgenMuBar_pz[2]/D");
            
            mtree->Branch("ZZgenVert", event.ZZgenVert, "ZZgenVert[3]/D");
+           
+             mtree->Branch("WWgenMu_phi", event.WWgenMu_phi, "WWgenMu_phi[2]/D");
+           mtree->Branch("WWgenMu_eta", event.WWgenMu_eta, "WWgenMu_eta[2]/D");
+           mtree->Branch("WWgenMu_pt", event.WWgenMu_pt, "WWgenMu_pt[2]/D");
+           mtree->Branch("WWgenMu_px", event.WWgenMu_px, "WWgenMu_px[2]/D");
+           mtree->Branch("WWgenMu_py", event.WWgenMu_py, "WWgenMu_py[2]/D");
+           mtree->Branch("WWgenMu_pz", event.WWgenMu_pz, "WWgenMu_pz[2]/D");
            
             mtree->Branch("WWgenMuBar_phi", event.WWgenMuBar_phi, "WWgenMuBar_phi[2]/D");
            mtree->Branch("WWgenMuBar_eta", event.WWgenMuBar_eta, "WWgenMuBar_eta[2]/D");
