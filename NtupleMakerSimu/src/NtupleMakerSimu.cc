@@ -257,6 +257,40 @@ class NtupleMakerSimu : public edm::EDAnalyzer {
 		  
 		  
 		  
+		  Double_t ZZgenMu_phi[2] = {0};
+		  Double_t ZZgenMu_eta[2] = {0};
+		  Double_t ZZgenMu_pt[2] = {0};
+		  Double_t ZZgenMu_px[2] = {0};
+		  Double_t ZZgenMu_py[2] = {0};
+		  Double_t ZZgenMu_pz[2] = {0};
+		  
+		  Double_t ZZgenMuBar_phi[2] = {0};
+		  Double_t ZZgenMuBar_eta[2] = {0};
+		  Double_t ZZgenMuBar_pt[2] = {0};
+		  Double_t ZZgenMuBar_px[2] = {0};
+		  Double_t ZZgenMuBar_py[2] = {0};
+		  Double_t ZZgenMuBar_pz[2] = {0};
+		  
+		  Double_t ZZgenVert[3] = {0};
+		  
+		  
+		  Double_t WWgenMu_phi[2] = {0};
+		  Double_t WWgenMu_eta[2] = {0};
+		  Double_t WWgenMu_pt[2] = {0};
+		  Double_t WWgenMu_px[2] = {0};
+		  Double_t WWgenMu_py[2] = {0};
+		  Double_t WWgenMu_pz[2] = {0};
+		  
+		  Double_t WWgenMuBar_phi[2] = {0};
+		  Double_t WWgenMuBar_eta[2] = {0};
+		  Double_t WWgenMuBar_pt[2] = {0};
+		  Double_t WWgenMuBar_px[2] = {0};
+		  Double_t WWgenMuBar_py[2] = {0};
+		  Double_t WWgenMuBar_pz[2] = {0};
+		  
+		  Double_t WWgenVert[3] = {0};
+		  
+		  
 		  
 		  }event,eventReset;
 		  //static const struct  mEvent eventReset ;
@@ -329,8 +363,8 @@ std::string pathName_m = "HLT_L2DoubleMu23_NoVertex_9";
  event.eventNumer= iEvent.id().event();
  event.runNumber= iEvent.id().run();
  event.lumiBlock = iEvent.id().luminosityBlock();
- int k = 0;
- int kBar = 0;
+ int k = 0, ZZk = 0, WWk = 0;
+ int kBar = 0, ZZkBar = 0, WWkBar= 0;
 for (size_t i =0; i< genParticles->size(); i++)
 {
 	const GenParticle & p = (*genParticles)[i];
@@ -380,7 +414,82 @@ for (size_t i =0; i< genParticles->size(); i++)
 			}
 		}
 	}
-	
+	if(id == 23 && p.numberOfDaughters() !=0 && k < 4)
+	{
+		
+		
+			event.ZZgenVert[0] = p.vx();
+			event.ZZgenVert[1] = p.vy();
+			event.ZZgenVert[2] = p.vz();
+		
+		for (size_t j =0; j< p.numberOfDaughters(); j++)
+		{
+			const Candidate & dp =  *(p.daughter(j));
+			
+			if(dp.pdgId()== 13)
+			{
+				event.ZZgenMu_phi[k] = dp.phi();
+				event.ZZgenMu_eta[k] = dp.eta();
+				event.ZZgenMu_pt[k] = dp.pt();
+				event.ZZgenMu_px[k] = dp.px();
+				event.ZZgenMu_py[k] = dp.py();
+				event.ZZgenMu_pz[k] = dp.pz();
+				
+				ZZk++;
+				
+			}
+			if(dp.pdgId()== -13)
+			{
+				event.ZZgenMuBar_phi[kBar] = dp.phi();
+				event.ZZgenMuBar_eta[kBar] = dp.eta();
+				event.ZZgenMuBar_pt[kBar] = dp.pt();
+				event.ZZgenMuBar_px[kBar] = dp.px();
+				event.ZZgenMuBar_py[kBar] = dp.py();
+				event.ZZgenMuBar_pz[kBar] = dp.pz();
+				
+				
+				ZZkBar++;
+			}
+		}
+	}
+	if(id == 24 && p.numberOfDaughters() !=0 && k < 4)
+	{
+		
+		
+			event.WWgenVert[0] = p.vx();
+			event.WWgenVert[1] = p.vy();
+			event.WWgenVert[2] = p.vz();
+		
+		for (size_t j =0; j< p.numberOfDaughters(); j++)
+		{
+			const Candidate & dp =  *(p.daughter(j));
+			
+			if(dp.pdgId()== 13)
+			{
+				event.WWgenMu_phi[k] = dp.phi();
+				event.WWgenMu_eta[k] = dp.eta();
+				event.WWgenMu_pt[k] = dp.pt();
+				event.WWgenMu_px[k] = dp.px();
+				event.WWgenMu_py[k] = dp.py();
+				event.WWgenMu_pz[k] = dp.pz();
+				
+				WWk++;
+				
+			}
+			if(dp.pdgId()== -13)
+			{
+				event.WWgenMuBar_phi[kBar] = dp.phi();
+				event.WWgenMuBar_eta[kBar] = dp.eta();
+				event.WWgenMuBar_pt[kBar] = dp.pt();
+				event.WWgenMuBar_px[kBar] = dp.px();
+				event.WWgenMuBar_py[kBar] = dp.py();
+				event.WWgenMuBar_pz[kBar] = dp.pz();
+				
+				
+				WWkBar++;
+			}
+		}
+	}
 }
 
 
@@ -895,6 +1004,25 @@ NtupleMakerSimu::beginJob()
            mtree->Branch("genMuBar_pz", event.genMuBar_pz, "genMuBar_pz[2]/D");
            
            mtree->Branch("genVert", event.genVert, "genVert[3]/D");
+           
+           
+            mtree->Branch("ZZgenMuBar_phi", event.ZZgenMuBar_phi, "ZZgenMuBar_phi[2]/D");
+           mtree->Branch("ZZgenMuBar_eta", event.ZZgenMuBar_eta, "ZZgenMuBar_eta[2]/D");
+           mtree->Branch("ZZgenMuBar_pt", event.ZZgenMuBar_pt, "ZZgenMuBar_pt[2]/D");
+           mtree->Branch("ZZgenMuBar_px", event.ZZgenMuBar_px, "ZZgenMuBar_px[2]/D");
+           mtree->Branch("ZZgenMuBar_py", event.ZZgenMuBar_py, "ZZgenMuBar_py[2]/D");
+           mtree->Branch("ZZgenMuBar_pz", event.ZZgenMuBar_pz, "ZZgenMuBar_pz[2]/D");
+           
+           mtree->Branch("ZZgenVert", event.ZZgenVert, "ZZgenVert[3]/D");
+           
+            mtree->Branch("WWgenMuBar_phi", event.WWgenMuBar_phi, "WWgenMuBar_phi[2]/D");
+           mtree->Branch("WWgenMuBar_eta", event.WWgenMuBar_eta, "WWgenMuBar_eta[2]/D");
+           mtree->Branch("WWgenMuBar_pt", event.WWgenMuBar_pt, "WWgenMuBar_pt[2]/D");
+           mtree->Branch("WWgenMuBar_px", event.WWgenMuBar_px, "WWgenMuBar_px[2]/D");
+           mtree->Branch("WWgenMuBar_py", event.WWgenMuBar_py, "WWgenMuBar_py[2]/D");
+           mtree->Branch("WWgenMuBar_pz", event.WWgenMuBar_pz, "WWgenMuBar_pz[2]/D");
+           
+           mtree->Branch("WWgenVert", event.WWgenVert, "WWgenVert[3]/D");
            
            mtree->Branch("triggerPath", event.triggerPath, "triggerPath[100]/C");
           // mtree->Branch("filter", event.filter, "filter[100]/C");
