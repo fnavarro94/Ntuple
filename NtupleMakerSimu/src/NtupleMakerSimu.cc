@@ -422,7 +422,7 @@ for (size_t i =0; i< genParticles->size(); i++)
 		}
 	}
 	if(id == 23 && p.numberOfDaughters() !=0 && k < 4)
-	{   cout<<"Z found"<<endl;
+	{  // cout<<"Z found"<<endl;
 		
 		
 			event.ZZgenVert[0] = p.vx();
@@ -446,7 +446,7 @@ for (size_t i =0; i< genParticles->size(); i++)
 				
 			}
 			if(dp.pdgId()== -13)
-			{
+			{     cout<<"corresponding mubar found"<<endl;
 				event.ZZgenMuBar_phi[kBar] = dp.phi();
 				event.ZZgenMuBar_eta[kBar] = dp.eta();
 				event.ZZgenMuBar_pt[kBar] = dp.pt();
