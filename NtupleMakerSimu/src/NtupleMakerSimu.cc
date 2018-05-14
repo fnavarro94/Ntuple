@@ -1049,10 +1049,10 @@ NtupleMakerSimu::beginJob()
            mtree->Branch("triggerPath", event.triggerPath, "triggerPath[100]/C");
            
            
-           mtree->Branch("ZZMuWasFound", event.ZZMuWasFound, "ZZMuWasFound/O");
-           mtree->Branch("ZZMuBarWasFound", event.ZZMuBarWasFound, "ZZMuBarWasFound/O");
-           mtree->Branch("WWMuWasFound", event.WWMuWasFound, "WWMuWasFound/O");
-           mtree->Branch("WWMuBarWasFound", event.ZZMuWasFound, "WWMuBarWasFound/O");
+           mtree->Branch("ZZMuWasFound", &event.ZZMuWasFound, "ZZMuWasFound/O");
+           mtree->Branch("ZZMuBarWasFound", &event.ZZMuBarWasFound, "ZZMuBarWasFound/O");
+           mtree->Branch("WWMuWasFound", &event.WWMuWasFound, "WWMuWasFound/O");
+           mtree->Branch("WWMuBarWasFound", &event.ZZMuWasFound, "WWMuBarWasFound/O");
           // mtree->Branch("filter", event.filter, "filter[100]/C");
 		  
 		  
