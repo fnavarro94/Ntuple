@@ -434,7 +434,7 @@ for (size_t i =0; i< genParticles->size(); i++)
 			const Candidate & dp =  *(p.daughter(j));
 			
 			if(dp.pdgId()== 13)
-			{
+			{ cout<<"corresponding muon found"<<endl;
 				event.ZZgenMu_phi[k] = dp.phi();
 				event.ZZgenMu_eta[k] = dp.eta();
 				event.ZZgenMu_pt[k] = dp.pt();
