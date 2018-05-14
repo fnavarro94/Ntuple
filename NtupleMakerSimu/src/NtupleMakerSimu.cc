@@ -386,7 +386,7 @@ for (size_t i =0; i< genParticles->size(); i++)
 		for (size_t j =0; j< p.numberOfDaughters(); j++)
 		{
 			const Candidate & dp =  *(p.daughter(j));
-			cout<<dp.pt()<<endl;
+			//cout<<dp.pt()<<endl;
 			
 			if(dp.pdgId()== 13)
 			{
@@ -415,7 +415,7 @@ for (size_t i =0; i< genParticles->size(); i++)
 		}
 	}
 	if(id == 23 && p.numberOfDaughters() !=0 && k < 4)
-	{
+	{   cout<<"Z found"<<endl;
 		
 		
 			event.ZZgenVert[0] = p.vx();
@@ -758,7 +758,7 @@ else
    
   //std::string e_filterName("hltDoubleEG43HEVTDoubleFilter"); // simulacion
   trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filterName,"",trigEventTag.process())); 
-  std::cout<<e_filterIndex<<" "<<trigEvent->sizeFilters()<<std::endl;
+  //std::cout<<e_filterIndex<<" "<<trigEvent->sizeFilters()<<std::endl;
   if(e_filterIndex<trigEvent->sizeFilters()){ 
 	  
 	 
@@ -797,7 +797,7 @@ else
   
   if(m_filterIndex<trigEvent->sizeFilters()){ 
 	  
-	  std::cout<<"paso"<<std::endl;
+	 // std::cout<<"paso"<<std::endl;
 	 
       const trigger::Keys& trigKeys = trigEvent->filterKeys(m_filterIndex); 
       
@@ -851,7 +851,7 @@ for (auto itJet = ak5Jets->begin(); itJet != ak5Jets->end(); ++itJet)
 	i++;
 }
 numJets2=event.numJets;
-std::cout<<"numjets "<<event.numJets<<std::endl;
+//std::cout<<"numjets "<<event.numJets<<std::endl;
  
 
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
