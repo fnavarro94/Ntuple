@@ -290,6 +290,13 @@ class NtupleMakerSimu : public edm::EDAnalyzer {
 		  
 		  Double_t WWgenVert[3] = {0};
 		  
+		  Bool_t MuWasFound = false;
+		  Bool_t MuBarWasFound = false;
+		  Bool_t ZZMuWasFound = false;
+		  Bool_t ZZMuBarWasFound = false;
+		  Bool_t WWMuWasFound = false;
+		  Bool_t WWMuBarWasFound = false;
+		  
 		  
 		  
 		  }event,eventReset;
@@ -434,7 +441,7 @@ for (size_t i =0; i< genParticles->size(); i++)
 				event.ZZgenMu_px[k] = dp.px();
 				event.ZZgenMu_py[k] = dp.py();
 				event.ZZgenMu_pz[k] = dp.pz();
-				
+				event.ZZMuWasFound  = true;
 				ZZk++;
 				
 			}
@@ -446,7 +453,7 @@ for (size_t i =0; i< genParticles->size(); i++)
 				event.ZZgenMuBar_px[kBar] = dp.px();
 				event.ZZgenMuBar_py[kBar] = dp.py();
 				event.ZZgenMuBar_pz[kBar] = dp.pz();
-				
+				event.ZZMuBarWasFound = true;
 				
 				ZZkBar++;
 			}
@@ -472,6 +479,7 @@ for (size_t i =0; i< genParticles->size(); i++)
 				event.WWgenMu_px[k] = dp.px();
 				event.WWgenMu_py[k] = dp.py();
 				event.WWgenMu_pz[k] = dp.pz();
+				event.WWMuWasFound = true;
 				
 				WWk++;
 				
@@ -484,7 +492,7 @@ for (size_t i =0; i< genParticles->size(); i++)
 				event.WWgenMuBar_px[kBar] = dp.px();
 				event.WWgenMuBar_py[kBar] = dp.py();
 				event.WWgenMuBar_pz[kBar] = dp.pz();
-				
+				event.WWMuBarWasFound = true;
 				
 				WWkBar++;
 			}
@@ -1039,6 +1047,12 @@ NtupleMakerSimu::beginJob()
            mtree->Branch("WWgenVert", event.WWgenVert, "WWgenVert[3]/D");
            
            mtree->Branch("triggerPath", event.triggerPath, "triggerPath[100]/C");
+           
+           
+           mtree->Branch("ZZMuWasFound", event.ZZMuWasFound, "ZZMuWasFound/O");
+           mtree->Branch("ZZMuBarWasFound", event.ZZMuBarWasFound, "ZZMuBarWasFound/O");
+           mtree->Branch("WWMuWasFound", event.WWMuWasFound, "WWMuWasFound/O");
+           mtree->Branch("WWMuBarWasFound", event.ZZMuWasFound, "WWMuBarWasFound/O");
           // mtree->Branch("filter", event.filter, "filter[100]/C");
 		  
 		  
