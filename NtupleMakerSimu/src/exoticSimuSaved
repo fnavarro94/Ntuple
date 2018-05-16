@@ -370,9 +370,8 @@ std::string pathName_m = "HLT_L2DoubleMu23_NoVertex_9";
  event.eventNumer= iEvent.id().event();
  event.runNumber= iEvent.id().run();
  event.lumiBlock = iEvent.id().luminosityBlock();
- /*int k = 0, ZZk = 0, WWk = 0;
+ int k = 0, ZZk = 0, WWk = 0;
  int kBar = 0, ZZkBar = 0, WWkBar= 0;
- 
 for (size_t i =0; i< genParticles->size(); i++)
 {
 	const GenParticle & p = (*genParticles)[i];
@@ -500,7 +499,7 @@ for (size_t i =0; i< genParticles->size(); i++)
 		}
 	}
 }
-*/
+
 
 
 
