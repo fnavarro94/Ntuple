@@ -122,9 +122,9 @@ public :
    Char_t          triggerPath[100];
 
   // Additional variables
-  Int_t 		   matchedTrack[2000];
-  Int_t 		   matchedTrigObj[2000];
-  Int_t 		   trackTrigObjIndex[2000];
+  Int_t 		   matchedTrack[20000];
+  Int_t 		   matchedTrigObj[20000];
+  Int_t 		   trackTrigObjIndex[20000];
   int vuelta;
   // root file
   
