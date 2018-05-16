@@ -46,7 +46,7 @@ void analyzer_strict::SlaveBegin(TTree * /*tree*/)
 
    TString option = GetOption();
    
-   file = new TFile("strictDYMuone.root", "recreate");
+   file = new TFile("exotic.root", "recreate");
    h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
    h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
    h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
@@ -84,7 +84,7 @@ bool standardCuts = cmsStandardCuts(vert_numTrack[0], Ev_Branch_numTrack, vertex
 reset();
 
 
-
+//cout<<"number of trigger objects "<<Ev_Branch_numTrigObjM<<endl;
 
 nEvents->Fill(1); 
 
@@ -105,7 +105,7 @@ if (standardCuts)   // quitar true
 			   {   
 				   matchedTrack[i] = 1;
 			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
-			       trackTrigObjIndex[i] = j; 
+			       trackTrigObjIndex[i] = j;
 			   }
 			   
 		   }
@@ -121,12 +121,12 @@ if (standardCuts)   // quitar true
 	for ( int i = 0;  i < Ev_Branch_numTrack; i++)
 	{
 		if ( matchedTrack[i] ==1 && track_charge[i] == 1 )
-		{  
+		{ 
 			for (int j =0; j< Ev_Branch_numTrack; j++)
 			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] && deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) >0.2)
 			{  
-				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 0.1 )
-				{
+				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 3 )
+				{       
 					double conePt_var = conePt(i, j, track_eta[i], track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
 					double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
 					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]); 
@@ -136,7 +136,7 @@ if (standardCuts)   // quitar true
 					//cout<<alpha<<endl;
 					//cout<<theta*180/(3.1415)<<endl;
 					
-					if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/)
+					if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/||true)
 					{
 						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
