@@ -140,7 +140,7 @@ if (standardCuts && triggerActivated)   // quitar true
 					{
 						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
-					 cout<<invariantMass<<" "<<theta*180/(3.1415)<<endl;
+					 //cout<<invariantMass<<" "<<theta*180/(3.1415)<<endl;
 					 //cout<<track_lxy1[i]<<endl;
 					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
 					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
@@ -165,9 +165,9 @@ if (standardCuts && triggerActivated)   // quitar true
 	
 }
    vuelta ++;
-   if(vuelta%1000 == 0)
+   if(vuelta%1000000 == 0)
    {
-//cout<<"Vuelta "<<vuelta<<endl;
+cout<<"Vuelta "<<vuelta<<endl;
    }
 
    return kTRUE;
