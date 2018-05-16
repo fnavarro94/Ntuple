@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    NtupleMaker_simuMuons
-// Class:      NtupleMaker_simuMuons
+// Package:    NtupleMakerSimu
+// Class:      NtupleMakerSimu
 // 
-/**\class NtupleMaker_simuMuons NtupleMaker_simuMuons.cc Ntuple/NtupleMaker_simuMuons/src/NtupleMaker_simuMuons.cc
+/**\class NtupleMakerSimu NtupleMakerSimu.cc Ntuple/NtupleMakerSimu/src/NtupleMakerSimu.cc
 
  Description: [one line class summary]
 
@@ -59,10 +59,10 @@
 // class declaration
 //
 
-class NtupleMaker_simuMuons : public edm::EDAnalyzer {
+class NtupleMakerSimu : public edm::EDAnalyzer {
    public:
-      explicit NtupleMaker_simuMuons(const edm::ParameterSet&);
-      ~NtupleMaker_simuMuons();
+      explicit NtupleMakerSimu(const edm::ParameterSet&);
+      ~NtupleMakerSimu();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -239,13 +239,63 @@ class NtupleMaker_simuMuons : public edm::EDAnalyzer {
 		  
 		  // generated particles data
 		  
-		  Double_t genMu_phi[4] = {0};
-		  Double_t genMu_eta[4] = {0};
-		  Double_t genMu_pt[4] = {0};
-		  Double_t genMu_px[4] = {0};
-		  Double_t genMu_py[4] = {0};
-		  Double_t genMu_pz[4] = {0};
+		  Double_t genMu_phi[2] = {0};
+		  Double_t genMu_eta[2] = {0};
+		  Double_t genMu_pt[2] = {0};
+		  Double_t genMu_px[2] = {0};
+		  Double_t genMu_py[2] = {0};
+		  Double_t genMu_pz[2] = {0};
 		  
+		  Double_t genMuBar_phi[2] = {0};
+		  Double_t genMuBar_eta[2] = {0};
+		  Double_t genMuBar_pt[2] = {0};
+		  Double_t genMuBar_px[2] = {0};
+		  Double_t genMuBar_py[2] = {0};
+		  Double_t genMuBar_pz[2] = {0};
+		  
+		  Double_t genVert[3] = {0};
+		  
+		  
+		  
+		  Double_t ZZgenMu_phi[2] = {0};
+		  Double_t ZZgenMu_eta[2] = {0};
+		  Double_t ZZgenMu_pt[2] = {0};
+		  Double_t ZZgenMu_px[2] = {0};
+		  Double_t ZZgenMu_py[2] = {0};
+		  Double_t ZZgenMu_pz[2] = {0};
+		  
+		  Double_t ZZgenMuBar_phi[2] = {0};
+		  Double_t ZZgenMuBar_eta[2] = {0};
+		  Double_t ZZgenMuBar_pt[2] = {0};
+		  Double_t ZZgenMuBar_px[2] = {0};
+		  Double_t ZZgenMuBar_py[2] = {0};
+		  Double_t ZZgenMuBar_pz[2] = {0};
+		  
+		  Double_t ZZgenVert[3] = {0};
+		  
+		  
+		  Double_t WWgenMu_phi[2] = {0};
+		  Double_t WWgenMu_eta[2] = {0};
+		  Double_t WWgenMu_pt[2] = {0};
+		  Double_t WWgenMu_px[2] = {0};
+		  Double_t WWgenMu_py[2] = {0};
+		  Double_t WWgenMu_pz[2] = {0};
+		  
+		  Double_t WWgenMuBar_phi[2] = {0};
+		  Double_t WWgenMuBar_eta[2] = {0};
+		  Double_t WWgenMuBar_pt[2] = {0};
+		  Double_t WWgenMuBar_px[2] = {0};
+		  Double_t WWgenMuBar_py[2] = {0};
+		  Double_t WWgenMuBar_pz[2] = {0};
+		  
+		  Double_t WWgenVert[3] = {0};
+		  
+		  Bool_t MuWasFound = false;
+		  Bool_t MuBarWasFound = false;
+		  Bool_t ZZMuWasFound = false;
+		  Bool_t ZZMuBarWasFound = false;
+		  Bool_t WWMuWasFound = false;
+		  Bool_t WWMuBarWasFound = false;
 		  
 		  
 		  
@@ -268,7 +318,7 @@ class NtupleMaker_simuMuons : public edm::EDAnalyzer {
 //
 // constructors and destructor  
 //
-NtupleMaker_simuMuons::NtupleMaker_simuMuons(const edm::ParameterSet& iConfig)
+NtupleMakerSimu::NtupleMakerSimu(const edm::ParameterSet& iConfig)
 :
  trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks")),
  outFile_(iConfig.getParameter<std::string>("outFile"))
@@ -279,7 +329,7 @@ NtupleMaker_simuMuons::NtupleMaker_simuMuons(const edm::ParameterSet& iConfig)
 }
 
 
-NtupleMaker_simuMuons::~NtupleMaker_simuMuons()
+NtupleMakerSimu::~NtupleMakerSimu()
 {
  
    // do anything here that needs to be done at desctruction time
@@ -294,7 +344,7 @@ NtupleMaker_simuMuons::~NtupleMaker_simuMuons()
 
 // ------------ method called for each event  ------------
 void
-NtupleMaker_simuMuons::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+NtupleMakerSimu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
    using namespace reco;
@@ -305,7 +355,8 @@ NtupleMaker_simuMuons::analyze(const edm::Event& iEvent, const edm::EventSetup& 
   using reco::TrackCollection;
   
   
-  edm::Handle<GenParticleCollection> genParticles;
+  Handle<GenParticleCollection> genParticles;
+  iEvent.getByLabel("genParticles", genParticles);
   
   edm::Handle<edm::TriggerResults> trigResults; //Our trigger result object
 edm::InputTag trigResultsTag("TriggerResults","","HLT");
@@ -319,25 +370,32 @@ std::string pathName_m = "HLT_L2DoubleMu23_NoVertex_9";
  event.eventNumer= iEvent.id().event();
  event.runNumber= iEvent.id().run();
  event.lumiBlock = iEvent.id().luminosityBlock();
- int k = 0;
+ int k = 0, ZZk = 0, WWk = 0;
+ int kBar = 0, ZZkBar = 0, WWkBar= 0;
 for (size_t i =0; i< genParticles->size(); i++)
 {
 	const GenParticle & p = (*genParticles)[i];
 	double  id = p.pdgId();
 	
-	if(k >4)
+	if(k >2 ||kBar > 2)
 	{
 		cout<< " WARNING: k couter is greater than 4" << endl;
 	}
 	
 	if(id == 6000111 && p.numberOfDaughters() !=0 && k < 4)
 	{
+		
+		
+			event.genVert[0] = p.vx();
+			event.genVert[1] = p.vy();
+			event.genVert[2] = p.vz();
+		
 		for (size_t j =0; j< p.numberOfDaughters(); j++)
 		{
 			const Candidate & dp =  *(p.daughter(j));
-			cout<<dp.pt()<<endl;
+			//cout<<dp.pt()<<endl;
 			
-			if(abs(dp.pdgId())== 13)
+			if(dp.pdgId()== 13)
 			{
 				event.genMu_phi[k] = dp.phi();
 				event.genMu_eta[k] = dp.eta();
@@ -346,12 +404,100 @@ for (size_t i =0; i< genParticles->size(); i++)
 				event.genMu_py[k] = dp.py();
 				event.genMu_pz[k] = dp.pz();
 				
-				
 				k++;
+				
+			}
+			if(dp.pdgId()== -13)
+			{
+				event.genMuBar_phi[kBar] = dp.phi();
+				event.genMuBar_eta[kBar] = dp.eta();
+				event.genMuBar_pt[kBar] = dp.pt();
+				event.genMuBar_px[kBar] = dp.px();
+				event.genMuBar_py[kBar] = dp.py();
+				event.genMuBar_pz[kBar] = dp.pz();
+				
+				
+				kBar++;
 			}
 		}
 	}
-	
+	if(id == 23 && p.numberOfDaughters() !=0 && k < 4)
+	{  // cout<<"Z found"<<endl;
+		
+		
+			event.ZZgenVert[0] = p.vx();
+			event.ZZgenVert[1] = p.vy();
+			event.ZZgenVert[2] = p.vz();
+		
+		for (size_t j =0; j< p.numberOfDaughters(); j++)
+		{
+			const Candidate & dp =  *(p.daughter(j));
+			
+			if(dp.pdgId()== 13)
+			{ cout<<"corresponding muon found"<<endl;
+				event.ZZgenMu_phi[k] = dp.phi();
+				event.ZZgenMu_eta[k] = dp.eta();
+				event.ZZgenMu_pt[k] = dp.pt();
+				event.ZZgenMu_px[k] = dp.px();
+				event.ZZgenMu_py[k] = dp.py();
+				event.ZZgenMu_pz[k] = dp.pz();
+				event.ZZMuWasFound  = true;
+				ZZk++;
+				
+			}
+			if(dp.pdgId()== -13)
+			{     cout<<"corresponding mubar found"<<endl;
+				event.ZZgenMuBar_phi[kBar] = dp.phi();
+				event.ZZgenMuBar_eta[kBar] = dp.eta();
+				event.ZZgenMuBar_pt[kBar] = dp.pt();
+				event.ZZgenMuBar_px[kBar] = dp.px();
+				event.ZZgenMuBar_py[kBar] = dp.py();
+				event.ZZgenMuBar_pz[kBar] = dp.pz();
+				event.ZZMuBarWasFound = true;
+				
+				ZZkBar++;
+			}
+		}
+	}
+	if(id == 24 && p.numberOfDaughters() !=0 && k < 4)
+	{
+		
+		
+			event.WWgenVert[0] = p.vx();
+			event.WWgenVert[1] = p.vy();
+			event.WWgenVert[2] = p.vz();
+		
+		for (size_t j =0; j< p.numberOfDaughters(); j++)
+		{
+			const Candidate & dp =  *(p.daughter(j));
+			
+			if(dp.pdgId()== 13)
+			{
+				event.WWgenMu_phi[k] = dp.phi();
+				event.WWgenMu_eta[k] = dp.eta();
+				event.WWgenMu_pt[k] = dp.pt();
+				event.WWgenMu_px[k] = dp.px();
+				event.WWgenMu_py[k] = dp.py();
+				event.WWgenMu_pz[k] = dp.pz();
+				event.WWMuWasFound = true;
+				
+				WWk++;
+				
+			}
+			if(dp.pdgId()== -13)
+			{
+				event.WWgenMuBar_phi[kBar] = dp.phi();
+				event.WWgenMuBar_eta[kBar] = dp.eta();
+				event.WWgenMuBar_pt[kBar] = dp.pt();
+				event.WWgenMuBar_px[kBar] = dp.px();
+				event.WWgenMuBar_py[kBar] = dp.py();
+				event.WWgenMuBar_pz[kBar] = dp.pz();
+				event.WWMuBarWasFound = true;
+				
+				WWkBar++;
+			}
+		}
+	}
 }
 
 
@@ -620,7 +766,7 @@ else
    
   //std::string e_filterName("hltDoubleEG43HEVTDoubleFilter"); // simulacion
   trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filterName,"",trigEventTag.process())); 
-  std::cout<<e_filterIndex<<" "<<trigEvent->sizeFilters()<<std::endl;
+  //std::cout<<e_filterIndex<<" "<<trigEvent->sizeFilters()<<std::endl;
   if(e_filterIndex<trigEvent->sizeFilters()){ 
 	  
 	 
@@ -659,7 +805,7 @@ else
   
   if(m_filterIndex<trigEvent->sizeFilters()){ 
 	  
-	  std::cout<<"paso"<<std::endl;
+	 // std::cout<<"paso"<<std::endl;
 	 
       const trigger::Keys& trigKeys = trigEvent->filterKeys(m_filterIndex); 
       
@@ -713,7 +859,7 @@ for (auto itJet = ak5Jets->begin(); itJet != ak5Jets->end(); ++itJet)
 	i++;
 }
 numJets2=event.numJets;
-std::cout<<"numjets "<<event.numJets<<std::endl;
+//std::cout<<"numjets "<<event.numJets<<std::endl;
  
 
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
@@ -732,7 +878,7 @@ mtree->Fill();
 
 // ------------ method called once each job just before starting event loop  ------------
 void 
-NtupleMaker_simuMuons::beginJob()
+NtupleMakerSimu::beginJob()
 {
  vuelta = 0;
  const char* of = outFile_.c_str();
@@ -851,14 +997,62 @@ NtupleMaker_simuMuons::beginJob()
            
            
            
-           mtree->Branch("genMu_phi", event.genMu_phi, "genMu_phi[4]/D");
-           mtree->Branch("genMu_eta", event.genMu_eta, "genMu_eta[4]/D");
-           mtree->Branch("genMu_pt", event.genMu_pt, "genMu_pt[4]/D");
-           mtree->Branch("genMu_px", event.genMu_px, "genMu_px[4]/D");
-           mtree->Branch("genMu_py", event.genMu_py, "genMu_py[4]/D");
-           mtree->Branch("genMu_pz", event.genMu_pz, "genMu_pz[4]/D");
+           mtree->Branch("genMu_phi", event.genMu_phi, "genMu_phi[2]/D");
+           mtree->Branch("genMu_eta", event.genMu_eta, "genMu_eta[2]/D");
+           mtree->Branch("genMu_pt", event.genMu_pt, "genMu_pt[2]/D");
+           mtree->Branch("genMu_px", event.genMu_px, "genMu_px[2]/D");
+           mtree->Branch("genMu_py", event.genMu_py, "genMu_py[2]/D");
+           mtree->Branch("genMu_pz", event.genMu_pz, "genMu_pz[2]/D");
+           
+           mtree->Branch("genMuBar_phi", event.genMuBar_phi, "genMuBar_phi[2]/D");
+           mtree->Branch("genMuBar_eta", event.genMuBar_eta, "genMuBar_eta[2]/D");
+           mtree->Branch("genMuBar_pt", event.genMuBar_pt, "genMuBar_pt[2]/D");
+           mtree->Branch("genMuBar_px", event.genMuBar_px, "genMuBar_px[2]/D");
+           mtree->Branch("genMuBar_py", event.genMuBar_py, "genMuBar_py[2]/D");
+           mtree->Branch("genMuBar_pz", event.genMuBar_pz, "genMuBar_pz[2]/D");
+           
+           mtree->Branch("genVert", event.genVert, "genVert[3]/D");
+           
+           
+            mtree->Branch("ZZgenMu_phi", event.ZZgenMu_phi, "ZZgenMu_phi[2]/D");
+           mtree->Branch("ZZgenMu_eta", event.ZZgenMu_eta, "ZZgenMu_eta[2]/D");
+           mtree->Branch("ZZgenMu_pt", event.ZZgenMu_pt, "ZZgenMu_pt[2]/D");
+           mtree->Branch("ZZgenMu_px", event.ZZgenMu_px, "ZZgenMu_px[2]/D");
+           mtree->Branch("ZZgenMu_py", event.ZZgenMu_py, "ZZgenMu_py[2]/D");
+           mtree->Branch("ZZgenMu_pz", event.ZZgenMu_pz, "ZZgenMu_pz[2]/D");
+           
+            mtree->Branch("ZZgenMuBar_phi", event.ZZgenMuBar_phi, "ZZgenMuBar_phi[2]/D");
+           mtree->Branch("ZZgenMuBar_eta", event.ZZgenMuBar_eta, "ZZgenMuBar_eta[2]/D");
+           mtree->Branch("ZZgenMuBar_pt", event.ZZgenMuBar_pt, "ZZgenMuBar_pt[2]/D");
+           mtree->Branch("ZZgenMuBar_px", event.ZZgenMuBar_px, "ZZgenMuBar_px[2]/D");
+           mtree->Branch("ZZgenMuBar_py", event.ZZgenMuBar_py, "ZZgenMuBar_py[2]/D");
+           mtree->Branch("ZZgenMuBar_pz", event.ZZgenMuBar_pz, "ZZgenMuBar_pz[2]/D");
+           
+           mtree->Branch("ZZgenVert", event.ZZgenVert, "ZZgenVert[3]/D");
+           
+             mtree->Branch("WWgenMu_phi", event.WWgenMu_phi, "WWgenMu_phi[2]/D");
+           mtree->Branch("WWgenMu_eta", event.WWgenMu_eta, "WWgenMu_eta[2]/D");
+           mtree->Branch("WWgenMu_pt", event.WWgenMu_pt, "WWgenMu_pt[2]/D");
+           mtree->Branch("WWgenMu_px", event.WWgenMu_px, "WWgenMu_px[2]/D");
+           mtree->Branch("WWgenMu_py", event.WWgenMu_py, "WWgenMu_py[2]/D");
+           mtree->Branch("WWgenMu_pz", event.WWgenMu_pz, "WWgenMu_pz[2]/D");
+           
+            mtree->Branch("WWgenMuBar_phi", event.WWgenMuBar_phi, "WWgenMuBar_phi[2]/D");
+           mtree->Branch("WWgenMuBar_eta", event.WWgenMuBar_eta, "WWgenMuBar_eta[2]/D");
+           mtree->Branch("WWgenMuBar_pt", event.WWgenMuBar_pt, "WWgenMuBar_pt[2]/D");
+           mtree->Branch("WWgenMuBar_px", event.WWgenMuBar_px, "WWgenMuBar_px[2]/D");
+           mtree->Branch("WWgenMuBar_py", event.WWgenMuBar_py, "WWgenMuBar_py[2]/D");
+           mtree->Branch("WWgenMuBar_pz", event.WWgenMuBar_pz, "WWgenMuBar_pz[2]/D");
+           
+           mtree->Branch("WWgenVert", event.WWgenVert, "WWgenVert[3]/D");
            
            mtree->Branch("triggerPath", event.triggerPath, "triggerPath[100]/C");
+           
+           
+           mtree->Branch("ZZMuWasFound", &event.ZZMuWasFound, "ZZMuWasFound/O");
+           mtree->Branch("ZZMuBarWasFound", &event.ZZMuBarWasFound, "ZZMuBarWasFound/O");
+           mtree->Branch("WWMuWasFound", &event.WWMuWasFound, "WWMuWasFound/O");
+           mtree->Branch("WWMuBarWasFound", &event.ZZMuWasFound, "WWMuBarWasFound/O");
           // mtree->Branch("filter", event.filter, "filter[100]/C");
 		  
 		  
@@ -880,7 +1074,7 @@ NtupleMaker_simuMuons::beginJob()
 
 // ------------ method called once each job just after ending the event loop  ------------
 void 
-NtupleMaker_simuMuons::endJob() {
+NtupleMakerSimu::endJob() {
 
 //mtree->Write();
 std::cout<<"num traks "<<Ntracks<<" num vertTraks "<<NvertTracks<<std::endl;
@@ -890,31 +1084,31 @@ mfile->Close();
 
 // ------------ method called when starting to processes a run  ------------
 void 
-NtupleMaker_simuMuons::beginRun(edm::Run const&, edm::EventSetup const&)
+NtupleMakerSimu::beginRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a run  ------------
 void 
-NtupleMaker_simuMuons::endRun(edm::Run const&, edm::EventSetup const&)
+NtupleMakerSimu::endRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when starting to processes a luminosity block  ------------
 void 
-NtupleMaker_simuMuons::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+NtupleMakerSimu::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a luminosity block  ------------
 void 
-NtupleMaker_simuMuons::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+NtupleMakerSimu::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-NtupleMaker_simuMuons::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+NtupleMakerSimu::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -929,4 +1123,4 @@ NtupleMaker_simuMuons::fillDescriptions(edm::ConfigurationDescriptions& descript
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(NtupleMaker_simuMuons);
+DEFINE_FWK_MODULE(NtupleMakerSimu);

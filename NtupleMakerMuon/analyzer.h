@@ -12,7 +12,8 @@
 #include <TChain.h>
 #include <TFile.h>
 #include <TSelector.h>
-
+#include <iostream>
+#include <fstream>
 // Header file for the classes stored in the TTree if any.
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -127,7 +128,7 @@ public :
   // root file
   
   TFile * file;
-  
+  ofstream myFile;
   // Histograms
   
   TH1F * h_invMass;

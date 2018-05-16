@@ -140,6 +140,7 @@ public :
   TH1F * nEvents;  
   TH1F * h_invMass;
   TH1F * h_lxy_err;
+  TH1F * h_lxy2_err;
   TH1F * h_lxy;
   TH1F * h_d0_err;
   TH1F * h_conePt;
