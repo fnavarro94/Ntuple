@@ -79,7 +79,7 @@ public :
    Double_t        trigObj_pz[100];   //[numTrigObjM]
    Double_t        trigObj_eta[100];   //[numTrigObjM]
    Double_t        trigObj_phi[100];   //[numTrigObjM]
-   Bool_t          triggerMActivated;
+   Bool_t          triggerActivated;
    Bool_t          trigObj_energy[100];   //[numTrigObjM]
    Double_t        vertex1Track_vx[6];   //[numVertTrack]
    Double_t        vertex1Track_vy[6];   //[numVertTrack]
@@ -193,7 +193,7 @@ public :
    TBranch        *b_trigObj_pz;   //!
    TBranch        *b_trigObj_eta;   //!
    TBranch        *b_trigObj_phi;   //!
-   TBranch        *b_triggerMActivated;   //!
+   TBranch        *b_triggerActivated;   //!
    TBranch        *b_trigObj_energy;   //!
    TBranch        *b_vertex1Track_vx;   //!
    TBranch        *b_vertex1Track_vy;   //!
@@ -326,7 +326,7 @@ void analyzer_strict::Init(TTree *tree)
    fChain->SetBranchAddress("trigObj_pz", trigObj_pz, &b_trigObj_pz);
    fChain->SetBranchAddress("trigObj_eta", trigObj_eta, &b_trigObj_eta);
    fChain->SetBranchAddress("trigObj_phi", trigObj_phi, &b_trigObj_phi);
-   fChain->SetBranchAddress("triggerMActivated", &triggerMActivated, &b_triggerMActivated);
+   fChain->SetBranchAddress("triggerActivated", &triggerActivated, &b_triggerActivated);
    fChain->SetBranchAddress("trigObj_energy", trigObj_energy, &b_trigObj_energy);
    fChain->SetBranchAddress("vertex1Track_vx", vertex1Track_vx, &b_vertex1Track_vx);
    fChain->SetBranchAddress("vertex1Track_vy", vertex1Track_vy, &b_vertex1Track_vy);
