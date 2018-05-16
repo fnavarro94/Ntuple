@@ -165,7 +165,7 @@ if (standardCuts && triggerActivated)   // quitar true
 	
 }
    vuelta ++;
-   if(vuelta%1000000 == 0)
+   if(vuelta%10000 == 0)
    {
 cout<<"Vuelta "<<vuelta<<endl;
    }
