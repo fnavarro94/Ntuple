@@ -88,7 +88,7 @@ reset();
 
 nEvents->Fill(1); 
 
-if (standardCuts)   // quitar true
+if (standardCuts && triggerActivated)   // quitar true
 {   
 
 	for (int i = 0 ; i< Ev_Branch_numTrack; i++)
@@ -136,11 +136,11 @@ if (standardCuts)   // quitar true
 					//cout<<alpha<<endl;
 					//cout<<theta*180/(3.1415)<<endl;
 					
-					if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/||true)
+					if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/)
 					{
 						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
-					 cout<<invariantMass<<" "<<theta*180/(3.1415)<<endl;
+					 //cout<<invariantMass<<" "<<theta*180/(3.1415)<<endl;
 					 //cout<<track_lxy1[i]<<endl;
 					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
 					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
@@ -165,9 +165,9 @@ if (standardCuts)   // quitar true
 	
 }
    vuelta ++;
-   if(vuelta%1000 == 0)
+   if(vuelta%10000 == 0)
    {
-//cout<<"Vuelta "<<vuelta<<endl;
+cout<<"Vuelta "<<vuelta<<endl;
    }
 
    return kTRUE;
