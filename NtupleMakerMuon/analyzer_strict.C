@@ -88,7 +88,7 @@ reset();
 
 nEvents->Fill(1); 
 
-if (standardCuts && trigger)   // quitar true
+if (standardCuts && triggerActivated)   // quitar true
 {   
 
 	for (int i = 0 ; i< Ev_Branch_numTrack; i++)
