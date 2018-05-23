@@ -59,6 +59,7 @@ void analyzer_strict::SlaveBegin(TTree * /*tree*/)
   
    matchCount = 0;
    triggerTurnOns = 0;
+   triggerObjects = 0;
    TH1::AddDirectory(true);
    vuelta = 0;
 }
@@ -95,6 +96,8 @@ if (triggerMActivated)
 {
 	triggerTurnOns++;
 }
+
+triggerObjects = triggerObjects + Ev_Branch_numTrigObjM;
 if (standardCuts)   // quitar true
 {   
 
@@ -184,7 +187,7 @@ if (standardCuts)   // quitar true
 					
 					h_dot->Fill(dot);
 					 
-					 cout<<invariantMass<<" "<<theta*180/(3.1415)<<endl;
+					 //cout<<invariantMass<<" "<<theta*180/(3.1415)<<endl;
 					 //cout<<track_lxy1[i]<<endl;
 					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
 					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
@@ -444,7 +447,8 @@ void analyzer_strict::Terminate()
 {
 	//cout<<vuelta<<endl;
 	cout<<"Number of matches: "<<matchCount<<endl;
-	cout<<"Trigger turnons: "<<triggerTurnOns<<endl;
+	cout<<"Trigger turnons: "<<triggerTurnOns<<" efficiency: "<<triggerTurnOns/4000.0<<endl;
+	cout<<"NUmber of trigger objects "<<triggerObjects<<"    "<<triggerObjects/(4000.0*4)<<endl;
 	file->Write();
 	file->Close();
    // The Terminate() function is the last function to be called during
