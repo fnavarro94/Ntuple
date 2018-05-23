@@ -364,32 +364,18 @@ iEvent.getByLabel(trigResultsTag,trigResults);
 const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
  
 std::string pathName_e = "HLT_DoubleEle33_CaloIdL_v8";
-std::string pathName_m = "HLT_L2DoubleMu23_NoVertex_9";
+std::string pathName_m = "HLT_L2DoubleMu23_NoVertex_v9";
 //std::string toFind[2] = {"HLT_DoubleEle33_CaloIdL_v8", "HLT_L2DoubleMu23_NoVertex_9"}; 
 
  event.eventNumer= iEvent.id().event();
  event.runNumber= iEvent.id().run();
  event.lumiBlock = iEvent.id().luminosityBlock();
- /*int k = 0, ZZk = 0, WWk = 0;
+ int k = 0, ZZk = 0, WWk = 0;
  int kBar = 0, ZZkBar = 0, WWkBar= 0;
-<<<<<<< HEAD
- int numMu =0;
- int muNumD[10] = {0};
- int numDCount = 0;
-=======
- 
->>>>>>> 43a382fa0f7129f5334c961d89a6c0a52e438f49
 for (size_t i =0; i< genParticles->size(); i++)
 {
 	const GenParticle & p = (*genParticles)[i];
 	double  id = p.pdgId();
-        
-        if (abs(id)==13)
-	{
-		numMu++;
-                muNumD[numDCount] = p.numberOfDaughters();
-		numDCount++;
-	}
 	
 	if(k >2 ||kBar > 2)
 	{
@@ -435,8 +421,8 @@ for (size_t i =0; i< genParticles->size(); i++)
 			}
 		}
 	}
-	if(id == 6 && p.numberOfDaughters() !=0 && k < 4)
-	{   //cout<<"Z found"<<endl;
+	if(id == 23 && p.numberOfDaughters() !=0 && k < 4)
+	{  // cout<<"Z found"<<endl;
 		
 		
 			event.ZZgenVert[0] = p.vx();
@@ -446,9 +432,9 @@ for (size_t i =0; i< genParticles->size(); i++)
 		for (size_t j =0; j< p.numberOfDaughters(); j++)
 		{
 			const Candidate & dp =  *(p.daughter(j));
-		        //cout<<"daughter pdgid: "<<dp.pdgId()<<endl;	
+			
 			if(dp.pdgId()== 13)
-			{ //cout<<"corresponding muon found"<<endl;
+			{ cout<<"corresponding muon found"<<endl;
 				event.ZZgenMu_phi[k] = dp.phi();
 				event.ZZgenMu_eta[k] = dp.eta();
 				event.ZZgenMu_pt[k] = dp.pt();
@@ -460,7 +446,7 @@ for (size_t i =0; i< genParticles->size(); i++)
 				
 			}
 			if(dp.pdgId()== -13)
-			{  //   cout<<"corresponding mubar found"<<endl;
+			{     cout<<"corresponding mubar found"<<endl;
 				event.ZZgenMuBar_phi[kBar] = dp.phi();
 				event.ZZgenMuBar_eta[kBar] = dp.eta();
 				event.ZZgenMuBar_pt[kBar] = dp.pt();
@@ -513,16 +499,11 @@ for (size_t i =0; i< genParticles->size(); i++)
 		}
 	}
 }
-*/
 
 
 
 
-cout<<"numMu: "<<numMu<<endl;
-for (int i =0; i< numMu; i++)
-{
-	cout<<muNumD[i]<<endl;
-}
+
 
 int trigPathSize = trigNames.size();
 /*
@@ -578,6 +559,8 @@ else
 }
 
 int trigIndexM = trigNames.triggerIndex(pathName_m);
+
+
 if (trigIndexM != trigPathSize)
 {
 bool passTrig_m=trigResults->accept(trigNames.triggerIndex(pathName_m));   // may cause vector::_M_range_check exeption
