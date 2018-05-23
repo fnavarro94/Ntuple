@@ -46,7 +46,7 @@ void analyzer::SlaveBegin(TTree * /*tree*/)
 
    TString option = GetOption();
    
-   file = new TFile("notStrictDYMuon.root", "recreate");
+   file = new TFile("notStrictExoMuon.root", "recreate");
    h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
    h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
    h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);

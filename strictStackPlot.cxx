@@ -2,7 +2,7 @@
    THStack *hs = new THStack("hs","");
    THStack *hs_mass = new THStack("hs_mass","");
   
-   TFile *fDY = new TFile("strictDYMuon.root");
+   TFile *fDY = new TFile("strictDYTMuon.root");
    // TFile *fZZ2 = new TFile("histsZZ2.root");
    TFile *fZZT = new TFile("strictZZMuon.root");
    // TFile *fZZ4 = new TFile("histsZZ4.root");
@@ -54,11 +54,11 @@
    hDat->SetFillColor(1);
    hDat_mass->SetFillColor(1);
    
-  double DY_scale = 3048.0/3987986;
-  double ZZ_scale = 5.9/3899263;
-  double WZ_scale = 18.2/1284698;
-  double WW_scale = 42.0/193524;
-  double Dat_scale = 1.0/15000;
+  double DY_scale = 17568*3048.0/(20987986);
+  double ZZ_scale = 17568*5.9/(3899263);
+  double WZ_scale = 17568*18.2/(1284698);
+  double WW_scale = 17568*42.0/(193524);
+  double Dat_scale =1.0;
    
    hDY->Scale(DY_scale);
    hZZT->Scale(ZZ_scale); 
@@ -99,10 +99,11 @@
  
    
    hDat->SetMarkerStyle(21);
+   hDat_mass->SetMarkerStyle(21);
   
    
   
-   //TCanvas *cs = new TCanvas("cs","cs",10,10,700,900);
+   TCanvas *cs = new TCanvas("cs","cs",10,10,700,900);
    TText T; T.SetTextFont(42); T.SetTextAlign(21);
     
    auto legend = new TLegend(0.5,0.7,0.9,0.9);
@@ -111,13 +112,15 @@
    legend->AddEntry(hWW_mass,"WW","f");
    legend->AddEntry(hWZ_mass,"WZ","f");
    legend->AddEntry(hZZT_mass,"ZZ","f");
+   legend->AddEntry(hDat_mass,"Data","p");
   
     legend->SetFillColor(0);
     
-    
-
+    hDat_mass->SetXTitle("Mass [GeV/C^2]");
+    hDat_mass->SetYTitle("Entries");
+    hDat_mass->SetTitle("Muon Pair Invariant Mass");
    //cs->cd(1); hDat->Draw("e"); cs->Update(); hs->Draw("same hist");T.DrawTextNDC(.5,.95,"Default drawing option"); 
- hDat_mass->Draw("e"); cs->Update(); hs_mass->Draw("same hist"); T.DrawTextNDC(.5,.95,"Default drawing option"); 
+ hDat_mass->Draw("e"); cs->Update(); hs_mass->Draw("same hist"); hDat_mass->Draww("e same")
 legend->Draw(); 
    gPad->Update();
    gPad->SetLogy(1);

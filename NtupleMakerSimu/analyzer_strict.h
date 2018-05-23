@@ -134,7 +134,8 @@ public :
   Int_t 		   trackTrigObjIndex[20000];
   int vuelta;
   // root file
-  
+  int matchCount;
+  int triggerTurnOns;
   TFile * file;
   
   // Histograms
@@ -145,6 +146,7 @@ public :
   TH1F * h_lxy;
   TH1F * h_d0_err;
   TH1F * h_conePt;
+  TH1F * h_dot;
    // List of branches
    TBranch        *b_Ev_Branch;   //!
    TBranch        *b_vert_numTrack;   //!

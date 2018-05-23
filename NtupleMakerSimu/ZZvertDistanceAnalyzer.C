@@ -319,8 +319,9 @@ if (! altCompare ||true)
     dotL = dotPLW(pV,sv1,sv2,p1,p2);
     
     t_dot->Fill(dot);
-    t_dotLeeWick->Fill(dotL);
     
+ 
+    t_dotLeeWick->Fill(dotL);
        if (track_lxy1[gPtIndex[0]]/track_lxy1Error[gPtIndexPos[0]]> lxyCut)
     {
 		t_dotCut->Fill(dot);
@@ -576,8 +577,7 @@ double vertexDistanceAnalyzer::dotP(double pV[3], double sv1[3], double sv2[3], 
 	}
 	
 	
-	//dot = pTot[0]*vertV[0] +pTot[1]*vertV[1] + pTot[2]*vertV[2];
-	dot = pTot[0]*vertV[0] +pTot[1]*vertV[1];
+	dot = pTot[0]*vertV[0] +pTot[1]*vertV[1] + pTot[2]*vertV[2];
 	//cout<<"normal "<<dot<<endl;
 	return dot;
 	
@@ -607,8 +607,7 @@ double vertexDistanceAnalyzer::dotPLW(double pV[3], double sv1[3], double sv2[3]
 	}
 	
 	
-	//dot = pTot[0]*vertV[0] +pTot[1]*vertV[1] +pTot[2]*vertV[2];
-	dot = pTot[0]*vertV[0] +pTot[1]*vertV[1];
+	dot = pTot[0]*vertV[0] +pTot[1]*vertV[1] +pTot[2]*vertV[2];
 	//cout<<"lw "<<dot<<endl;
 	return dot;
 	

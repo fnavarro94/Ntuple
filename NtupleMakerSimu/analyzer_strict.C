@@ -53,8 +53,12 @@ void analyzer_strict::SlaveBegin(TTree * /*tree*/)
    h_lxy2_err = new TH1F ("lxy2_err", "Transverse decay length significance", 20, 0 , 20);
    h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
    h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
+   h_dot = new TH1F ("h_dot","Dot product between lepton pair momentum and secVert-primVert distance",100,-10000,10000);
    nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
   //matchedTrack[ = {0};
+  
+   matchCount = 0;
+   triggerTurnOns = 0;
    TH1::AddDirectory(true);
    vuelta = 0;
 }
@@ -87,7 +91,10 @@ reset();
 //cout<<"number of trigger objects "<<Ev_Branch_numTrigObjM<<endl;
 
 nEvents->Fill(1); 
-
+if (triggerMActivated)
+{
+	triggerTurnOns++;
+}
 if (standardCuts)   // quitar true
 {   
 
@@ -102,7 +109,7 @@ if (standardCuts)   // quitar true
 		   if (lepMatch)
 		   {  
 			   if(deltaR(track_phi[i], track_eta[i], trigObjM_phi[j], trigObjM_eta[j])< 0.1 /*&& deltaP(track_px[i], track_py[i],track_pz[i], trigObjM_px[j], trigObjM_py[j], trigObjM_pz[j]) < 3*/)
-			   {   
+			   {   matchCount++;
 				   matchedTrack[i] = 1;
 			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
 			       trackTrigObjIndex[i] = j;
@@ -125,21 +132,58 @@ if (standardCuts)   // quitar true
 			for (int j =0; j< Ev_Branch_numTrack; j++)
 			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] && deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) >0.2)
 			{  
-				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 3 )
+				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 10 )
 				{       
 					double conePt_var = conePt(i, j, track_eta[i], track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
 					double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
 					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]); 
 					double theta2 = mTheta(-track_px[i]-track_px[j], -track_py[i]-track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]);
+					
+					
+					double dot, iM;
+					
+					double p1[3], p2[3], sv1[3], sv2[3], pV[3];
+					
+					
                          	   	
 					//cout<<conePt_var<<endl;
 					//cout<<alpha<<endl;
 					//cout<<theta*180/(3.1415)<<endl;
 					
-					if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/||true)
+					//if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/)
+					if (conePt_var < 4 && alpha > -0.95/*0.8 ipara electron*/)
+					
 					{
 						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
+					 
+					 
+					 
+					p1[0] = track_px[i];
+					p1[1] = track_py[i];
+					p1[2] = track_pz[i];
+					
+					p2[0] = track_px[i];
+					p2[1] = track_py[i];
+					p2[2] = track_pz[i];
+					
+					sv1[0] = track_vx[i];
+					sv1[1] = track_vy[i];
+					sv1[2] = track_vz[i];
+					
+					sv2[0] = track_vx[i];
+					sv2[1] = track_vy[i];
+					sv2[2] = track_vz[i];
+					
+					pV[0] = vertex_x[0];
+					pV[1] = vertex_y[0];
+					pV[2] = vertex_z[0];
+					dot = dotPL(pV,sv1,sv2,p1,p2);
+					
+					
+					
+					h_dot->Fill(dot);
+					 
 					 cout<<invariantMass<<" "<<theta*180/(3.1415)<<endl;
 					 //cout<<track_lxy1[i]<<endl;
 					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
@@ -357,7 +401,36 @@ bool analyzer_strict::cmsStandardCuts(Int_t numVertTracks, Int_t numTracks, Doub
 	
 
 }
-
+double analyzer_strict::dotPL(double pV[3], double sv1[3], double sv2[3], double p1[3], double p2[3])
+{
+	double VAv[3], vertV[3], pTot[3], dot;
+	
+	for (int i = 0; i< 3; i++)
+	{  
+		pTot[i] = (p1[i] + p2[i]);
+		
+		VAv[i] = 0.5*(sv1[i] + sv2[i]);
+		
+		vertV[i] = VAv[i] - pV[i];
+	}
+	// normalize pAv
+	
+	for (int i = 0; i<3; i++)
+	{
+		/*pTot[i] = pTot[i]/norm(pTot[0],pTot[1], pTot[2]);
+		vertV[i] = vertV[i]/norm(vertV[0], vertV[1], vertV[2]);*/
+		
+		/*pTot[i] = pTot[i]/norm(pTot[0],pTot[1]);
+		vertV[i] = vertV[i]/norm(vertV[0], vertV[1]);*/
+	}
+	
+	
+	dot = pTot[0]*vertV[0] +pTot[1]*vertV[1] + pTot[2]*vertV[2];
+	//dot = pTot[0]*vertV[0] +pTot[1]*vertV[1];
+	//cout<<"normal "<<dot<<endl;
+	return dot;
+	
+}
 
 void analyzer_strict::SlaveTerminate()
 {
@@ -370,6 +443,8 @@ void analyzer_strict::SlaveTerminate()
 void analyzer_strict::Terminate()
 {
 	//cout<<vuelta<<endl;
+	cout<<"Number of matches: "<<matchCount<<endl;
+	cout<<"Trigger turnons: "<<triggerTurnOns<<endl;
 	file->Write();
 	file->Close();
    // The Terminate() function is the last function to be called during

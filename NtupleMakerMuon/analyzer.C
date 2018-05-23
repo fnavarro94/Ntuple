@@ -26,6 +26,8 @@
 #include "analyzer.h"
 #include <TH2.h>
 #include <TStyle.h>
+#include <iostream>
+#include <fstream>
 
 
 void analyzer::Begin(TTree * /*tree*/)
@@ -45,7 +47,7 @@ void analyzer::SlaveBegin(TTree * /*tree*/)
    // The tree argument is deprecated (on PROOF 0 is passed).
 
    TString option = GetOption();
-   
+   myFile.open("example.txt");  
    file = new TFile("hists.root", "recreate");
    h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
    h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
@@ -84,6 +86,7 @@ reset();
 
 
 
+
  
 
 if (standardCuts)   // quitar true
@@ -101,7 +104,7 @@ if (standardCuts)   // quitar true
 		  
 		   if (lepMatch)
 		   {
-			   if(deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 && deltaP(track_px[i], track_py[i],track_pz[i], trigObj_px[j], trigObj_py[j], trigObj_pz[j]) < 3)
+			   if(deltaR(track_phi[i], track_eta[i], trigObj_phi[j], trigObj_eta[j])< 0.1 /*&& deltaP(track_px[i], track_py[i],track_pz[i], trigObj_px[j], trigObj_py[j], trigObj_pz[j]) < 3*/)
 			   {
 				   matchedTrack[i] = 1;
 			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
@@ -137,6 +140,7 @@ if (standardCuts)   // quitar true
 					{
 						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
+					 myFile<<invariantMass<<endl;
 					 cout<<invariantMass<<endl;
 					 h_invMass->Fill(invariantMass);
 					 h_lxy->Fill(track_lxy1[i]);
@@ -365,6 +369,7 @@ void analyzer::Terminate()
 	//cout<<vuelta<<endl;
 	file->Write();
 	file->Close();
+	myFile.close();
    // The Terminate() function is the last function to be called during
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
