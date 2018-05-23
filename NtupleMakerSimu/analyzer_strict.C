@@ -135,7 +135,7 @@ if (standardCuts)   // quitar true
 			for (int j =0; j< Ev_Branch_numTrack; j++)
 			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] && deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) >0.2)
 			{  
-				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) < 10 )
+				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) <5 )
 				{       
 					double conePt_var = conePt(i, j, track_eta[i], track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
 					double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
@@ -212,9 +212,9 @@ if (standardCuts)   // quitar true
 	
 }
    vuelta ++;
-   if(vuelta%1000 == 0)
+   if(vuelta%10000 == 0)
    {
-//cout<<"Vuelta "<<vuelta<<endl;
+  cout<<"Vuelta "<<vuelta<<endl;
    }
 
    return kTRUE;
