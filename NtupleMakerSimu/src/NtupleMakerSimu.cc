@@ -85,6 +85,7 @@ class NtupleMakerSimu : public edm::EDAnalyzer {
       int vuelta;
       int NvertTracks = 0, Ntracks = 0;
       int numJets2 = 0;
+      int triggerTurnOns = 0;
       
       struct mEvent {
 
@@ -100,6 +101,7 @@ class NtupleMakerSimu : public edm::EDAnalyzer {
 		  Bool_t wasTriggerFound = false;
 		  Int_t triggerFound = 0;
 		  Int_t numVertTrack[entryMax]={0};
+		  
 		  
 		  
 		// track data 
@@ -566,6 +568,7 @@ if (trigIndexM != trigPathSize)
 bool passTrig_m=trigResults->accept(trigNames.triggerIndex(pathName_m));   // may cause vector::_M_range_check exeption
     
     event.triggerMActivated = passTrig_m;
+    triggerTurnOns++;
 }
 else
 {
@@ -1080,6 +1083,7 @@ NtupleMakerSimu::endJob() {
 
 //mtree->Write();
 std::cout<<"num traks "<<Ntracks<<" num vertTraks "<<NvertTracks<<std::endl;
+std::cout<<"Trigger turn ons "<<triggerTurnOns<<std::endl;
 mfile->Write();
 mfile->Close();
 }

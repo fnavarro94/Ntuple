@@ -271,9 +271,15 @@ for (int i =0; i < 4; i++)
 	rjy = ak5jet_y[sortedIndex[i]];
 	rjz = ak5jet_z[sortedIndex[i]];
 	
-	r0x = 
-
-	double coef = 
+	r0x = LW_X;
+	r0y = LW_Y;
+	r0z = LW_Z;
+     
+	double coef = ((Pjx)*(r0x-rjx)+(Pjy)*(r0y-rjy)+(Pjz)*(r0z-rjz))/(pj2);
+	
+	dx = Pjx*coef + rjx -r0x; 
+	dx = Pjy*coef + rjy -r0y; 
+	dx = Pjz*coef + rjz -r0z; 
 }
 
 
