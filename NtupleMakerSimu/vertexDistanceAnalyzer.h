@@ -199,7 +199,20 @@ public :
   
   // histograms with cuts
 
+  TH1F * t_invMassFull;
   TH1F * t_invMass;
+  TH1F * t_invMass1;
+  TH1F * t_invMass2;
+  TH1F * t_invMass3;
+  TH1F * t_invMass4;
+  TH1F * t_invMass5;
+  TH1F * t_invMass6;
+  TH1F * t_invMass7;
+  TH1F * t_invMass8;
+  TH1F * t_invMass9;
+  TH1F * t_invMass10;
+  
+  
   TH1F * t_invMassCut;
   TH1F * t_pt;
   TH1F * t_phi;
@@ -208,6 +221,14 @@ public :
   TH1F * t_dx;
   TH1F * t_dy;
   TH1F * t_dz;
+  
+  TH1F * t_ptCut;
+  TH1F * t_phiCut;
+  TH1F * t_etaCut;
+  TH1F * t_dvCut;
+  TH1F * t_dxCut;
+  TH1F * t_dyCut;
+  TH1F * t_dzCut;
   
   TH1F * t_dot;
   TH1F * t_dotCut;
