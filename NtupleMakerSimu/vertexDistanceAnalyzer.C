@@ -40,12 +40,31 @@ void vertexDistanceAnalyzer::Begin(TTree * /*tree*/)
    nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
    
    //Histograms for track pairs
+    t_invMassFull = new TH1F ("t_invMassFull", "track pair Invariant Mass", 100, 0 , 600);
    t_invMass = new TH1F ("t_invMass", "track pair Invariant Mass", 100, 0 , 600);
+   t_invMass1 = new TH1F ("t_invMass1", "track pair Invariant Mass", 100, 0 , 600);
+   t_invMass2 = new TH1F ("t_invMass2", "track pair Invariant Mass", 100, 0 , 600);
+   t_invMass3 = new TH1F ("t_invMass3", "track pair Invariant Mass", 100, 0 , 600);
+   t_invMass4 = new TH1F ("t_invMass4", "track pair Invariant Mass", 100, 0 , 600);
+   t_invMass5 = new TH1F ("t_invMass5", "track pair Invariant Mass", 100, 0 , 600);
+   t_invMass6 = new TH1F ("t_invMass6", "track pair Invariant Mass", 100, 0 , 600);
+   t_invMass7 = new TH1F ("t_invMass7", "track pair Invariant Mass", 100, 0 , 600);
+   t_invMass8 = new TH1F ("t_invMass8", "track pair Invariant Mass", 100, 0 , 600);
+   t_invMass9 = new TH1F ("t_invMass9", "track pair Invariant Mass", 100, 0 , 600);
+   t_invMass10 = new TH1F ("t_invMass10", "track pair Invariant Mass", 100, 0 , 600);
+   
    t_invMassCut = new TH1F ("t_invMassCut", "track pair Invariant Mass (with some cut)", 100, 0 , 600);
-   t_dv = new TH1F ("t_dv","Distance between track vertices ", 100, -0.1,0.1);
-   t_dx = new TH1F ("t_dx","Distance between track vertices ", 100, -0.1,0.1);
-   t_dy = new TH1F ("t_dy","Distance between track vertices ", 100, -0.1,0.1);
-   t_dz = new TH1F ("t_dz","Distance between track vertices ", 100, -0.1,0.1);
+   
+   t_dv = new TH1F ("t_dv","Distance between track vertices ", 100, -10,10);
+   t_dx = new TH1F ("t_dx","Distance between track vertices ", 100, -10,10);
+   t_dy = new TH1F ("t_dy","Distance between track vertices ", 100, -10,10);
+   t_dz = new TH1F ("t_dz","Distance between track vertices ", 100, -10,10);
+   
+   t_dvCut = new TH1F ("t_dvCut","Distance between track vertices ", 100, -10,10);
+   t_dxCut = new TH1F ("t_dxCut","Distance between track vertices ", 100, -10,10);
+   t_dyCut = new TH1F ("t_dyCut","Distance between track vertices ", 100, -10,10);
+   t_dzCut = new TH1F ("t_dzCut","Distance between track vertices ", 100, -10,10);
+   
    t_dot = new TH1F ("t_dot","Dot product between lepton pair momentum and secVert-primVert distance vector ", 100, -10000,10000);
    t_dotCut = new TH1F ("t_dotCut","Dot product between lepton pair momentum and secVert-primVert distance vector ", 100, -10000,10000);
    t_dotLeeWick = new TH1F ("t_dotLeeWick","Dot product between lepton pair momentum and secVert-primVert distance vector (with lee-wick modification) ", 100, -10000,10000);
@@ -105,7 +124,14 @@ fChain->GetTree()->GetEntry(entry);
 double dv1= 100;
 double dv2 = 100;
 
+// *** Lee wick mod
 
+for (int i = 0; i< Ev_Branch_numTrack; i ++)
+{
+	track_px[i] = -track_px[i];
+	track_py[i] = -track_py[i];
+	track_pz[i] = -track_pz[i];
+}
 
 
 reset();
@@ -238,7 +264,7 @@ if (WWgenMu_pt[0] < WWgenMu_pt[1])
 
 bool altCompare = false;
 
-if (ZZgenMuBar_pt[0] < ZZgenMuBar_pt[1])
+if (genMuBar_pt[0] < genMuBar_pt[1])
 {
 	altCompare = true;
 }
@@ -264,15 +290,123 @@ sw = ZZMuWasFound && ZZMuBarWasFound;
 if (ZZMuBarWasFound)
 cout<<ZZMuWasFound<<" "<<ZZMuBarWasFound<<" "<<sw<<endl;
 double lxyCut = 8.0;
-if (! altCompare ||true)
-{   
+if (! altCompare)
+{   int interval = 400;
+	
+	
+	double p1[3], p2[3], pV[3], sv1[3], sv2[3], dot, dotL;
+	
+	p1[0] = track_px[gPtIndexPos[0]];
+	p1[1] = track_py[gPtIndexPos[0]];
+	p1[2] = track_pz[gPtIndexPos[0]];
+    
+    p2[0] = track_px[gPtIndexNeg[0]];
+	p2[1] = track_py[gPtIndexNeg[0]];
+	p2[2] = track_pz[gPtIndexNeg[0]];
+	
+	sv1[0] = track_vx[gPtIndexPos[0]];
+	sv1[1] = track_vy[gPtIndexPos[0]];
+	sv1[2] = track_vz[gPtIndexPos[0]];
+	
+	sv2[0] = track_vx[gPtIndexNeg[0]];
+	sv2[1] = track_vy[gPtIndexNeg[0]];
+	sv2[2] = track_vz[gPtIndexNeg[0]];
+	
+	pV[0] = genVert[0];
+	pV[1] = genVert[1];
+	pV[2] = genVert[2];
+if (track_pt[gPtIndexPos[0]]>33 ) {
+	
+	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMassFull->Fill(iM);
+	
+	
+   }
+	
+	// inv mas histograms are filled
+	if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < 0) {
+	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass->Fill(iM);
 	
 	
+   }
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval) {
+	
+	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass1->Fill(iM);
+	
+	
+   }
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*2) {
+	
+	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass2->Fill(iM);
+	
+	
+   }
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*3) {
+	
+	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass3->Fill(iM);
+	
+	
+   }
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*4) {
+	
+	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass4->Fill(iM);
+	
+	
+   }
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*5) {
+	
+	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass5->Fill(iM);
+	
+	
+   }
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*6) {
+	
+	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass6->Fill(iM);
+	
+	
+   }
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*7) {
+	
+	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass7->Fill(iM);
+	
+	
+   }
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*8) {
+	
+	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass8->Fill(iM);
+	
+	
+   }
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*9) {
+	
+	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass9->Fill(iM);
+	
+	
+   }
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*10) {
+	
+	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
+	t_invMass10->Fill(iM);
+	
+	
+   }
+
+	
+	
    
 	 
-	 if(iM >  80 && iM < 120  ){
+	 if(iM >  300 && iM <400 ){
 		  vertDis = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[0]], track_vy[gPtIndexNeg[0]], track_vz[gPtIndexNeg[0]]);
     t_dv->Fill(vertDis);
 	
@@ -334,23 +468,9 @@ if (! altCompare ||true)
 	
 			}
 			
-		/*	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
-	t_invMass->Fill(iM);
 	
 	
-   
-	 
-	 if(iM >  300 && iM < 400 ){
-		  vertDis = deltaV(track_vx[gPtIndexPos[1]], track_vy[gPtIndexPos[1]], track_vz[gPtIndexPos[1]],track_vx[gPtIndexNeg[1]], track_vy[gPtIndexNeg[1]], track_vz[gPtIndexNeg[1]]);
-    t_dv->Fill(vertDis);
-	
-	 
-	t_dx->Fill(track_vx[gPtIndexPos[1]]-track_vx[gPtIndexNeg[1]]);
-	t_dy->Fill(track_vy[gPtIndexPos[1]]-track_vy[gPtIndexNeg[1]]);
-	t_dz->Fill(track_vz[gPtIndexPos[1]]-track_vz[gPtIndexNeg[1]]);
-	
-	
-	double p1[3], p2[3], pV[3], sv1[3], sv2[3], dot, dotL;
+double p1[3], p2[3], pV[3], sv1[3], sv2[3], dot, dotL;
 	
 	p1[0] = track_px[gPtIndexPos[1]];
 	p1[1] = track_py[gPtIndexPos[1]];
@@ -372,9 +492,110 @@ if (! altCompare ||true)
 	pV[1] = genVert[1];
 	pV[2] = genVert[2];
 	
+	
+	
+	if (track_pt[gPtIndexPos[1]]>33 ) {
+	
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMassFull->Fill(iM);
+	
+	
+   }
+	
+	// inv mas histograms are filled
+	if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < 0) {
+	
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass->Fill(iM);
+	
+	
+   }
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval) {
+	
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass1->Fill(iM);
+	
+	
+   }
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*2) {
+	
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass2->Fill(iM);
+	
+	
+   }
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*3) {
+	
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass3->Fill(iM);
+	
+	
+   }
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*4) {
+	
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass4->Fill(iM);
+	
+	
+   }
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*5) {
+	
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass5->Fill(iM);
+	
+	
+   }
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*6) {
+	
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass6->Fill(iM);
+	
+	
+   }
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*7) {
+	
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass7->Fill(iM);
+	
+	
+   }
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*8) {
+	
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass8->Fill(iM);
+	
+	
+   }
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*9) {
+	
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass9->Fill(iM);
+	
+	
+   }
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*10) {
+	
+	iM = invMass(track_px[gPtIndexPos[1]], track_py[gPtIndexPos[1]], track_pz[gPtIndexPos[1]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
+	t_invMass10->Fill(iM);
+	
+	
+   }
+   
+	 
+	 if(iM >  300 && iM <400 ){
+		  vertDis = deltaV(track_vx[gPtIndexPos[1]], track_vy[gPtIndexPos[1]], track_vz[gPtIndexPos[1]],track_vx[gPtIndexNeg[1]], track_vy[gPtIndexNeg[1]], track_vz[gPtIndexNeg[1]]);
+    t_dv->Fill(vertDis);
+	
+	 
+	t_dx->Fill(track_vx[gPtIndexPos[1]]-track_vx[gPtIndexNeg[1]]);
+	t_dy->Fill(track_vy[gPtIndexPos[1]]-track_vy[gPtIndexNeg[1]]);
+	t_dz->Fill(track_vz[gPtIndexPos[1]]-track_vz[gPtIndexNeg[1]]);
+	
+	
+	
     /*pV[0] = vertex_x[0];
 	pV[1] = vertex_y[0];
-	pV[2] = vertex_z[0];
+	pV[2] = vertex_z[0];*/
     
     dot = dotP(pV,sv1,sv2,p1,p2);
     
@@ -401,9 +622,9 @@ if (! altCompare ||true)
    
 	
 	
-			}*/
+			}
 }
-  /*else
+  else
 {  
 	
     iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[1]], track_py[gPtIndexNeg[1]], track_pz[gPtIndexNeg[1]]);
@@ -412,7 +633,7 @@ if (! altCompare ||true)
 	
    
 	 
-	 if(iM >  390 && iM < 400 ){
+	 if(iM >  300 && iM <400){
 		  vertDis = deltaV(track_vx[gPtIndexPos[0]], track_vy[gPtIndexPos[0]], track_vz[gPtIndexPos[0]],track_vx[gPtIndexNeg[1]], track_vy[gPtIndexNeg[1]], track_vz[gPtIndexNeg[1]]);
     t_dv->Fill(vertDis);
 	
@@ -446,7 +667,7 @@ if (! altCompare ||true)
 	
     /*pV[0] = vertex_x[0];
 	pV[1] = vertex_y[0];
-	pV[2] = vertex_z[0];
+	pV[2] = vertex_z[0];*/
     
     dot = dotP(pV,sv1,sv2,p1,p2);
     
@@ -481,7 +702,7 @@ if (! altCompare ||true)
 	
    
 	 
-	 if(iM >  390 && iM < 400 ){
+	 if(iM >  300 && iM <400){
 		  vertDis = deltaV(track_vx[gPtIndexPos[1]], track_vy[gPtIndexPos[1]], track_vz[gPtIndexPos[1]],track_vx[gPtIndexNeg[0]], track_vy[gPtIndexNeg[0]], track_vz[gPtIndexNeg[0]]);
     t_dv->Fill(vertDis);
 	
@@ -515,7 +736,7 @@ if (! altCompare ||true)
 	
     /*pV[0] = vertex_x[0];
 	pV[1] = vertex_y[0];
-	pV[2] = vertex_z[0];
+	pV[2] = vertex_z[0];*/
     
     dot = dotP(pV,sv1,sv2,p1,p2);
     
@@ -544,7 +765,7 @@ if (! altCompare ||true)
 	
 			}
 }
-*/
+
 
 nEvents->Fill(1); 
    return kTRUE;
