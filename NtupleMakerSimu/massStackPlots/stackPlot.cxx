@@ -37,7 +37,7 @@
    TH1F * hll10 = (TH1F*)fll->Get("t_invMass10");
    
    TH1F * hlwFull = (TH1F*)flw->Get("t_invMassFull");
-   TH1F * hlw = (TH1F*)flw>Get("t_invMass");
+   TH1F * hlw = (TH1F*)flw->Get("t_invMass");
    TH1F * hlw1 = (TH1F*)flw->Get("t_invMass1");
    TH1F * hlw2 = (TH1F*)flw->Get("t_invMass2");
    TH1F * hlw3 = (TH1F*)flw->Get("t_invMass3");
@@ -87,7 +87,7 @@
    TH1F * hDY7 = (TH1F*)fDY->Get("t_invMass7");
    TH1F * hDY8 = (TH1F*)fDY->Get("t_invMass8");
    TH1F * hDY9 = (TH1F*)fDY->Get("t_invMass9");
-   TH1F * hDY10 = (TH1F*)DY->Get("t_invMass10");
+   TH1F * hDY10 = (TH1F*)fDY->Get("t_invMass10");
    
    TH1F * hWZFull = (TH1F*)fWZ->Get("t_invMassFull");
    TH1F * hWZ = (TH1F*)fWZ->Get("t_invMass");
@@ -288,7 +288,9 @@
    
   
    TCanvas *csFull = new TCanvas("csFull","csFull",10,10,700,900);
+    csFull->cd(1); hsFull->Draw("hist"); csFull->Update();
    TCanvas *cs = new TCanvas("cs","cs",10,10,700,900);
+   
   
   
    cs->Divide(2,5);
@@ -310,4 +312,5 @@
    gPad->Update();
    //gPad->SetLogy(1);
    return cs;
+   return cFull;
 }
