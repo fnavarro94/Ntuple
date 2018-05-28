@@ -143,12 +143,17 @@ public :
   // Histograms
   TH1F * nEvents;  
   TH1F * h_invMass;
+  TH1F * h_invMassLC;
+  TH1F * h_invMassLW;
   TH1F * h_lxy_err;
+  TH1F * h_lxy_errLC;
   TH1F * h_lxy2_err;
   TH1F * h_lxy;
   TH1F * h_d0_err;
+  TH1F * h_d0_errLC;
   TH1F * h_conePt;
   TH1F * h_dot;
+ 
    // List of branches
    TBranch        *b_Ev_Branch;   //!
    TBranch        *b_vert_numTrack;   //!

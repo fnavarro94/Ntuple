@@ -47,11 +47,14 @@ void analyzer_strict::SlaveBegin(TTree * /*tree*/)
    TString option = GetOption();
    
    file = new TFile("exotic.root", "recreate");
-   h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+   h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass (loose)", 100, 0 , 600);
+   h_invMassLC = new TH1F ("InvMassLC", "Lepton Pair Invariant Mass", 100, 0 , 600);
+   h_invMassLW = new TH1F ("InvMassLW", "Lepton Pair Invariant Mass (L-W cuts)", 100, 0 , 600);
    h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
    h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
    h_lxy2_err = new TH1F ("lxy2_err", "Transverse decay length significance", 20, 0 , 20);
-   h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
+   h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
+   h_d0_errLC = new TH1F ("d0_errLC", "Impact parameter / Standar Deviation", 100, 0 , 20);
    h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
    h_dot = new TH1F ("h_dot","Dot product between lepton pair momentum and secVert-primVert distance",100,-10000,10000);
    nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
@@ -238,6 +241,25 @@ if (standardCuts && triggerMActivated)   // quitar true
 					 h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
 					 h_d0_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
 					 h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
+					 
+					 // ***************** Histograms with life time related cuts
+					 
+					 if (fabs(track_lxy1[i]/track_dxyError[i])>5)
+					 {
+							h_invMassLC->Fill(invariantMass);
+							
+							if (dot<-400)
+							{
+								h_invMassLW->Fill(invariantMass);
+							}
+							
+							h_d0_errLC->Fill(fabs(track_dxy[i]/track_dxyError[i]));
+					 }
+					 
+					 
+					 //****************** End Histograms with....
+					 
+					 
 					}
 					
 	                                //cout<<invariantMass<<endl;				
