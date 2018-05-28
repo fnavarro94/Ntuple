@@ -108,7 +108,7 @@ if (triggerMActivated)
 
 //****** LeeWick mod
 
-                       
+     /*                  
 int ctemp = 0;
 int check = 0;
 for (int i = 0; i< Ev_Branch_numTrack; i++)
@@ -137,9 +137,9 @@ if (ctemp >  1)
 	effCount++;
 }
 
-
+*/
 triggerObjects = triggerObjects + Ev_Branch_numTrigObjM;
-if (standardCuts /*&& triggerMActivated*/)   // quitar true
+if (standardCuts && triggerMActivated)   // quitar true
 {   
     
      
@@ -148,12 +148,12 @@ if (standardCuts /*&& triggerMActivated*/)   // quitar true
 
 		for (int j = 0; j< Ev_Branch_numTrigObjM; j++)
 		{
-			bool lepMatch =matchingCuts( track_highPurity[i]  , track_pt[i] , track_found[i], fabs(track_eta[i]), fabs(track_dxy[i]/track_dxyError[i]));
+			bool lepMatch =matchingCuts( track_highPurity[i]  , track_pt[i] , track_nHits[i],track_n3DHits[i], fabs(track_eta[i]), fabs(track_dxy[i]/track_dxyError[i]));
 		
 		  
 		   if (lepMatch)
 		   {  
-			   if(deltaR(track_phi[i], track_eta[i], trigObjM_phi[j], trigObjM_eta[j])< 0.1 /*&& deltaP(track_px[i], track_py[i],track_pz[i], trigObjM_px[j], trigObjM_py[j], trigObjM_pz[j]) < 3*/)
+			   if(deltaR(track_phi[i], track_eta[i], trigObjM_phi[j], trigObjM_eta[j])< 0.1 )
 			   {   matchCount++;
 				   matchedTrack[i] = 1;
 			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
@@ -308,13 +308,13 @@ double analyzer_strict::conePt(int forbiddenIndex1, int forbiddenIndex2, double 
 
 // resets arrays and variables to Null/0
 
-bool analyzer_strict::matchingCuts( bool purity, double pt, int hits, double eta, double impSig)
+bool analyzer_strict::matchingCuts( bool purity, double pt, int hits, int hits3D, double eta, double impSig)
 {
 	bool ret = false;
 	
 	
 		
-	  //if(purity && pt > 33 && hits >= 6   && eta < 2 && impSig > 2 )
+	  if(purity && pt > 33 && hits >= 6   && eta < 2 && impSig > 2 )
 	  if(true)
 	  
 	  {
@@ -323,14 +323,7 @@ bool analyzer_strict::matchingCuts( bool purity, double pt, int hits, double eta
 	  }	
 	 
 	  
-	
-/*	if(lepton == "electron")
-	{
-		if(purity && pt > 41 && hits >= 6  && eta < 2 && impSig > 3)
-		{
-			ret = true;
-		}
-	}*/
+
 	
 	return ret;
 }
@@ -438,8 +431,8 @@ bool analyzer_strict::cmsStandardCuts(Int_t numVertTracks, Int_t numTracks, Doub
 		
 	}
 	
-	//cout<<numTracks<<" "<< distCount<<" "<<highPurity<<" "<< moreThan25percent<<endl;
-	if (numTracks > 4 /*&& distCount >4*/ /*&&  moreThan25percent*/)
+	
+	if (numTracks > 3 && distCount >3 &&  moreThan25percent)
 	{
 		ret  = true;
 	}
