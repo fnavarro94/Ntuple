@@ -29,17 +29,17 @@
    TH1F * hWW_mass = (TH1F*)fWW->Get("InvMass");
    TH1F * hDat_mass = (TH1F*)fDat->Get("InvMass");
    
-   TH1F * hDY_massCutLC = (TH1F*)fDY->Get("InvMassLC");
-   TH1F * hZZT_massCutLC = (TH1F*)fZZT->Get("InvMassLC");
-   TH1F * hWZ_massCutLC = (TH1F*)fWZ->Get("InvMassLC");
-   TH1F * hWW_massCutLC = (TH1F*)fWW->Get("InvMassLC");
-   TH1F * hDat_massCutLC = (TH1F*)fDat->Get("InvMassLC");
+   TH1F * hDY_massLC = (TH1F*)fDY->Get("InvMassLC");
+   TH1F * hZZT_massLC = (TH1F*)fZZT->Get("InvMassLC");
+   TH1F * hWZ_massLC = (TH1F*)fWZ->Get("InvMassLC");
+   TH1F * hWW_massLC = (TH1F*)fWW->Get("InvMassLC");
+   TH1F * hDat_massLC = (TH1F*)fDat->Get("InvMassLC");
    
     
-   TH1F * hDY_massCutLW = (TH1F*)fDY->Get("InvMassLW");
-   TH1F * hZZT_massCutLW = (TH1F*)fZZT->Get("InvMassLW");
-   TH1F * hWZ_massCutLW = (TH1F*)fWZ->Get("InvMassLW");
-   TH1F * hWW_massCutLW = (TH1F*)fWW->Get("InvMassLW");
+   TH1F * hDY_massLW = (TH1F*)fDY->Get("InvMassLW");
+   TH1F * hZZT_massLW = (TH1F*)fZZT->Get("InvMassLW");
+   TH1F * hWZ_massLW = (TH1F*)fWZ->Get("InvMassLW");
+   TH1F * hWW_massLW = (TH1F*)fWW->Get("InvMassLW");
    TH1F * hDat_massLW = (TH1F*)fDat->Get("InvMassLW");
    
    
@@ -82,11 +82,6 @@
    hWW_massLW->Sumw2();
    hDat_massLW->Sumw2();
    
-   hDY_massLC->Sumw2();
-   hZZT_massLC->Sumw2();
-   hWZ_massLC->Sumw2();
-   hWW_massLC->Sumw2();
-   hDat_massLC->Sumw2();
    
    hDY_d0_err->Sumw2();
    hZZT_d0_err->Sumw2();
@@ -104,37 +99,43 @@
    hZZT->SetFillColor(kGreen +3); 
    hWZ->SetFillColor(kCyan -9); 
    hWW->SetFillColor(kMagenta -3);   
-   hDat->SetFillColor(1);
+   hDat->SetFillColor(0);
+   hDat->SetLineColor(2);
    
    hDY_mass->SetFillColor(2);
    hZZT_mass->SetFillColor(kGreen +3);
    hWZ_mass->SetFillColor(kCyan -9);
    hWW_mass->SetFillColor(kMagenta -3);
-   hDat_mass->SetFillColor(1);
+   hDat_mass->SetFillColor(0);
+   hDat_mass->SetLineColor(2);
    
    hDY_massLC->SetFillColor(2);
    hZZT_massLC->SetFillColor(kGreen +3);
    hWZ_massLC->SetFillColor(kCyan -9);
    hWW_massLC->SetFillColor(kMagenta -3);
-   hDat_massLC->SetFillColor(1);
+   hDat_massLC->SetFillColor(0);
+   hDat_massLC->SetLineColor(2);
    
    hDY_massLW->SetFillColor(2);
    hZZT_massLW->SetFillColor(kGreen +3);
    hWZ_massLW->SetFillColor(kCyan -9);
    hWW_massLW->SetFillColor(kMagenta -3);
-   hDat_massLW->SetFillColor(1);
+   hDat_massLW->SetFillColor(0);
+   hDat_massLW->SetLineColor(2);
    
    hDY_d0_err->SetFillColor(2);
    hZZT_d0_err->SetFillColor(kGreen +3);
    hWZ_d0_err->SetFillColor(kCyan -9);
    hWW_d0_err->SetFillColor(kMagenta -3);
-   hDat_d0_err->SetFillColor(1);
+   hDat_d0_err->SetFillColor(0);
+   hDat_d0_err->SetLineColor(2);
    
    hDY_d0_errLC->SetFillColor(2);
    hZZT_d0_errLC->SetFillColor(kGreen +3);
    hWZ_d0_errLC->SetFillColor(kCyan -9);
    hWW_d0_errLC->SetFillColor(kMagenta -3);
-   hDat_d0_errLC->SetFillColor(1);
+   hDat_d0_errLC->SetFillColor(0);
+   hDat_d0_errLC->SetLineColor(2);
    
    
   double DY_scale = lumi*3048.0/(489661);
@@ -193,6 +194,27 @@
    hWW_mass->SetStats(0);
    hDat_mass->SetStats(0);
    
+   hDY_massLC->SetStats(0);
+   hZZT_massLC->SetStats(0);
+   hWZ_massLC->SetStats(0);
+   hWW_massLC->SetStats(0);
+   hDat_massLC->SetStats(0);
+   
+   hDY_massLW->SetStats(0);
+   hZZT_massLW->SetStats(0);
+   hWZ_massLW->SetStats(0);
+   hWW_massLW->SetStats(0);
+   hDat_massLW->SetStats(0);
+   
+   hDY_d0_err->SetStats(0);
+   hZZT_d0_err->SetStats(0);
+   hWZ_d0_err->SetStats(0);
+   hWW_d0_err->SetStats(0);
+   hDat_d0_err->SetStats(0);
+   
+   
+   
+   
   
   
      hs->Add(hZZT);
@@ -215,15 +237,15 @@
      hs_massLW->Add(hWW_massLW);
      hs_massLW->Add(hDY_massLW);
 
-     hs_mass_d0_err->Add(hZZT_d0_err);
-     hs_mass_d0_err->Add(hWZ_d0_err);
-     hs_mass_d0_err->Add(hWW_d0_err);
-     hs_mass_d0_err->Add(hDY_d0_err);
+     hs_d0_err->Add(hZZT_d0_err);
+     hs_d0_err->Add(hWZ_d0_err);
+     hs_d0_err->Add(hWW_d0_err);
+     hs_d0_err->Add(hDY_d0_err);
      
-     hs_mass_d0_errLC->Add(hZZT_d0_errLC);
-     hs_mass_d0_errLC->Add(hWZ_d0_errLC);
-     hs_mass_d0_errLC->Add(hWW_d0_errLC);
-     hs_mass_d0_errLC->Add(hDY_d0_errLC);
+     hs_d0_errLC->Add(hZZT_d0_errLC);
+     hs_d0_errLC->Add(hWZ_d0_errLC);
+     hs_d0_errLC->Add(hWW_d0_errLC);
+     hs_d0_errLC->Add(hDY_d0_errLC);
     
     
    
@@ -233,8 +255,13 @@
    
    hDat->SetMarkerStyle(21);
    hDat_mass->SetMarkerStyle(21);
-  
+   hDat_massLC->SetMarkerStyle(21);
+   hDat_massLW->SetMarkerStyle(21);
+   hDat_d0_err->SetMarkerStyle(21);
+   hDat_d0_errLC->SetMarkerStyle(21);
    
+  
+   // lxy
   
    TCanvas *cs = new TCanvas("cs","cs",10,10,700,900);
    TText T; T.SetTextFont(42); T.SetTextAlign(21);
@@ -247,14 +274,126 @@
    legend->AddEntry(hZZT_mass,"ZZ","f");
    legend->AddEntry(hDat_mass,"Data","p");
   
-    legend->SetFillColor(0);
+   legend->SetFillColor(0);
+  
+   cs->cd(1); hDat->Draw("hist"); cs->Update(); hs->Draw("same hist");
+ 
+   legend->Draw(); 
+   gPad->Update();
+   gPad->SetLogy(1);
+  
+   
+    // inv mass loose cuts
     
-    hDat_mass->SetXTitle("Mass [GeV/C^2]");
-    hDat_mass->SetYTitle("Entries");
-    hDat_mass->SetTitle("Muon Pair Invariant Mass");
-   cs->cd(1); hDat->Draw("e"); cs->Update(); hs->Draw("same hist");T.DrawTextNDC(.5,.95,"Default drawing option"); 
- //hDat_mass->Draw("e"); cs->Update(); hs_mass->Draw("same hist"); hDat_mass->Draww("e same")
-legend->Draw(); 
+   TCanvas *cs_mass = new TCanvas("cs_mass","cs_mass",10,10,700,900);
+   TText T; T.SetTextFont(42); T.SetTextAlign(21);
+    
+   auto legend_mass = new TLegend(0.5,0.7,0.9,0.9);
+  
+   legend_mass->AddEntry(hDY_mass,"Z/#gamma*#rightarrow #mu#mu","f");
+   legend_mass->AddEntry(hWW_mass,"WW","f");
+   legend_mass->AddEntry(hWZ_mass,"WZ","f");
+   legend_mass->AddEntry(hZZT_mass,"ZZ","f");
+   legend_mass->AddEntry(hDat_mass,"Data","p");
+  
+   legend_mass->SetFillColor(0);
+  
+   cs_mass->cd(1); hDat_mass->Draw("hist"); cs_mass->Update(); hs_mass->Draw("same hist");
+ 
+   legend_mass->Draw(); 
+   
+   gPad->Update();
+   gPad->SetLogy(1);
+   
+    // inv mass all cuts
+    
+   TCanvas *cs_massLC = new TCanvas("cs_massLC","cs_massLC",10,10,700,900);
+   TText T; T.SetTextFont(42); T.SetTextAlign(21);
+    
+   auto legend_massLC = new TLegend(0.5,0.7,0.9,0.9);
+  
+   legend_massLC->AddEntry(hDY_mass,"Z/#gamma*#rightarrow #mu#mu","f");
+   legend_massLC->AddEntry(hWW_mass,"WW","f");
+   legend_massLC->AddEntry(hWZ_mass,"WZ","f");
+   legend_massLC->AddEntry(hZZT_mass,"ZZ","f");
+   legend_massLC->AddEntry(hDat_mass,"Data","p");
+  
+   legend_massLC->SetFillColor(0);
+  
+   cs_massLC->cd(1); hDat_massLC->Draw("hist"); cs_massLC->Update(); hs_massLC->Draw("same hist");
+ 
+   legend_massLC->Draw(); 
+   
+   
+   gPad->Update();
+   gPad->SetLogy(1);
+   
+       // inv mass lw
+    
+   TCanvas *cs_massLW = new TCanvas("cs_massLW","cs_massLW",10,10,700,900);
+   TText T; T.SetTextFont(42); T.SetTextAlign(21);
+    
+   auto legend_massLW = new TLegend(0.5,0.7,0.9,0.9);
+  
+   legend_massLW->AddEntry(hDY_mass,"Z/#gamma*#rightarrow #mu#mu","f");
+   legend_massLW->AddEntry(hWW_mass,"WW","f");
+   legend_massLW->AddEntry(hWZ_mass,"WZ","f");
+   legend_massLW->AddEntry(hZZT_mass,"ZZ","f");
+   legend_massLW->AddEntry(hDat_mass,"Data","p");
+  
+   legend_massLW->SetFillColor(0);
+  
+   cs_massLW->cd(1); hDat_massLW->Draw("hist"); cs_massLW->Update(); hs_massLW->Draw("same hist");
+ 
+   legend_massLW->Draw(); 
+   
+   
+   gPad->Update();
+   gPad->SetLogy(1);
+   
+     // d0_err
+    
+   TCanvas *cs_d0_err = new TCanvas("cs_d0_err","cs_d0_err",10,10,700,900);
+   TText T; T.SetTextFont(42); T.SetTextAlign(21);
+    
+   auto legend_d0_err = new TLegend(0.5,0.7,0.9,0.9);
+  
+   legend_d0_err->AddEntry(hDY_mass,"Z/#gamma*#rightarrow #mu#mu","f");
+   legend_d0_err->AddEntry(hWW_mass,"WW","f");
+   legend_d0_err->AddEntry(hWZ_mass,"WZ","f");
+   legend_d0_err->AddEntry(hZZT_mass,"ZZ","f");
+   legend_d0_err->AddEntry(hDat_mass,"Data","p");
+  
+   legend_d0_err->SetFillColor(0);
+  
+   cs_d0_err->cd(1); hDat_d0_err->Draw("hist"); cs_d0_err->Update(); hs_d0_err->Draw("same hist");
+ 
+   legend_d0_err->Draw(); 
+   
+   
+   gPad->Update();
+   gPad->SetLogy(1);
+   
+    // d0_errLC
+    
+   TCanvas *cs_d0_errLC = new TCanvas("cs_d0_errLC","cs_d0_errLC",10,10,700,900);
+   TText T; T.SetTextFont(42); T.SetTextAlign(21);
+    
+   auto legend_d0_errLC = new TLegend(0.5,0.7,0.9,0.9);
+  
+   legend_d0_errLC->AddEntry(hDY_mass,"Z/#gamma*#rightarrow #mu#mu","f");
+   legend_d0_errLC->AddEntry(hWW_mass,"WW","f");
+   legend_d0_errLC->AddEntry(hWZ_mass,"WZ","f");
+   legend_d0_errLC->AddEntry(hZZT_mass,"ZZ","f");
+   legend_d0_errLC->AddEntry(hDat_mass,"Data","p");
+  
+   legend_d0_errLC->SetFillColor(0);
+  
+   cs_d0_errLC->cd(1); hDat_d0_errLC->Draw("hist"); cs_d0_errLC->Update(); hs_d0_errLC->Draw("same hist");
+ 
+   legend_d0_errLC->Draw(); 
+   
+   
    gPad->Update();
    gPad->SetLogy(1);
    return cs;
