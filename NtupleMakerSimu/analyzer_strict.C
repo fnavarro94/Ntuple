@@ -60,6 +60,7 @@ void analyzer_strict::SlaveBegin(TTree * /*tree*/)
    matchCount = 0;
    triggerTurnOns = 0;
    triggerObjects = 0;
+   effCount = 0;
    TH1::AddDirectory(true);
    vuelta = 0;
 }
@@ -89,6 +90,13 @@ bool standardCuts = cmsStandardCuts(vert_numTrack[0], Ev_Branch_numTrack, vertex
 reset();
 
 
+//  
+
+
+
+//
+
+
 //cout<<"number of trigger objects "<<Ev_Branch_numTrigObjM<<endl;
 
 nEvents->Fill(1); 
@@ -97,10 +105,44 @@ if (triggerMActivated)
 	triggerTurnOns++;
 }
 
-triggerObjects = triggerObjects + Ev_Branch_numTrigObjM;
-if (standardCuts)   // quitar true
-{   
 
+//****** LeeWick mod
+
+                       
+int ctemp = 0;
+int check = 0;
+for (int i = 0; i< Ev_Branch_numTrack; i++)
+{
+	
+
+	track_px[i] = -track_px[i];
+	track_py[i] = -track_py[i];
+	track_pz[i] = -track_pz[i];
+	
+	//if (track_nHits[i] > 5 && track_n3DHits[i]>1)
+	if(track_pt[i]>33)
+	{  
+		  // cout<<track_nHits[i]<<endl;
+	
+			ctemp++;
+		
+	}
+	
+	
+	
+}
+
+if (ctemp >  1)
+{
+	effCount++;
+}
+
+
+triggerObjects = triggerObjects + Ev_Branch_numTrigObjM;
+if (standardCuts /*&& triggerMActivated*/)   // quitar true
+{   
+    
+     
 	for (int i = 0 ; i< Ev_Branch_numTrack; i++)
 	{
 
@@ -272,7 +314,9 @@ bool analyzer_strict::matchingCuts( bool purity, double pt, int hits, double eta
 	
 	
 		
-	  if(purity && pt > 33 && hits >= 6   && eta < 2 && impSig > 2 )
+	  //if(purity && pt > 33 && hits >= 6   && eta < 2 && impSig > 2 )
+	  if(true)
+	  
 	  {
 		  ret = true;
 
@@ -395,7 +439,7 @@ bool analyzer_strict::cmsStandardCuts(Int_t numVertTracks, Int_t numTracks, Doub
 	}
 	
 	//cout<<numTracks<<" "<< distCount<<" "<<highPurity<<" "<< moreThan25percent<<endl;
-	if (numTracks > 4 && distCount >4 && moreThan25percent)
+	if (numTracks > 4 /*&& distCount >4*/ /*&&  moreThan25percent*/)
 	{
 		ret  = true;
 	}
@@ -446,9 +490,10 @@ void analyzer_strict::SlaveTerminate()
 void analyzer_strict::Terminate()
 {
 	//cout<<vuelta<<endl;
-	cout<<"Number of matches: "<<matchCount<<endl;
-	cout<<"Trigger turnons: "<<triggerTurnOns<<" efficiency: "<<triggerTurnOns/4000.0<<endl;
-	cout<<"NUmber of trigger objects "<<triggerObjects<<"    "<<triggerObjects/(4000.0*4)<<endl;
+	cout<<"Number of matches: "<<matchCount<<" efficiency  "<<matchCount/(4000.0*4)<<endl;
+	cout<<"Trigger turnons: "<<triggerTurnOns<<" efficiency:   "<<triggerTurnOns/4000.0<<endl;
+	cout<<"NUmber of trigger objects "<<triggerObjects<<"     "<<triggerObjects/(4000.0*4)<<endl;
+	cout<<"eff Count: "<<effCount<<endl;
 	file->Write();
 	file->Close();
    // The Terminate() function is the last function to be called during

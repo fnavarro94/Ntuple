@@ -270,7 +270,7 @@ cout<<"genZZ:  "<<genMuBar_pt[0]<<" "<<genMuBar_pt[1]<<" "<<genMu_pt[0]<<" "<<ge
 bool sw = false;
 
 
-
+int lxyDist = 8;
 
 sw = ZZMuWasFound && ZZMuBarWasFound;
 if (ZZMuBarWasFound)
@@ -300,7 +300,7 @@ if (! altCompare ||true)
 	
 	int interval = 400;
 	
-	if (track_pt[gPtIndexPos[0]]>33 ) {
+	if (track_pt[gPtIndexPos[0]]>33  ) {
 	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMassFull->Fill(iM);
@@ -309,77 +309,77 @@ if (! altCompare ||true)
    }
 	
 	// inv mas histograms are filled
-	if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < 0) {
+	if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < 0 && track_lxy1[gPtIndexPos[0]]/track_lxyError[gPtIndexPos[0]] > lxyDist) {
 	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass->Fill(iM);
 	
 	
    }
-   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval) {
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval && track_lxy1[gPtIndexPos[0]]/track_lxyError[gPtIndexPos[0]] > lxyDist) {
 	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass1->Fill(iM);
 	
 	
    }
-   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*2) {
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*2  && track_lxy1[gPtIndexPos[0]]/track_lxyError[gPtIndexPos[0]] > lxyDist) {
 	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass2->Fill(iM);
 	
 	
    }
-   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*3) {
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*3 && track_lxy1[gPtIndexPos[0]]/track_lxyError[gPtIndexPos[0]] > lxyDist) {
 	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass3->Fill(iM);
 	
 	
    }
-   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*4) {
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*4 && track_lxy1[gPtIndexPos[0]]/track_lxyError[gPtIndexPos[0]] > lxyDist) {
 	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass4->Fill(iM);
 	
 	
    }
-   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*5) {
+   if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*5 && track_lxy1[gPtIndexPos[0]]/track_lxyError[gPtIndexPos[0]] > lxyDist) {
 	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass5->Fill(iM);
 	
 	
    }
-    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*6) {
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*6 && track_lxy1[gPtIndexPos[0]]/track_lxyError[gPtIndexPos[0]] > lxyDist) {
 	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass6->Fill(iM);
 	
 	
    }
-    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*7) {
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*7 && track_lxy1[gPtIndexPos[0]]/track_lxyError[gPtIndexPos[0]] > lxyDist) {
 	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass7->Fill(iM);
 	
 	
    }
-    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*8) {
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*8 && track_lxy1[gPtIndexPos[0]]/track_lxyError[gPtIndexPos[0]] > lxyDist) {
 	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass8->Fill(iM);
 	
 	
    }
-    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*9) {
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*9 && track_lxy1[gPtIndexPos[0]]/track_lxyError[gPtIndexPos[0]] > lxyDist) {
 	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass9->Fill(iM);
 	
 	
    }
-    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*10) {
+    if (track_pt[gPtIndexPos[0]]>33  && dotP(pV,sv1,sv2,p1,p2) < -interval*10 && track_lxy1[gPtIndexPos[0]]/track_lxyError[gPtIndexPos[0]] > lxyDist) {
 	
 	iM = invMass(track_px[gPtIndexPos[0]], track_py[gPtIndexPos[0]], track_pz[gPtIndexPos[0]],track_px[gPtIndexNeg[0]], track_py[gPtIndexNeg[0]], track_pz[gPtIndexNeg[0]]);
 	t_invMass10->Fill(iM);

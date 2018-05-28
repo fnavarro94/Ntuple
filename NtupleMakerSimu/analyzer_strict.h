@@ -136,6 +136,7 @@ public :
   // root file
   int matchCount;
   int triggerTurnOns;
+  int effCount;
   int triggerObjects;
   TFile * file;
   
