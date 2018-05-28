@@ -51,11 +51,11 @@
    hDat->SetFillColor(1);
    hDat_mass->SetFillColor(1);
    
-  double DY_scale = lumi*3048.0/(20987986);
-  double ZZ_scale = lumi*5.9/(3899263);
-  double WZ_scale = lumi*18.2/(1284698);
-  double WW_scale = lumi*42.0/(193524);
-  double Dat_scale =1.0;
+  double DY_scale = lumi*3048.0/(489661);
+  double ZZ_scale = lumi*5.9/(1095073);
+  double WZ_scale = lumi*18.2/(1210588);
+  double WW_scale = lumi*42.0/(3935865);
+  double Dat_scale = lumi*1.0/4000;
    
    hDY->Scale(DY_scale);
    hZZT->Scale(ZZ_scale); 
