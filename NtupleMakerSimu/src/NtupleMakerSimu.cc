@@ -123,6 +123,8 @@ class NtupleMakerSimu : public edm::EDAnalyzer {
 		  Int_t track_n3DHits[entryMax] = {0};
 		  Double_t track_found[entryMax] = {0};
 		  Double_t track_dxy[entryMax] = {0};
+		  Double_t track_d0[entryMax] = {0};
+		  Double_t track_d0Error[entryMax] = {0};
 		  Double_t track_dxyError[entryMax] = {0};
 		  Double_t track_lxy1[entryMax] = {0};
 		  Double_t track_lxy1Error[entryMax] = {0};
@@ -744,6 +746,8 @@ else
 		   event.track_n3DHits[i] = itTrack->hitPattern().numberOfValidPixelHits();
 		   event.track_found[i] = itTrack->found();
 		   event.track_dxy[i] = itTrack->dxy();
+		   event.track_d0[i] = itTrack->d0();
+		   event.track_d0Error[i] = itTrack->d0Error();
 		   event.track_dxyError[i] = itTrack->dxyError();
 		   event.track_lxy1[i] = itTrack->dxy(vertex1);
 		   event.track_lxy1Error[i] = itTrack->dxyError();
@@ -916,6 +920,8 @@ NtupleMakerSimu::beginJob()
            mtree->Branch("track_n3DHits", event.track_n3DHits, "track_n3DHits[numTrack]/I");
            mtree->Branch("track_dxy", event.track_dxy, "track_dxy[numTrack]/D");
            mtree->Branch("track_dxyError", event.track_dxyError, "track_dxyError[numTrack]/D");
+           mtree->Branch("track_d0", event.track_d0, "track_d0[numTrack]/D");
+           mtree->Branch("track_d0Error", event.track_d0Error, "track_d0Error[numTrack]/D");
            mtree->Branch("track_lxy1", event.track_lxy1, "track_lxy1[numTrack]/D");
            mtree->Branch("track_lxy1Error", event.track_lxy1Error, "track_lxy1Error[numTrack]/D");
            mtree->Branch("track_lxy2", event.track_lxy2, "track_lxy2[numTrack]/D");

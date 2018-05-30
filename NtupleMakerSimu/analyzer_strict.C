@@ -111,9 +111,6 @@ if (triggerMActivated)
 
 //****** LeeWick mod
 
-     /*                  
-int ctemp = 0;
-int check = 0;
 for (int i = 0; i< Ev_Branch_numTrack; i++)
 {
 	
@@ -121,26 +118,11 @@ for (int i = 0; i< Ev_Branch_numTrack; i++)
 	track_px[i] = -track_px[i];
 	track_py[i] = -track_py[i];
 	track_pz[i] = -track_pz[i];
-	
-	//if (track_nHits[i] > 5 && track_n3DHits[i]>1)
-	if(track_pt[i]>33)
-	{  
-		  // cout<<track_nHits[i]<<endl;
-	
-			ctemp++;
-		
-	}
-	
-	
+
 	
 }
 
-if (ctemp >  1)
-{
-	effCount++;
-}
 
-*/
 triggerObjects = triggerObjects + Ev_Branch_numTrigObjM;
 if (standardCuts && triggerMActivated)   // quitar true
 {   
