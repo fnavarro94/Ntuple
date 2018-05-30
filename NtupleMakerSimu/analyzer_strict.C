@@ -46,7 +46,7 @@ void analyzer_strict::SlaveBegin(TTree * /*tree*/)
 
    TString option = GetOption();
    
-   file = new TFile("exotic.root", "recreate");
+ file = new TFile("WZabs.root", "recreate");
    h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass (loose)", 100, 0 , 600);
    h_invMassLC = new TH1F ("InvMassLC", "Lepton Pair Invariant Mass", 100, 0 , 600);
    h_invMassLW = new TH1F ("InvMassLW", "Lepton Pair Invariant Mass (L-W cuts)", 100, 0 , 600);
@@ -237,7 +237,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
 					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
 					 h_invMass->Fill(invariantMass);
-					 h_lxy->Fill(track_lxy1[i]);
+					 h_lxy->Fill((track_lxy1[i]));
 					 h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
 					 h_d0_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
 					 h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
