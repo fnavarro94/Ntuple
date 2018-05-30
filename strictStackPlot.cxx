@@ -95,6 +95,37 @@
    hWW_d0_errLC->Sumw2();
    hDat_d0_errLC->Sumw2();
    
+   hDY->SetLineColor(1);
+   hZZT->SetLineColor(1);
+   hWZ->SetLineColor(1);
+   hWW->SetLineColor(1); 
+   
+    hDY_mass->SetLineColor(1);
+   hZZT_mass->SetLineColor(1);
+   hWZ_mass->SetLineColor(1);
+   hWW_mass->SetLineColor(1); 
+   
+   hDY_massLC->SetLineColor(1);
+   hZZT_massLC->SetLineColor(1);
+   hWZ_massLC->SetLineColor(1);
+   hWW_massLC->SetLineColor(1); 
+   
+   hDY_massLW->SetLineColor(1);
+   hZZT_massLW->SetLineColor(1);
+   hWZ_massLW->SetLineColor(1);
+   hWW_massLW->SetLineColor(1); 
+   
+   hDY_d0_err->SetLineColor(1);
+   hZZT_d0_err->SetLineColor(1);
+   hWZ_d0_err->SetLineColor(1);
+   hWW_d0_err->SetLineColor(1); 
+   
+   hDY_d0_errLC->SetLineColor(1);
+   hZZT_d0_errLC->SetLineColor(1);
+   hWZ_d0_errLC->SetLineColor(1);
+   hWW_d0_errLC->SetLineColor(1); 
+  
+   
    hDY->SetFillColor(2);
    hZZT->SetFillColor(kGreen +3); 
    hWZ->SetFillColor(kCyan -9); 
@@ -138,11 +169,13 @@
    hDat_d0_errLC->SetLineColor(2);
    
    
-  double DY_scale = lumi*3048.0/(489661);
-  double ZZ_scale = lumi*5.9/(1095073);
-  double WZ_scale = lumi*18.2/(1210588);
-  double WW_scale = lumi*42.0/(3935865);
-  double Dat_scale = lumi*10;
+  double DY_scale = lumi*3048.0/(hDY->Integral());
+  double ZZ_scale = lumi*5.9/(hZZT->Integral());
+  double WZ_scale = lumi*18.2/(hWZ->Integral());
+  double WW_scale = lumi*42.0/(hWW->Integral());
+  double Dat_scale = lumi*1/(hDat->Integral());
+   
+   cout<<hDY_d0_err->Integral(-99999999,99999999)<<endl;
    
    hDY->Scale(DY_scale);
    hZZT->Scale(ZZ_scale); 
@@ -275,8 +308,13 @@
    legend->AddEntry(hDat_mass,"Data","p");
   
    legend->SetFillColor(0);
-  
-   cs->cd(1); hDat->Draw("hist"); cs->Update(); hs->Draw("same hist");
+ 
+   hDat->SetMaximum(2*hs->GetMaximum());
+   hs->SetTitle("Transverse decay length significance");
+   hDat->SetXTitle("L_{xy}/#sigma_{xy}");
+   hDat->SetYTitle("Entries");
+   cs->cd(1); hDat->Draw("hist "); cs->Update(); hs->Draw("same e hist");
+   //cs->cd(1);  hs->Draw(" hist"); cs->Update(); hDat->Draw("hist same");
  
    legend->Draw(); 
    gPad->Update();
@@ -287,7 +325,7 @@
     
    TCanvas *cs_mass = new TCanvas("cs_mass","cs_mass",10,10,700,900);
    TText T; T.SetTextFont(42); T.SetTextAlign(21);
-    
+    hs_mass->SetTitle("Muon Pair Invariant Mass (loose cuts)");
    auto legend_mass = new TLegend(0.5,0.7,0.9,0.9);
   
    legend_mass->AddEntry(hDY_mass,"Z/#gamma*#rightarrow #mu#mu","f");
@@ -297,8 +335,11 @@
    legend_mass->AddEntry(hDat_mass,"Data","p");
   
    legend_mass->SetFillColor(0);
-  
+   hDat_mass->SetMaximum(2*hs_mass->GetMaximum());
+   hDat_mass->SetXTitle("mass [GeV/c^{2}]");
+   hDat_mass->SetYTitle("Entries");
    cs_mass->cd(1); hDat_mass->Draw("hist"); cs_mass->Update(); hs_mass->Draw("same hist");
+   // cs->cd(1);  hs_mass->Draw(" hist"); cs->Update(); hDat_mass->Draw("hist same");
  
    legend_mass->Draw(); 
    
@@ -306,7 +347,7 @@
    gPad->SetLogy(1);
    
     // inv mass all cuts
-    
+    hs_massLC->SetTitle("Muon Pair Invariant Mass");
    TCanvas *cs_massLC = new TCanvas("cs_massLC","cs_massLC",10,10,700,900);
    TText T; T.SetTextFont(42); T.SetTextAlign(21);
     
@@ -319,8 +360,11 @@
    legend_massLC->AddEntry(hDat_mass,"Data","p");
   
    legend_massLC->SetFillColor(0);
-  
-   cs_massLC->cd(1); hDat_massLC->Draw("hist"); cs_massLC->Update(); hs_massLC->Draw("same hist");
+  hDat_massLC->SetMaximum(2*hs_massLC->GetMaximum());
+   hDat_massLC->SetXTitle("mass [GeV/c^{2}]");
+   hDat_massLC->SetYTitle("Entries");
+   //cs_massLC->cd(1); hDat_massLC->Draw("hist"); cs_massLC->Update(); hs_massLC->Draw("same hist");
+    cs->cd(1);  hs_massLC->Draw(" hist"); cs->Update(); hDat_massLC->Draw("hist same");
  
    legend_massLC->Draw(); 
    
@@ -330,6 +374,7 @@
    
        // inv mass lw
     
+   hs_massLW->SetTitle("Muon Pair Invariant Mass (Lee-Wick Cuts)"); 
    TCanvas *cs_massLW = new TCanvas("cs_massLW","cs_massLW",10,10,700,900);
    TText T; T.SetTextFont(42); T.SetTextAlign(21);
     
@@ -342,8 +387,11 @@
    legend_massLW->AddEntry(hDat_mass,"Data","p");
   
    legend_massLW->SetFillColor(0);
-  
+   hDat_massLW->SetMaximum(2*hs_massLW->GetMaximum());
+   hDat_massLW->SetXTitle("mass [GeV/c^{2}]");
+   hDat_massLW->SetYTitle("Entries");
    cs_massLW->cd(1); hDat_massLW->Draw("hist"); cs_massLW->Update(); hs_massLW->Draw("same hist");
+   //cs->cd(1);  hs_massLW->Draw(" hist"); cs->Update(); hDat_massLW->Draw("hist same");
  
    legend_massLW->Draw(); 
    
@@ -351,8 +399,8 @@
    gPad->Update();
    gPad->SetLogy(1);
    
-     // d0_err
-    
+    // d0_err
+   hs_d0_err->SetTitle("Transverse Impact Parameter Significance (loose cuts)");
    TCanvas *cs_d0_err = new TCanvas("cs_d0_err","cs_d0_err",10,10,700,900);
    TText T; T.SetTextFont(42); T.SetTextAlign(21);
     
@@ -365,8 +413,11 @@
    legend_d0_err->AddEntry(hDat_mass,"Data","p");
   
    legend_d0_err->SetFillColor(0);
-  
+   hDat_d0_err->SetMaximum(2*hs_d0_err->GetMaximum());
+   hDat_d0_err->SetXTitle("|d_{0}/#sigma_{0}|");
+   hDat_d0_err->SetYTitle("Entries");
    cs_d0_err->cd(1); hDat_d0_err->Draw("hist"); cs_d0_err->Update(); hs_d0_err->Draw("same hist");
+  // cs->cd(1);  hs_d0_err->Draw(" hist"); cs->Update(); hDat_d0_err->Draw("hist same");
  
    legend_d0_err->Draw(); 
    
@@ -375,8 +426,8 @@
    gPad->SetLogy(1);
    
     // d0_errLC
-    
-   TCanvas *cs_d0_errLC = new TCanvas("cs_d0_errLC","cs_d0_errLC",10,10,700,900);
+    hs_d0_errLC->SetTitle("Transverse Impact Parameter Significance");
+   TCanvas *cs_d0_errLC = new TCanvas("cs_d0_errLC","cs_d0_errLC_",10,10,700,900);
    TText T; T.SetTextFont(42); T.SetTextAlign(21);
     
    auto legend_d0_errLC = new TLegend(0.5,0.7,0.9,0.9);
@@ -388,8 +439,11 @@
    legend_d0_errLC->AddEntry(hDat_mass,"Data","p");
   
    legend_d0_errLC->SetFillColor(0);
-  
-   cs_d0_errLC->cd(1); hDat_d0_errLC->Draw("hist"); cs_d0_errLC->Update(); hs_d0_errLC->Draw("same hist");
+   hDat_d0_errLC->SetMaximum(2*hs_d0_errLC->GetMaximum());
+   hDat_d0_errLC->SetXTitle("|d_{0}/#sigma_{0}|");
+   hDat_d0_errLC->SetYTitle("Entries");
+     cs_d0_errLC->cd(1); hDat_d0_errLC->Draw("hist"); cs_d0_errLC->Update(); hs_d0_errLC->Draw("same hist");
+    //cs->cd(1);  hs_d0_errLC->Draw(" hist"); cs->Update(); hDat_d0_errLC->Draw("hist same");
  
    legend_d0_errLC->Draw(); 
    
