@@ -130,6 +130,7 @@ public :
 
   // Additional variables
   Int_t 		   matchedTrack[20000];
+  Int_t 		   matchedTrackLoose[20000];
   Int_t 		   matchedTrigObj[20000];
   Int_t 		   trackTrigObjIndex[20000];
   int vuelta;
@@ -149,10 +150,17 @@ public :
   TH1F * h_lxy_errLC;
   TH1F * h_lxy2_err;
   TH1F * h_lxy;
+  TH1F * h_lxyLoose;
   TH1F * h_d0_err;
   TH1F * h_d0_errLC;
   TH1F * h_conePt;
   TH1F * h_dot;
+  TH1F * h_chi2_NDF;
+  TH1F * h_delPhi;
+  TH1F * h_NumHits;
+  TH1F * h_cos;
+  
+  
  
    // List of branches
    TBranch        *b_Ev_Branch;   //!

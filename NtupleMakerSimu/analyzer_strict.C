@@ -58,7 +58,8 @@ void analyzer_strict::SlaveBegin(TTree * /*tree*/)
    h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
    h_dot = new TH1F ("h_dot","Dot product between lepton pair momentum and secVert-primVert distance",100,-10000,10000);
    nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
-  //matchedTrack[ = {0};
+   
+   
   
    matchCount = 0;
    triggerTurnOns = 0;
@@ -134,6 +135,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 		for (int j = 0; j< Ev_Branch_numTrigObjM; j++)
 		{
 			bool lepMatch =matchingCuts( track_highPurity[i]  , track_pt[i] , track_nHits[i],track_n3DHits[i], fabs(track_eta[i]), fabs(track_dxy[i]/track_dxyError[i]));
+			bool lepMatchLoose =matchingCutsLoose( track_highPurity[i]  , track_pt[i] , track_nHits[i],track_n3DHits[i], fabs(track_eta[i]));
 		
 		  
 		   if (lepMatch)
@@ -141,7 +143,15 @@ if (standardCuts && triggerMActivated)   // quitar true
 			   if(deltaR(track_phi[i], track_eta[i], trigObjM_phi[j], trigObjM_eta[j])< 0.1 )
 			   {   matchCount++;
 				   matchedTrack[i] = 1;
-			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
+			      
+			   }
+			   
+		   }
+		    if (lepMatchLoose)
+		   {  
+			   if(deltaR(track_phi[i], track_eta[i], trigObjM_phi[j], trigObjM_eta[j])< 0.1 )
+			   {   
+				   matchedTrackLoose[i] = 1;
 			       trackTrigObjIndex[i] = j;
 			   }
 			   
@@ -157,10 +167,10 @@ if (standardCuts && triggerMActivated)   // quitar true
 	
 	for ( int i = 0;  i < Ev_Branch_numTrack; i++)
 	{
-		if ( matchedTrack[i] ==1 && track_charge[i] == 1 )
+		if ( matchedTrackLoose[i] ==1 && track_charge[i] == 1 )
 		{ 
 			for (int j =0; j< Ev_Branch_numTrack; j++)
-			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] && deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) >0.2)
+			if ( matchedTrackLoose[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] && deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) >0.2)
 			{  
 				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) <5 )
 				{       
@@ -180,9 +190,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 					//cout<<alpha<<endl;
 					//cout<<theta*180/(3.1415)<<endl;
 					
-					//if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/)
-					if (conePt_var < 4 && alpha > -0.95/*0.8 ipara electron*/)
-					
+					if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/)
 					{
 						double invariantMass, sumPt;
 					 invariantMass = invMass(track_px[i], track_py[i], track_pz[i], track_px[j], track_py[j], track_pz[j]);
@@ -212,23 +220,14 @@ if (standardCuts && triggerMActivated)   // quitar true
 					
 					
 					
-					h_dot->Fill(dot);
-					 
-					 //cout<<invariantMass<<" "<<theta*180/(3.1415)<<endl;
-					 //cout<<track_lxy1[i]<<endl;
-					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
-					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
-					 h_invMass->Fill(invariantMass);
-					 h_lxy->Fill(track_lxy1[i]);
-					 h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
-					 h_d0_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
-					 h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
+					
 					 
 					 // ***************** Histograms with life time related cuts
 					 
-					 if (fabs(track_lxy1[i]/track_dxyError[i])>5)
+					 if (fabs(track_lxy1[i]/track_dxyError[i])>5 && fabs(track_d0[i]/track_d0Error[i])>2)
 					 {
 							h_invMassLC->Fill(invariantMass);
+							h_lxy->Fill(track_lxy1[i]);
 							
 							if (dot<-400)
 							{
@@ -239,16 +238,26 @@ if (standardCuts && triggerMActivated)   // quitar true
 					 }
 					 
 					 
-					 //****************** End Histograms with....
+					 //****************** End Histograms with lifetime related Cuts
 					 
+					 
+					 //***************** Histograms with loose cuts
+					h_dot->Fill(dot); 
+					h_invMass->Fill(invariantMass);
+					h_lxyLoose->Fill(track_lxy1[i]);
+					h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
+					h_d0_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
+					h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
+					 
+					 
+					 //***************** End Histograms with loose cuts
 					 
 					}
 					
-	                                //cout<<invariantMass<<endl;				
+	                        				
 					 
 					sumPt = conePt(i,track_eta[i],track_phi[i], Ev_Branch_numTrack, track_eta, track_phi, track_pt);
-					//cout<<sumPt<<endl;
-					 h_conePt->Fill(sumPt); 
+					h_conePt->Fill(sumPt); 
 					 
 				}
 			}
@@ -331,12 +340,32 @@ bool analyzer_strict::matchingCuts( bool purity, double pt, int hits, int hits3D
 	
 	return ret;
 }
+bool analyzer_strict::matchingCutsLoose( bool purity, double pt, int hits, int hits3D, double eta)
+{
+	bool ret = false;
+	
+	
+		
+	  if(purity && pt > 33 && hits >= 6   && eta < 2  )
+	  if(true)
+	  
+	  {
+		  ret = true;
+
+	  }	
+	 
+	  
+
+	
+	return ret;
+}
 
 void analyzer_strict::reset()
 {
 	for (int i = 0; i< Ev_Branch_numTrack; i++)
 	{
 		matchedTrack[i] = 0;
+		matchedTrackLoose[i] = 0;
 	}
 	for (int i = 0; i< Ev_Branch_numTrigObjM; i++)
 	{
