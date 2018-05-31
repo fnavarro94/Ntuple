@@ -46,20 +46,28 @@ void analyzer_strict::SlaveBegin(TTree * /*tree*/)
 
    TString option = GetOption();
    
- file = new TFile("lw.root", "recreate");
-   h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass (loose)", 100, 0 , 500);
-   h_invMassLC = new TH1F ("InvMassLC", "Lepton Pair Invariant Mass", 100, 0 , 500);
-   h_invMassLW = new TH1F ("InvMassLW", "Lepton Pair Invariant Mass (L-W cuts)", 100, 0 , 500);
+   file = new TFile("exotic.root", "recreate");
+   
+   h_invMassLoose = new TH1F ("InvMassLoose", "Lepton Pair Invariant Mass (loose)", 100, 0 , 600);
+   h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+   h_invMassLW = new TH1F ("InvMassLW", "Lepton Pair Invariant Mass (L-W cuts)", 100, 0 , 600);
    h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
+   h_lxyLoose = new TH1F ("lxyLoose", "Transverse decay length (loose)", 20, 0 , 20);
    h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
+   h_lxy_errLoose = new TH1F ("lxy_errLoose", "Transverse decay length significance (loose)", 20, 0 , 20);
    h_lxy2_err = new TH1F ("lxy2_err", "Transverse decay length significance", 20, 0 , 20);
-   h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
-   h_d0_errLC = new TH1F ("d0_errLC", "Impact parameter / Standar Deviation", 100, 0 , 20);
+   h_d0_errLoose = new TH1F ("d0_errLoose", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
+   h_d0_err = new TH1F ("d0_errLC", "Impact parameter / Standar Deviation", 100, 0 , 20);
    h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
-   h_chi2_ndf = new TH1F ("chi2_ndf", "#chi^2 / NDF", 100, 0 , 20);
+   h_cos = new TH1F ("cos", "Cos(#alpha) lepton pairs", 100, -1.2 , 1.2);
+   h_cosLoose = new TH1F ("cosLoose", "Cos(#alpha) lepton pairs (loose)", 100, -1.2 , 1.2);
+   h_delPhi = new TH1F ("delPhi", "lep Pt and vertex distance vector angle", 100, -4 , 4);
+   h_delPhiLoose = new TH1F ("delPhiLoose", "lep Pt and vertex distance vector angle (loose)", 100, -4 , 4);
+   h_chi2_NDF = new TH1F ("chi2_NDF", "#chi^{2}/NDF", 100, 0 , 20);
+   h_chi2_NDFLoose = new TH1F ("chi2_NDFLoose", "#chi^{2}/NDF (loose)", 100, 0 , 20);
+   h_numHitsLoose = new TH1F ("numHitsLoose", "Number of tracker hits between lepton pairs", 100, 0 , 20);
    h_dot = new TH1F ("h_dot","Dot product between lepton pair momentum and secVert-primVert distance",100,-10000,10000);
    nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
-  //matchedTrack[ = {0};
   
    matchCount = 0;
    triggerTurnOns = 0;
@@ -112,7 +120,7 @@ if (triggerMActivated)
 
 //****** LeeWick mod
 
-                      
+     /*                  
 int ctemp = 0;
 int check = 0;
 for (int i = 0; i< Ev_Branch_numTrack; i++)
@@ -122,14 +130,26 @@ for (int i = 0; i< Ev_Branch_numTrack; i++)
 	track_px[i] = -track_px[i];
 	track_py[i] = -track_py[i];
 	track_pz[i] = -track_pz[i];
-
+	
+	//if (track_nHits[i] > 5 && track_n3DHits[i]>1)
+	if(track_pt[i]>33)
+	{  
+		  // cout<<track_nHits[i]<<endl;
+	
+			ctemp++;
+		
+	}
+	
 	
 	
 }
 
+if (ctemp >  1)
+{
+	effCount++;
+}
 
-
-
+*/
 triggerObjects = triggerObjects + Ev_Branch_numTrigObjM;
 if (standardCuts && triggerMActivated)   // quitar true
 {   
@@ -140,21 +160,19 @@ if (standardCuts && triggerMActivated)   // quitar true
 
 		for (int j = 0; j< Ev_Branch_numTrigObjM; j++)
 		{
-			bool lepMatch =matchingCuts( track_highPurity[i]  , track_pt[i] , track_nHits[i],track_n3DHits[i], fabs(track_eta[i]), fabs(track_dxy[i]/track_dxyError[i]));
-			bool lepMatchLoose =matchingCutsLoose(track_highPurity[i]  , track_pt[i] , track_nHits[i],track_n3DHits[i], fabs(track_eta[i]));
+			bool lepMatch =matchingCuts( track_highPurity[i]  , track_pt[i] , track_nHits[i],track_n3DHits[i], fabs(track_eta[i]));
 		
 		  
-		   if (lepMatchLoose)
+		   if (lepMatch)
 		   {  
 			   if(deltaR(track_phi[i], track_eta[i], trigObjM_phi[j], trigObjM_eta[j])< 0.1 )
 			   {   matchCount++;
-				    matchedTrackLoose[i] = 1;
 				   matchedTrack[i] = 1;
-			      
+			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
+			       trackTrigObjIndex[i] = j;
 			   }
 			   
 		   }
-		  
 		  
 		}
 	}
@@ -223,28 +241,36 @@ if (standardCuts && triggerMActivated)   // quitar true
 					
 					h_dot->Fill(dot);
 					 
-					 //cout<<invariantMass<<" "<<theta*180/(3.1415)<<endl;
-					 //cout<<track_lxy1[i]<<endl;
-					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
-					 //cout<<sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))<<"   "<<track_lxy1[i]<<" "<<abs(sqrt((track_vx[i]-vertex_x[0])*(track_vx[i]-vertex_x[0])+(track_vy[i] -vertex_y[0])*(track_vy[i] -vertex_y[0]))-track_lxy1[i])/track_lxy1[i]<<endl;
-					 h_invMass->Fill(invariantMass);
-					 h_lxy->Fill(track_lxy1[i]);
-					 h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
-					 h_d0_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
-					 h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
-					 h_chi2_ndf->Fill(track_chi2[i]/track_ndof[i]);
+					//***************** Histograms with loose cuts
+					h_dot->Fill(dot); 
+					h_invMassLoose->Fill(invariantMass);
+					h_lxyLoose->Fill(track_lxy1[i]);
+					h_lxy_errLoose->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
+					h_chi2_NDFLoose->Fill(track_chi2[i]/track_ndof[i]);
+					h_d0_errLoose->Fill(fabs(track_dxy[i]/track_dxyError[i]));
+					h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
+					h_delPhiLoose->Fill(1);
+					h_cosLoose->Fill(1);
+					h_numHitsLoose->Fill(track_nHits[i]+track_nHits[j]);
+					 
 					 // ***************** Histograms with life time related cuts
 					 
-					 if (fabs(track_lxy1[i]/track_dxyError[i])>5)
+					 if (fabs(track_lxy1[i]/track_dxyError[i])>5 && fabs(track_dxy[i]/track_dxyError[i]) > 2)
 					 {
-							h_invMassLC->Fill(invariantMass);
+							h_invMass->Fill(invariantMass);
+							h_lxy->Fill(track_lxy1[i]);
+							h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
+							h_chi2_NDF->Fill(track_chi2[i]/track_ndof[i]);
+							h_delPhi->Fill(1);
+							h_cos->Fill(1);
+							h_d0_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
 							
 							if (dot<-400)
 							{
 								h_invMassLW->Fill(invariantMass);
 							}
 							
-							h_d0_errLC->Fill(fabs(track_dxy[i]/track_dxyError[i]));
+							
 					 }
 					 
 					 
@@ -321,32 +347,13 @@ double analyzer_strict::conePt(int forbiddenIndex1, int forbiddenIndex2, double 
 
 // resets arrays and variables to Null/0
 
-bool analyzer_strict::matchingCuts( bool purity, double pt, int hits, int hits3D, double eta, double impSig)
+bool analyzer_strict::matchingCuts( bool purity, double pt, int hits, int hits3D, double eta)
 {
 	bool ret = false;
 	
 	
 		
-	  if(purity && pt > 33 && hits >= 6   && eta < 2 && impSig > 2 )
-	  if(true)
-	  
-	  {
-		  ret = true;
-
-	  }	
-	 
-	  
-
-	
-	return ret;
-}
-bool analyzer_strict::matchingCutsLoose( bool purity, double pt, int hits, int hits3D, double eta)
-{
-	bool ret = false;
-	
-	
-		
-	  if(purity && pt > 33 && hits >= 6   && eta < 2 )
+	  if(purity && pt > 33 && hits >= 6   && eta < 2  )
 	  if(true)
 	  
 	  {

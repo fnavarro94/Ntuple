@@ -143,19 +143,25 @@ public :
   
   // Histograms
   TH1F * nEvents;  
+  TH1F * h_invMassLoose;
   TH1F * h_invMass;
-  TH1F * h_invMassLC;
   TH1F * h_invMassLW;
+  TH1F * h_lxy_errLoose;
   TH1F * h_lxy_err;
-  TH1F * h_lxy_errLC;
   TH1F * h_lxy2_err;
   TH1F * h_lxy;
+  TH1F * h_lxyLoose;
   TH1F * h_d0_err;
-  TH1F * h_d0_errLC;
+  TH1F * h_d0_errLoose;
   TH1F * h_conePt;
-  TH1F * h_chi2_ndf;
   TH1F * h_dot;
- 
+  TH1F * h_chi2_NDF;
+  TH1F * h_chi2_NDFLoose;
+  TH1F * h_delPhi;
+  TH1F * h_delPhiLoose;
+  TH1F * h_numHitsLoose;
+  TH1F * h_cos;
+  TH1F * h_cosLoose;
    // List of branches
    TBranch        *b_Ev_Branch;   //!
    TBranch        *b_vert_numTrack;   //!
