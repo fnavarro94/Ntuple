@@ -57,12 +57,12 @@ void analyzer_strict::SlaveBegin(TTree * /*tree*/)
    h_lxy_errLoose = new TH1F ("lxy_errLoose", "Transverse decay length significance (loose)", 20, 0 , 20);
    h_lxy2_err = new TH1F ("lxy2_err", "Transverse decay length significance", 20, 0 , 20);
    h_d0_errLoose = new TH1F ("d0_errLoose", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
-   h_d0_err = new TH1F ("d0_errLC", "Impact parameter / Standar Deviation", 100, 0 , 20);
+   h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
    h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
-   h_cos = new TH1F ("cos", "Cos(#alpha) lepton pairs", 100, -1.2 , 1.2);
-   h_cosLoose = new TH1F ("cosLoose", "Cos(#alpha) lepton pairs (loose)", 100, -1.2 , 1.2);
-   h_delPhi = new TH1F ("delPhi", "lep Pt and vertex distance vector angle", 100, -4 , 4);
-   h_delPhiLoose = new TH1F ("delPhiLoose", "lep Pt and vertex distance vector angle (loose)", 100, -4 , 4);
+   h_cos = new TH1F ("cos", "Cos(#alpha) lepton pairs", 100, -1.1 , 1.1);
+   h_cosLoose = new TH1F ("cosLoose", "Cos(#alpha) lepton pairs (loose)", 100, -1.1 , 1.1);
+   h_delPhi = new TH1F ("delPhi", "lep Pt and vertex distance vector angle", 100, 0 , 1);
+   h_delPhiLoose = new TH1F ("delPhiLoose", "lep Pt and vertex distance vector angle (loose)", 100, 0 , 1);
    h_chi2_NDF = new TH1F ("chi2_NDF", "#chi^{2}/NDF", 100, 0 , 20);
    h_chi2_NDFLoose = new TH1F ("chi2_NDFLoose", "#chi^{2}/NDF (loose)", 100, 0 , 20);
    h_numHitsLoose = new TH1F ("numHitsLoose", "Number of tracker hits between lepton pairs", 100, 0 , 20);
@@ -195,7 +195,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 					double alpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
 					double theta = mTheta(track_px[i]+track_px[j], track_py[i]+track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]); 
 					double theta2 = mTheta(-track_px[i]-track_px[j], -track_py[i]-track_py[j],vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]);
-					
+					double cosAlpha = mCos(track_phi[i], track_eta[i], track_phi[j], track_eta[j]);
 					
 					double dot, iM;
 					
@@ -249,8 +249,8 @@ if (standardCuts && triggerMActivated)   // quitar true
 					h_chi2_NDFLoose->Fill(track_chi2[i]/track_ndof[i]);
 					h_d0_errLoose->Fill(fabs(track_dxy[i]/track_dxyError[i]));
 					h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
-					h_delPhiLoose->Fill(1);
-					h_cosLoose->Fill(1);
+					h_delPhiLoose->Fill(theta);
+					h_cosLoose->Fill(cosAlpha);
 					h_numHitsLoose->Fill(track_nHits[i]+track_nHits[j]);
 					 
 					 // ***************** Histograms with life time related cuts
@@ -261,8 +261,8 @@ if (standardCuts && triggerMActivated)   // quitar true
 							h_lxy->Fill(track_lxy1[i]);
 							h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
 							h_chi2_NDF->Fill(track_chi2[i]/track_ndof[i]);
-							h_delPhi->Fill(1);
-							h_cos->Fill(1);
+							h_delPhi->Fill(theta);
+							h_cos->Fill(cosAlpha);
 							h_d0_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
 							
 							if (dot<-400)
@@ -428,6 +428,10 @@ double analyzer_strict::deltaV(double vx1, double vy1, double vz1, double vx2, d
 double analyzer_strict::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, double obj2Eta)
 {
 	double dPhi = obj1Phi - obj2Phi;
+	if (abs(dPhi)>3.1415/2)
+	{
+		dPhi =  3.1415 -dPhi;
+	}
 	double dEta = obj1Eta - obj2Eta;
 	double dR = sqrt(dPhi*dPhi + dEta*dEta);
 	return dR;
