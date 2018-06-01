@@ -5,7 +5,7 @@ paramList = ["lxy","lxyLoose", "lxy_err","lxy_errLoose", "InvMass", "InvMassLoos
                "cos","cosLoose", "delPhi", "delPhiLoose","conePt", "chi2_NDF","chi2_NDF", "chi2_NDFLoose", "numHitsLoose", "h_dot"]
 
 dataSetList = ["ZZ", "WZ", "WW","DY"]
-dataSetColor = ["kGreen +3", "kCyan -9","",""]
+dataSetColor = ["kGreen +3", "kCyan -9","kMagenta -3","2"]
 otherSetList = ["ll","Dat"]
 mfile = open('plotter.cxx','w')
 
@@ -62,10 +62,38 @@ for param in paramList:
 	print >> mfile, "\n"
 	
 for param in paramList:
+	i = 0
 	for dset in dataSetList:
-			print >> mfile , "h"+dset+"_"+param+"->SetFillColor("+color+");"
+		print >> mfile , "h"+dset+"_"+param+"->SetFillColor("+dataSetColor[i]+");"
+		i = i+1
+	print >> mfile, "\n"
+
+
+print >> mfile, "double DY_scale = lumi*3048.0/(hDY->Integral());"
+print >> mfile, "double ZZ_scale = lumi*5.9/(hZZ->Integral());"
+print >> mfile, "double WZ_scale = lumi*18.2/(hWZ->Integral());"
+print >> mfile, "double WW_scale = lumi*42.0/(hWW->Integral());"
+print >> mfile, "\n"
+
+
+for param in paramList:
+	for dset in dataSetList:
+			print >> mfile , "h"+dset+"_"+param+"->Scale("+dset+"_scale);"
 		
 	print >> mfile, "\n"
+
+for param in paramList:
+	for dset in dataSetList:
+			print >> mfile , "h"+dset+"_"+param+"->SetStats(0);"
+		
+	print >> mfile, "\n"
+
+for param in paramList:
+	for dset in dataSetList:
+		print >> mfile , "hs_"+param+"->Add(h"+dset+"_"+param+");"
+		
+	print >> mfile, "\n"
+
 
 
 
