@@ -56,6 +56,8 @@ void analyzer_strict::SlaveBegin(TTree * /*tree*/)
    h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
    h_lxy_errLoose = new TH1F ("lxy_errLoose", "Transverse decay length significance (loose)", 20, 0 , 20);
    h_lxy2_err = new TH1F ("lxy2_err", "Transverse decay length significance", 20, 0 , 20);
+   h_dxy_errLoose = new TH1F ("d0_errLoose", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
+   h_dxy_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
    h_d0_errLoose = new TH1F ("d0_errLoose", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
    h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
    h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
@@ -248,7 +250,8 @@ if (standardCuts && triggerMActivated)   // quitar true
 					h_lxyLoose->Fill(track_lxy1[i]);
 					h_lxy_errLoose->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
 					h_chi2_NDFLoose->Fill(track_chi2[i]/track_ndof[i]);
-					h_d0_errLoose->Fill(fabs(track_dxy[i]/track_dxyError[i]));
+					h_d0_errLoose->Fill(fabs(track_d0[i]/track_d0Error[i]));
+					h_dxy_errLoose->Fill(fabs(track_dxy[i]/track_dxyError[i]));
 					h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
 					h_delPhiLoose->Fill(theta);
 					h_cosLoose->Fill(cosAlpha);
@@ -265,7 +268,8 @@ if (standardCuts && triggerMActivated)   // quitar true
 							h_chi2_NDF->Fill(track_chi2[i]/track_ndof[i]);
 							h_delPhi->Fill(theta);
 							h_cos->Fill(cosAlpha);
-							h_d0_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
+							h_d0_err->Fill(fabs(track_d0[i]/track_d0Error[i]));
+							h_dxy_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
 							
 							if (dot<-400)
 							{
