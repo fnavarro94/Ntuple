@@ -56,8 +56,8 @@ void analyzer_strict::SlaveBegin(TTree * /*tree*/)
    h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
    h_lxy_errLoose = new TH1F ("lxy_errLoose", "Transverse decay length significance (loose)", 20, 0 , 20);
    h_lxy2_err = new TH1F ("lxy2_err", "Transverse decay length significance", 20, 0 , 20);
-   h_dxy_errLoose = new TH1F ("d0_errLoose", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
-   h_dxy_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
+   h_dxy_errLoose = new TH1F ("dxy_errLoose", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
+   h_dxy_err = new TH1F ("dxy_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
    h_d0_errLoose = new TH1F ("d0_errLoose", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
    h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
    h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
