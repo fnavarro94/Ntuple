@@ -250,7 +250,7 @@ if (standardCuts && triggerActivated)   // quitar true
 					h_lxyLoose->Fill(track_lxy1[i]);
 					h_lxy_errLoose->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
 					h_chi2_NDFLoose->Fill(track_chi2[i]/track_ndof[i]);
-					h_d0_errLoose->Fill(fabs(track_d0[i]/track_d0Error[i]));
+					//h_d0_errLoose->Fill(fabs(track_d0[i]/track_d0Error[i]));
 					h_dxy_errLoose->Fill(fabs(track_dxy[i]/track_dxyError[i]));
 					h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
 					h_delPhiLoose->Fill(theta);
@@ -268,7 +268,7 @@ if (standardCuts && triggerActivated)   // quitar true
 							h_chi2_NDF->Fill(track_chi2[i]/track_ndof[i]);
 							h_delPhi->Fill(theta);
 							h_cos->Fill(cosAlpha);
-							h_d0_err->Fill(fabs(track_d0[i]/track_d0Error[i]));
+						//	h_d0_err->Fill(fabs(track_d0[i]/track_d0Error[i]));
 							h_dxy_err->Fill(fabs(track_dxy[i]/track_dxyError[i]));
 							
 							if (dot<-400)
