@@ -97,4 +97,32 @@ for param in paramList:
 
 
 
+
+for param in paramList:
+  print >> mfile, "TCanvas *cs_"+param+" = new TCanvas(\"cs_"+param+"\",\"cs_"+param+"\",10,10,700,900);"
+  print >> mfile,  "TText T; T.SetTextFont(42); T.SetTextAlign(21);"
+  print >> mfile,  "hs_"+param+"->SetTitle(\"" +param+ "\");"
+  print >> mfile,  "auto legend_mass = new TLegend(0.5,0.7,0.9,0.9);"
+  
+  print >> mfile,   "legend_mass->AddEntry(hDY_"+param+",\"Z/#gamma*#rightarrow #mu#mu\",\"f\");"
+  print >> mfile,   "legend_mass->AddEntry(hWW_"+param+",\"WW\",\"f\");"
+  print >> mfile,   "legend_mass->AddEntry(hWZ_"+param+",\"WZ\",\"f\");"
+  print >> mfile,   "legend_mass->AddEntry(hZZT_"+param+",\"ZZ\",\"f\");"
+  print >> mfile,   "legend_mass->AddEntry(hDat_"+param+",\"Data\",\"p\");"
+  
+  print >> mfile,  "legend_"+param+"->SetFillColor(0);"
+  print >> mfile,  "hDat_"+param+"->SetMaximum(2*hs_mass->GetMaximum());"
+  print >> mfile,  "hDat_"+param+"->SetXTitle(\"mass [GeV/c^{2}]\");"
+  print >> mfile,  "hDat_"+param+"->SetYTitle(\"Entries\");"
+  print >> mfile,  "cs_"+param+"->cd(1); hDat_"+param+"->Draw(\"hist\"); cs_"+param+"->Update(); hs_"+param+"->Draw(\"same hist\");"
+  print >> mfile,  "// cs->cd(1);  hs_"+param+"->Draw(\" hist\"); cs->Update(); hDat_"+param+"->Draw(\"hist same\");"
+ 
+  print >> mfile, "legend_"+param+"->Draw();" 
+   
+  print >> mfile,   "gPad->Update();"
+  print >> mfile,  "gPad->SetLogy(1);"
+  print >> mfile, "\n"
+
+
+
 print >> mfile, " \n }"
