@@ -5,8 +5,8 @@
 // found on file: muonsSimu.root
 //////////////////////////////////////////////////////////
 
-#ifndef analyzerE_h
-#define analyzerE_h
+#ifndef analyzerM_h
+#define analyzerM_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -17,7 +17,7 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class analyzerE : public TSelector {
+class analyzerM : public TSelector {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
 
@@ -265,8 +265,8 @@ public :
    TBranch        *b_ak5jet_eta;   //!
    TBranch        *b_triggerPath;   //!
 
-   analyzerE(TTree * /*tree*/ =0) : fChain(0) { }
-   virtual ~analyzerE() { }
+   analyzerM(TTree * /*tree*/ =0) : fChain(0) { }
+   virtual ~analyzerM() { }
    virtual Int_t   Version() const { return 2; }
    virtual void    Begin(TTree *tree);
    virtual void    SlaveBegin(TTree *tree);
@@ -281,13 +281,13 @@ public :
    virtual void    SlaveTerminate();
    virtual void    Terminate();
 
-   ClassDef(analyzerE,0);
+   ClassDef(analyzerM,0);
 };
 
 #endif
 
-#ifdef analyzerE_cxx
-void analyzerE::Init(TTree *tree)
+#ifdef analyzerM_cxx
+void analyzerM::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -401,7 +401,7 @@ void analyzerE::Init(TTree *tree)
    fChain->SetBranchAddress("triggerPath", triggerPath, &b_triggerPath);
 }
 
-Bool_t analyzerE::Notify()
+Bool_t analyzerM::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -412,4 +412,4 @@ Bool_t analyzerE::Notify()
    return kTRUE;
 }
 
-#endif // #ifdef analyzerE_cxx
+#endif // #ifdef analyzerM_cxx
