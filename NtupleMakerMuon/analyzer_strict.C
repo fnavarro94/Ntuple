@@ -114,7 +114,7 @@ reset();
 //cout<<"number of trigger objects "<<Ev_Branch_numTrigObjM<<endl;
 
 nEvents->Fill(1); 
-if (triggerMActivated)
+if (triggerActivated)
 {
 	triggerTurnOns++;
 }
@@ -153,7 +153,7 @@ if (ctemp >  1)
 
 */
 triggerObjects = triggerObjects + Ev_Branch_numTrigObj;
-if (standardCuts && triggerMActivated)   // quitar true
+if (standardCuts && triggerActivated)   // quitar true
 {   
     
      

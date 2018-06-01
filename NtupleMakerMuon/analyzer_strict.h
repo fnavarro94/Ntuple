@@ -26,8 +26,8 @@ public :
    Int_t           Ev_Branch_runNumber;
    Int_t           Ev_Branch_lumiBlock;
    Int_t           Ev_Branch_numTrack;
-  
-   Int_t           Ev_Branch_numTrigObjM;
+   Int_t           Ev_Branch_numTrigObjE;
+   Int_t           Ev_Branch_numTrigObj;
    Int_t           Ev_Branch_numJets;
    Int_t           Ev_Branch_numVert;
    Bool_t          Ev_Branch_wasTriggerFound;
@@ -52,6 +52,8 @@ public :
    Int_t           track_n3DHits[20000];   //[numTrack]
    Double_t        track_dxy[20000];   //[numTrack]
    Double_t        track_dxyError[20000];   //[numTrack]
+   Double_t        track_d0[20000];   //[numTrack]
+   Double_t        track_d0Error[20000];   //[numTrack]
    Double_t        track_lxy1[20000];   //[numTrack]
    Double_t        track_lxy1Error[20000];   //[numTrack]
    Double_t        track_lxy2[20000];   //[numTrack]
@@ -65,8 +67,14 @@ public :
    Bool_t          track_tight[20000];   //[numTrack]
    Bool_t          track_loose[20000];   //[numTrack]
    Int_t           track_matchedVertIndex[20000];   //[numTrack]
-  
-  
+   Double_t        trigObjE_pt[100];   //[numTrigObjE]
+   Double_t        trigObjE_px[100];   //[numTrigObjE]
+   Double_t        trigObjE_py[100];   //[numTrigObjE]
+   Double_t        trigObjE_pz[100];   //[numTrigObjE]
+   Double_t        trigObjE_eta[100];   //[numTrigObjE]
+   Double_t        trigObjE_phi[100];   //[numTrigObjE]
+   Bool_t          triggerEActivated;
+   Bool_t          trigObjE_energy[100];   //[numTrigObjE]
    Double_t        trigObj_pt[100];   //[numTrigObjM]
    Double_t        trigObj_px[100];   //[numTrigObjM]
    Double_t        trigObj_py[100];   //[numTrigObjM]
@@ -74,6 +82,7 @@ public :
    Double_t        trigObj_eta[100];   //[numTrigObjM]
    Double_t        trigObj_phi[100];   //[numTrigObjM]
    Bool_t          triggerActivated;
+   Bool_t          trigObj_energy[100];   //[numTrigObjM]
    Bool_t          trigObj_energy[100];   //[numTrigObjM]
    Double_t        vertex1Track_vx[6];   //[numVertTrack]
    Double_t        vertex1Track_vy[6];   //[numVertTrack]
@@ -119,25 +128,45 @@ public :
    Double_t        ak5jet_pz[78];   //[numJets]
    Double_t        ak5jet_phi[78];   //[numJets]
    Double_t        ak5jet_eta[78];   //[numJets]
+   Double_t        ak5jet_mass[78];   //[numJets]
    Char_t          triggerPath[100];
 
   // Additional variables
   Int_t 		   matchedTrack[20000];
+  Int_t 		   matchedTrackLoose[20000];
   Int_t 		   matchedTrigObj[20000];
   Int_t 		   trackTrigObjIndex[20000];
   int vuelta;
   // root file
-  
+  int matchCount;
+  int triggerTurnOns;
+  int effCount;
+  int triggerObjects;
   TFile * file;
   
   // Histograms
   TH1F * nEvents;  
+  TH1F * h_invMassLoose;
   TH1F * h_invMass;
+  TH1F * h_invMassLW;
+  TH1F * h_lxy_errLoose;
   TH1F * h_lxy_err;
   TH1F * h_lxy2_err;
   TH1F * h_lxy;
+  TH1F * h_lxyLoose;
   TH1F * h_d0_err;
+  TH1F * h_d0_errLoose;
+  TH1F * h_dxy_err;
+  TH1F * h_dxy_errLoose;
   TH1F * h_conePt;
+  TH1F * h_dot;
+  TH1F * h_chi2_NDF;
+  TH1F * h_chi2_NDFLoose;
+  TH1F * h_delPhi;
+  TH1F * h_delPhiLoose;
+  TH1F * h_numHitsLoose;
+  TH1F * h_cos;
+  TH1F * h_cosLoose;
    // List of branches
    TBranch        *b_Ev_Branch;   //!
    TBranch        *b_vert_numTrack;   //!
@@ -160,6 +189,8 @@ public :
    TBranch        *b_track_n3DHits;   //!
    TBranch        *b_track_dxy;   //!
    TBranch        *b_track_dxyError;   //!
+   TBranch        *b_track_d0;   //!
+   TBranch        *b_track_d0Error;   //!
    TBranch        *b_track_lxy1;   //!
    TBranch        *b_track_lxy1Error;   //!
    TBranch        *b_track_lxy2;   //!
@@ -173,7 +204,14 @@ public :
    TBranch        *b_track_tight;   //!
    TBranch        *b_track_loose;   //!
    TBranch        *b_track_matchedVertIndex;   //!
-   
+   TBranch        *b_trigObjE_pt;   //!
+   TBranch        *b_trigObjE_px;   //!
+   TBranch        *b_trigObjE_py;   //!
+   TBranch        *b_trigObjE_pz;   //!
+   TBranch        *b_trigObjE_eta;   //!
+   TBranch        *b_trigObjE_phi;   //!
+   TBranch        *b_triggerEActivated;   //!
+   TBranch        *b_trigObjE_energy;   //!
    TBranch        *b_trigObj_pt;   //!
    TBranch        *b_trigObj_px;   //!
    TBranch        *b_trigObj_py;   //!
@@ -285,7 +323,9 @@ void analyzer_strict::Init(TTree *tree)
    fChain->SetBranchAddress("track_found", track_found, &b_track_found);
    fChain->SetBranchAddress("track_n3DHits", track_n3DHits, &b_track_n3DHits);
    fChain->SetBranchAddress("track_dxy", track_dxy, &b_track_dxy);
-   fChain->SetBranchAddress("track_dxyError", track_dxyError, &b_track_dxyError);
+   fChain->SetBranchAddress("track_dxyError", track_dxy, &b_track_dxy);
+   fChain->SetBranchAddress("track_d0", track_dxy, &b_track_dxy);
+   fChain->SetBranchAddress("track_d0Error", track_dxyError, &b_track_dxyError);
    fChain->SetBranchAddress("track_lxy1", track_lxy1, &b_track_lxy1);
    fChain->SetBranchAddress("track_lxy1Error", track_lxy1Error, &b_track_lxy1Error);
    fChain->SetBranchAddress("track_lxy2", track_lxy2, &b_track_lxy2);
@@ -299,6 +339,14 @@ void analyzer_strict::Init(TTree *tree)
    fChain->SetBranchAddress("track_tight", track_tight, &b_track_tight);
    fChain->SetBranchAddress("track_loose", track_loose, &b_track_loose);
    fChain->SetBranchAddress("track_matchedVertIndex", track_matchedVertIndex, &b_track_matchedVertIndex);
+   fChain->SetBranchAddress("trigObjE_pt", &trigObjE_pt, &b_trigObjE_pt);
+   fChain->SetBranchAddress("trigObjE_px", &trigObjE_px, &b_trigObjE_px);
+   fChain->SetBranchAddress("trigObjE_py", &trigObjE_py, &b_trigObjE_py);
+   fChain->SetBranchAddress("trigObjE_pz", &trigObjE_pz, &b_trigObjE_pz);
+   fChain->SetBranchAddress("trigObjE_eta", &trigObjE_eta, &b_trigObjE_eta);
+   fChain->SetBranchAddress("trigObjE_phi", &trigObjE_phi, &b_trigObjE_phi);
+   fChain->SetBranchAddress("triggerEActivated", &triggerEActivated, &b_triggerEActivated);
+   fChain->SetBranchAddress("trigObjE_energy", &trigObjE_energy, &b_trigObjE_energy);
    fChain->SetBranchAddress("trigObj_pt", trigObj_pt, &b_trigObj_pt);
    fChain->SetBranchAddress("trigObj_px", trigObj_px, &b_trigObj_px);
    fChain->SetBranchAddress("trigObj_py", trigObj_py, &b_trigObj_py);
