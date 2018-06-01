@@ -243,6 +243,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 					
 					h_dot->Fill(dot);
 					 
+
 					//***************** Histograms with loose cuts
 					h_dot->Fill(dot); 
 					h_invMassLoose->Fill(invariantMass);
@@ -255,6 +256,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 					h_delPhiLoose->Fill(theta);
 					h_cosLoose->Fill(cosAlpha);
 					h_numHitsLoose->Fill(track_nHits[i]+track_nHits[j]);
+
 					 
 					 // ***************** Histograms with life time related cuts
 					 
