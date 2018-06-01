@@ -189,7 +189,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 		if ( matchedTrack[i] ==1 && track_charge[i] == 1 )
 		{ 
 			for (int j =0; j< Ev_Branch_numTrack; j++)
-			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] && deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) >0.2)
+			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] )
 			{  
 				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) <5 )
 				{       
@@ -209,8 +209,8 @@ if (standardCuts && triggerMActivated)   // quitar true
 					//cout<<alpha<<endl;
 					//cout<<theta*180/(3.1415)<<endl;
 					
-					//if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/)
-					if (conePt_var < 4 && alpha > -0.95/*0.8 ipara electron*/)
+					if (conePt_var < 4 && (theta < 0.8 )/*0.8 ipara electron*/)
+					//if (conePt_var < 4 && alpha > -0.95/*0.8 ipara electron*/)
 					
 					{
 						double invariantMass, sumPt;
@@ -260,7 +260,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 					 
 					 // ***************** Histograms with life time related cuts
 					 
-					 if (fabs(track_lxy1[i]/track_dxyError[i])>5 && fabs(track_dxy[i]/track_dxyError[i]) > 2)
+					 if (fabs(track_lxy1[i]/track_dxyError[i])>8 && fabs(track_dxy[i]/track_dxyError[i]) > 3)
 					 {
 							h_invMass->Fill(invariantMass);
 							h_lxy->Fill(track_lxy1[i]);
@@ -359,7 +359,7 @@ bool analyzerE::matchingCuts( bool purity, double pt, int hits, int hits3D, doub
 	
 	
 		
-	  if(purity && pt > 33 && hits >= 6   && eta < 2  )
+	  if(purity && pt > 41 && hits >= 6 && hits3D >1   && eta < 2  )
 	  if(true)
 	  
 	  {

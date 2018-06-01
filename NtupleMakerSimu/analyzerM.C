@@ -209,8 +209,8 @@ if (standardCuts && triggerMActivated)   // quitar true
 					//cout<<alpha<<endl;
 					//cout<<theta*180/(3.1415)<<endl;
 					
-					//if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/)
-					if (conePt_var < 4 && alpha > -0.95/*0.8 ipara electron*/)
+					if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/)
+					//if (conePt_var < 4 && alpha > -0.95/*0.8 ipara electron*/)
 					
 					{
 						double invariantMass, sumPt;
@@ -359,7 +359,7 @@ bool analyzerM::matchingCuts( bool purity, double pt, int hits, int hits3D, doub
 	
 	
 		
-	  if(purity && pt > 33 && hits >= 6   && eta < 2  )
+	  if(purity && pt > 33 && hits >= 6  && hits3D >1 && eta < 2  )
 	  if(true)
 	  
 	  {
