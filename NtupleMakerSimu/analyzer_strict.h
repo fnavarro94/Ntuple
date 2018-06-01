@@ -153,6 +153,8 @@ public :
   TH1F * h_lxyLoose;
   TH1F * h_d0_err;
   TH1F * h_d0_errLoose;
+  TH1F * h_dxy_err;
+  TH1F * h_dxy_errLoose;
   TH1F * h_conePt;
   TH1F * h_dot;
   TH1F * h_chi2_NDF;
