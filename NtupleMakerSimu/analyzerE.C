@@ -114,7 +114,7 @@ reset();
 //cout<<"number of trigger objects "<<Ev_Branch_numTrigObjM<<endl;
 
 nEvents->Fill(1); 
-if (triggerMActivated)
+if (triggerEActivated)
 {
 	triggerTurnOns++;
 }
@@ -152,22 +152,22 @@ if (ctemp >  1)
 }
 
 */
-triggerObjects = triggerObjects + Ev_Branch_numTrigObjM;
-if (standardCuts && triggerMActivated)   // quitar true
+triggerObjects = triggerObjects + Ev_Branch_numTrigObjE;
+if (standardCuts && triggerEActivated)   // quitar true
 {   
     
      
 	for (int i = 0 ; i< Ev_Branch_numTrack; i++)
 	{
 
-		for (int j = 0; j< Ev_Branch_numTrigObjM; j++)
+		for (int j = 0; j< Ev_Branch_numTrigObjE; j++)
 		{
 			bool lepMatch =matchingCuts( track_highPurity[i]  , track_pt[i] , track_nHits[i],track_n3DHits[i], fabs(track_eta[i]));
 		
 		  
 		   if (lepMatch)
 		   {  
-			   if(deltaR(track_phi[i], track_eta[i], trigObjM_phi[j], trigObjM_eta[j])< 0.1 )
+			   if(deltaR(track_phi[i], track_eta[i], trigObjE_phi[j], trigObjE_eta[j])< 0.1 )
 			   {   matchCount++;
 				   matchedTrack[i] = 1;
 			       matchedTrigObj[j] = (matchedTrigObj[j] + 1)%2;
@@ -379,7 +379,7 @@ void analyzerE::reset()
 	{
 		matchedTrack[i] = 0;
 	}
-	for (int i = 0; i< Ev_Branch_numTrigObjM; i++)
+	for (int i = 0; i< Ev_Branch_numTrigObjE; i++)
 	{
 		matchedTrigObj[i] = 0;
 	}
