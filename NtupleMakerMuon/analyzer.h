@@ -1,24 +1,23 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Wed Mar 14 20:10:41 2018 by ROOT version 5.32/00
+// Wed Mar 28 22:24:21 2018 by ROOT version 5.32/00
 // from TTree mtree/Ntuple
-// found on file: muon.root
+// found on file: muonsSimu.root
 //////////////////////////////////////////////////////////
 
-#ifndef analyzer_h
-#define analyzer_h
+#ifndef analyzer_strict_h
+#define analyzer_strict_h
 
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
 #include <TSelector.h>
-#include <iostream>
-#include <fstream>
+
 // Header file for the classes stored in the TTree if any.
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class analyzer : public TSelector {
+class analyzer_strict : public TSelector {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
 
@@ -27,6 +26,7 @@ public :
    Int_t           Ev_Branch_runNumber;
    Int_t           Ev_Branch_lumiBlock;
    Int_t           Ev_Branch_numTrack;
+   
    Int_t           Ev_Branch_numTrigObj;
    Int_t           Ev_Branch_numJets;
    Int_t           Ev_Branch_numVert;
@@ -49,8 +49,11 @@ public :
    Double_t        track_phiError[20000];   //[numTrack]
    Int_t           track_nHits[20000];   //[numTrack]
    Int_t           track_found[20000];   //[numTrack]
+   Int_t           track_n3DHits[20000];   //[numTrack]
    Double_t        track_dxy[20000];   //[numTrack]
    Double_t        track_dxyError[20000];   //[numTrack]
+   Double_t        track_d0[20000];   //[numTrack]
+   Double_t        track_d0Error[20000];   //[numTrack]
    Double_t        track_lxy1[20000];   //[numTrack]
    Double_t        track_lxy1Error[20000];   //[numTrack]
    Double_t        track_lxy2[20000];   //[numTrack]
@@ -64,14 +67,16 @@ public :
    Bool_t          track_tight[20000];   //[numTrack]
    Bool_t          track_loose[20000];   //[numTrack]
    Int_t           track_matchedVertIndex[20000];   //[numTrack]
-   Double_t        trigObj_pt[4];   //[numTrigObj]
-   Double_t        trigObj_px[4];   //[numTrigObj]
-   Double_t        trigObj_py[4];   //[numTrigObj]
-   Double_t        trigObj_pz[4];   //[numTrigObj]
-   Double_t        trigObj_eta[4];   //[numTrigObj]
-   Double_t        trigObj_phi[4];   //[numTrigObj]
+  
+   Double_t        trigObj_pt[100];   //[numTrigObjM]
+   Double_t        trigObj_px[100];   //[numTrigObjM]
+   Double_t        trigObj_py[100];   //[numTrigObjM]
+   Double_t        trigObj_pz[100];   //[numTrigObjM]
+   Double_t        trigObj_eta[100];   //[numTrigObjM]
+   Double_t        trigObj_phi[100];   //[numTrigObjM]
    Bool_t          triggerActivated;
-   Bool_t          trigObj_energy[4];   //[numTrigObj]
+   Bool_t          trigObj_energy[100];   //[numTrigObjM]
+   Bool_t          trigObj_energy[100];   //[numTrigObjM]
    Double_t        vertex1Track_vx[6];   //[numVertTrack]
    Double_t        vertex1Track_vy[6];   //[numVertTrack]
    Double_t        vertex1Track_vz[6];   //[numVertTrack]
@@ -107,35 +112,54 @@ public :
    Double_t        vertex_yError[6];   //[numVert]
    Double_t        vertex_zError[6];   //[numVert]
    Double_t        vertex_nTracks[6];   //[numVert]
-   Double_t        ak5jet_x[100];   //[numJets]
-   Double_t        ak5jet_y[100];   //[numJets]
-   Double_t        ak5jet_z[100];   //[numJets]
-   Double_t        ak5jet_pt[100];   //[numJets]
-   Double_t        ak5jet_px[100];   //[numJets]
-   Double_t        ak5jet_py[100];   //[numJets]
-   Double_t        ak5jet_pz[100];   //[numJets]
-   Double_t        ak5jet_phi[100];   //[numJets]
-   Double_t        ak5jet_eta[100];   //[numJets]
+   Double_t        ak5jet_x[78];   //[numJets]
+   Double_t        ak5jet_y[78];   //[numJets]
+   Double_t        ak5jet_z[78];   //[numJets]
+   Double_t        ak5jet_pt[78];   //[numJets]
+   Double_t        ak5jet_px[78];   //[numJets]
+   Double_t        ak5jet_py[78];   //[numJets]
+   Double_t        ak5jet_pz[78];   //[numJets]
+   Double_t        ak5jet_phi[78];   //[numJets]
+   Double_t        ak5jet_eta[78];   //[numJets]
+   Double_t        ak5jet_mass[78];   //[numJets]
    Char_t          triggerPath[100];
-   Char_t          filter[100];
 
- 
   // Additional variables
   Int_t 		   matchedTrack[20000];
+  Int_t 		   matchedTrackLoose[20000];
   Int_t 		   matchedTrigObj[20000];
   Int_t 		   trackTrigObjIndex[20000];
   int vuelta;
   // root file
-  
+  int matchCount;
+  int triggerTurnOns;
+  int effCount;
+  int triggerObjects;
   TFile * file;
-  ofstream myFile;
-  // Histograms
   
+  // Histograms
+  TH1F * nEvents;  
+  TH1F * h_invMassLoose;
   TH1F * h_invMass;
+  TH1F * h_invMassLW;
+  TH1F * h_lxy_errLoose;
   TH1F * h_lxy_err;
+  TH1F * h_lxy2_err;
   TH1F * h_lxy;
+  TH1F * h_lxyLoose;
   TH1F * h_d0_err;
+  TH1F * h_d0_errLoose;
+  TH1F * h_dxy_err;
+  TH1F * h_dxy_errLoose;
   TH1F * h_conePt;
+  TH1F * h_dot;
+  TH1F * h_chi2_NDF;
+  TH1F * h_chi2_NDFLoose;
+  TH1F * h_delPhi;
+  TH1F * h_delPhiLoose;
+  TH1F * h_numHitsLoose;
+  TH1F * h_cos;
+  TH1F * h_cosLoose;
    // List of branches
    TBranch        *b_Ev_Branch;   //!
    TBranch        *b_vert_numTrack;   //!
@@ -155,8 +179,11 @@ public :
    TBranch        *b_track_phiError;   //!
    TBranch        *b_track_nHits;   //!
    TBranch        *b_track_found;   //!
+   TBranch        *b_track_n3DHits;   //!
    TBranch        *b_track_dxy;   //!
    TBranch        *b_track_dxyError;   //!
+   TBranch        *b_track_d0;   //!
+   TBranch        *b_track_d0Error;   //!
    TBranch        *b_track_lxy1;   //!
    TBranch        *b_track_lxy1Error;   //!
    TBranch        *b_track_lxy2;   //!
@@ -170,6 +197,7 @@ public :
    TBranch        *b_track_tight;   //!
    TBranch        *b_track_loose;   //!
    TBranch        *b_track_matchedVertIndex;   //!
+   
    TBranch        *b_trigObj_pt;   //!
    TBranch        *b_trigObj_px;   //!
    TBranch        *b_trigObj_py;   //!
@@ -223,10 +251,9 @@ public :
    TBranch        *b_ak5jet_phi;   //!
    TBranch        *b_ak5jet_eta;   //!
    TBranch        *b_triggerPath;   //!
-   TBranch        *b_filter;   //!
 
-   analyzer(TTree * /*tree*/ =0) : fChain(0) { }
-   virtual ~analyzer() { }
+   analyzer_strict(TTree * /*tree*/ =0) : fChain(0) { }
+   virtual ~analyzer_strict() { }
    virtual Int_t   Version() const { return 2; }
    virtual void    Begin(TTree *tree);
    virtual void    SlaveBegin(TTree *tree);
@@ -241,13 +268,13 @@ public :
    virtual void    SlaveTerminate();
    virtual void    Terminate();
 
-   ClassDef(analyzer,0);
+   ClassDef(analyzer_strict,0);
 };
 
 #endif
 
-#ifdef analyzer_cxx
-void analyzer::Init(TTree *tree)
+#ifdef analyzer_strict_cxx
+void analyzer_strict::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -280,8 +307,11 @@ void analyzer::Init(TTree *tree)
    fChain->SetBranchAddress("track_phiError", track_phiError, &b_track_phiError);
    fChain->SetBranchAddress("track_nHits", track_nHits, &b_track_nHits);
    fChain->SetBranchAddress("track_found", track_found, &b_track_found);
+   fChain->SetBranchAddress("track_n3DHits", track_n3DHits, &b_track_n3DHits);
    fChain->SetBranchAddress("track_dxy", track_dxy, &b_track_dxy);
-   fChain->SetBranchAddress("track_dxyError", track_dxyError, &b_track_dxyError);
+   fChain->SetBranchAddress("track_dxyError", track_dxy, &b_track_dxy);
+   fChain->SetBranchAddress("track_d0", track_dxy, &b_track_dxy);
+   fChain->SetBranchAddress("track_d0Error", track_dxyError, &b_track_dxyError);
    fChain->SetBranchAddress("track_lxy1", track_lxy1, &b_track_lxy1);
    fChain->SetBranchAddress("track_lxy1Error", track_lxy1Error, &b_track_lxy1Error);
    fChain->SetBranchAddress("track_lxy2", track_lxy2, &b_track_lxy2);
@@ -295,6 +325,8 @@ void analyzer::Init(TTree *tree)
    fChain->SetBranchAddress("track_tight", track_tight, &b_track_tight);
    fChain->SetBranchAddress("track_loose", track_loose, &b_track_loose);
    fChain->SetBranchAddress("track_matchedVertIndex", track_matchedVertIndex, &b_track_matchedVertIndex);
+   
+   
    fChain->SetBranchAddress("trigObj_pt", trigObj_pt, &b_trigObj_pt);
    fChain->SetBranchAddress("trigObj_px", trigObj_px, &b_trigObj_px);
    fChain->SetBranchAddress("trigObj_py", trigObj_py, &b_trigObj_py);
@@ -348,10 +380,9 @@ void analyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ak5jet_phi", ak5jet_phi, &b_ak5jet_phi);
    fChain->SetBranchAddress("ak5jet_eta", ak5jet_eta, &b_ak5jet_eta);
    fChain->SetBranchAddress("triggerPath", triggerPath, &b_triggerPath);
-   fChain->SetBranchAddress("filter", filter, &b_filter);
 }
 
-Bool_t analyzer::Notify()
+Bool_t analyzer_strict::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -362,4 +393,4 @@ Bool_t analyzer::Notify()
    return kTRUE;
 }
 
-#endif // #ifdef analyzer_cxx
+#endif // #ifdef analyzer_strict_cxx
