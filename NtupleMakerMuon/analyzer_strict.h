@@ -26,7 +26,7 @@ public :
    Int_t           Ev_Branch_runNumber;
    Int_t           Ev_Branch_lumiBlock;
    Int_t           Ev_Branch_numTrack;
-   Int_t           Ev_Branch_numTrigObjE;
+   
    Int_t           Ev_Branch_numTrigObj;
    Int_t           Ev_Branch_numJets;
    Int_t           Ev_Branch_numVert;
@@ -67,14 +67,7 @@ public :
    Bool_t          track_tight[20000];   //[numTrack]
    Bool_t          track_loose[20000];   //[numTrack]
    Int_t           track_matchedVertIndex[20000];   //[numTrack]
-   Double_t        trigObjE_pt[100];   //[numTrigObjE]
-   Double_t        trigObjE_px[100];   //[numTrigObjE]
-   Double_t        trigObjE_py[100];   //[numTrigObjE]
-   Double_t        trigObjE_pz[100];   //[numTrigObjE]
-   Double_t        trigObjE_eta[100];   //[numTrigObjE]
-   Double_t        trigObjE_phi[100];   //[numTrigObjE]
-   Bool_t          triggerEActivated;
-   Bool_t          trigObjE_energy[100];   //[numTrigObjE]
+  
    Double_t        trigObj_pt[100];   //[numTrigObjM]
    Double_t        trigObj_px[100];   //[numTrigObjM]
    Double_t        trigObj_py[100];   //[numTrigObjM]
@@ -204,14 +197,7 @@ public :
    TBranch        *b_track_tight;   //!
    TBranch        *b_track_loose;   //!
    TBranch        *b_track_matchedVertIndex;   //!
-   TBranch        *b_trigObjE_pt;   //!
-   TBranch        *b_trigObjE_px;   //!
-   TBranch        *b_trigObjE_py;   //!
-   TBranch        *b_trigObjE_pz;   //!
-   TBranch        *b_trigObjE_eta;   //!
-   TBranch        *b_trigObjE_phi;   //!
-   TBranch        *b_triggerEActivated;   //!
-   TBranch        *b_trigObjE_energy;   //!
+   
    TBranch        *b_trigObj_pt;   //!
    TBranch        *b_trigObj_px;   //!
    TBranch        *b_trigObj_py;   //!
@@ -339,14 +325,8 @@ void analyzer_strict::Init(TTree *tree)
    fChain->SetBranchAddress("track_tight", track_tight, &b_track_tight);
    fChain->SetBranchAddress("track_loose", track_loose, &b_track_loose);
    fChain->SetBranchAddress("track_matchedVertIndex", track_matchedVertIndex, &b_track_matchedVertIndex);
-   fChain->SetBranchAddress("trigObjE_pt", &trigObjE_pt, &b_trigObjE_pt);
-   fChain->SetBranchAddress("trigObjE_px", &trigObjE_px, &b_trigObjE_px);
-   fChain->SetBranchAddress("trigObjE_py", &trigObjE_py, &b_trigObjE_py);
-   fChain->SetBranchAddress("trigObjE_pz", &trigObjE_pz, &b_trigObjE_pz);
-   fChain->SetBranchAddress("trigObjE_eta", &trigObjE_eta, &b_trigObjE_eta);
-   fChain->SetBranchAddress("trigObjE_phi", &trigObjE_phi, &b_trigObjE_phi);
-   fChain->SetBranchAddress("triggerEActivated", &triggerEActivated, &b_triggerEActivated);
-   fChain->SetBranchAddress("trigObjE_energy", &trigObjE_energy, &b_trigObjE_energy);
+   
+   
    fChain->SetBranchAddress("trigObj_pt", trigObj_pt, &b_trigObj_pt);
    fChain->SetBranchAddress("trigObj_px", trigObj_px, &b_trigObj_px);
    fChain->SetBranchAddress("trigObj_py", trigObj_py, &b_trigObj_py);
