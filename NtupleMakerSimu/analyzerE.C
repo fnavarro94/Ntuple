@@ -47,28 +47,40 @@ void analyzerE::SlaveBegin(TTree * /*tree*/)
    TString option = GetOption();
    
  file = new TFile("DY.root", "recreate");
+   file = new TFile("jueves.root", "recreate");
    
    h_invMassLoose = new TH1F ("InvMassLoose", "Lepton Pair Invariant Mass (loose)", 100, 0 , 600);
    h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+   h_invMass2 = new TH1F ("InvMass2", "Lepton Pair Invariant Mass (d0)", 100, 0 , 600);
    h_invMassLW = new TH1F ("InvMassLW", "Lepton Pair Invariant Mass (L-W cuts)", 100, 0 , 600);
+   h_invMassLW2 = new TH1F ("InvMassLW2", "Lepton Pair Invariant Mass (L-W cuts, d0)", 100, 0 , 600);
    h_lxy = new TH1F ("lxy", "Transverse decay length", 20, 0 , 20);
+   h_lxy2 = new TH1F ("lxy2", "Transverse decay length (d0)", 20, 0 , 20);
    h_lxyLoose = new TH1F ("lxyLoose", "Transverse decay length (loose)", 20, 0 , 20);
    h_lxy_err = new TH1F ("lxy_err", "Transverse decay length significance", 20, 0 , 20);
+   h_lxy_err2 = new TH1F ("lxy_err2", "Transverse decay length significance (d0)", 20, 0 , 20);
    h_lxy_errLoose = new TH1F ("lxy_errLoose", "Transverse decay length significance (loose)", 20, 0 , 20);
    h_lxy2_err = new TH1F ("lxy2_err", "Transverse decay length significance", 20, 0 , 20);
+   h_lxy2_err2 = new TH1F ("lxy2_err2", "Transverse decay length significance (d0)", 20, 0 , 20);
    h_dxy_errLoose = new TH1F ("dxy_errLoose", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
    h_dxy_err = new TH1F ("dxy_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
+   h_dxy_err2 = new TH1F ("dxy_err2", "Impact parameter / Standar Deviation (d0)", 100, 0 , 20);
    h_d0_errLoose = new TH1F ("d0_errLoose", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
    h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
+   h_d0_err2 = new TH1F ("d0_err2", "Impact parameter / Standar Deviation (d0)", 100, 0 , 20);
    h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
    h_cos = new TH1F ("cos", "Cos(#alpha) lepton pairs", 100, -1.1 , 1.1);
+   h_cos2 = new TH1F ("cos2", "Cos(#alpha) lepton pairs (d0)", 100, -1.1 , 1.1);
    h_cosLoose = new TH1F ("cosLoose", "Cos(#alpha) lepton pairs (loose)", 100, -1.1 , 1.1);
    h_delPhi = new TH1F ("delPhi", "lep Pt and vertex distance vector angle", 100, 0 , 1);
+   h_delPhi2 = new TH1F ("delPhi2", "lep Pt and vertex distance vector angle (d0)", 100, 0 , 1);
    h_delPhiLoose = new TH1F ("delPhiLoose", "lep Pt and vertex distance vector angle (loose)", 100, 0 , 1);
    h_chi2_NDF = new TH1F ("chi2_NDF", "#chi^{2}/NDF", 100, 0 , 20);
+   h_chi2_NDF2 = new TH1F ("chi2_NDF2", "#chi^{2}/NDF (d0)", 100, 0 , 20);
    h_chi2_NDFLoose = new TH1F ("chi2_NDFLoose", "#chi^{2}/NDF (loose)", 100, 0 , 20);
    h_numHitsLoose = new TH1F ("numHitsLoose", "Number of tracker hits between lepton pairs", 100, 0 , 20);
    h_dot = new TH1F ("h_dot","Dot product between lepton pair momentum and secVert-primVert distance",100,-10000,10000);
+   h_dot2 = new TH1F ("h_dot2","Dot product between lepton pair momentum and secVert-primVert distance (d0)",100,-10000,10000);
    nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
   
    matchCount = 0;
@@ -189,7 +201,7 @@ if (standardCuts && triggerEActivated)   // quitar true
 		if ( matchedTrack[i] ==1 && track_charge[i] == 1 )
 		{ 
 			for (int j =0; j< Ev_Branch_numTrack; j++)
-			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] )
+			if ( matchedTrack[j] == 1 && track_charge[j] == -1 && trackTrigObjIndex[i] != trackTrigObjIndex[j] && deltaR(track_phi[i], track_eta[i], track_phi[j], track_eta[j]) >0.2)
 			{  
 				if ( deltaV(track_vx[i], track_vy[i], track_vz[i],track_vx[j], track_vy[j], track_vz[j]) <5 )
 				{       
@@ -209,8 +221,8 @@ if (standardCuts && triggerEActivated)   // quitar true
 					//cout<<alpha<<endl;
 					//cout<<theta*180/(3.1415)<<endl;
 					
-					if (conePt_var < 4 && (theta < 0.8 )/*0.8 ipara electron*/)
-					//if (conePt_var < 4 && alpha > -0.95/*0.8 ipara electron*/)
+					//if (conePt_var < 4 && alpha > -0.95 && (theta < 0.2 )/*0.8 ipara electron*/)
+					if (conePt_var < 4 && alpha > -0.95/*0.8 ipara electron*/)
 					
 					{
 						double invariantMass, sumPt;
@@ -260,7 +272,7 @@ if (standardCuts && triggerEActivated)   // quitar true
 					 
 					 // ***************** Histograms with life time related cuts
 					 
-					 if (fabs(track_lxy1[i]/track_dxyError[i])>8 && fabs(track_dxy[i]/track_dxyError[i]) > 3)
+					 if (fabs(track_lxy1[i]/track_dxyError[i])>5 && fabs(track_dxy[i]/track_dxyError[i]) > 2)
 					 {
 							h_invMass->Fill(invariantMass);
 							h_lxy->Fill(track_lxy1[i]);
@@ -278,7 +290,25 @@ if (standardCuts && triggerEActivated)   // quitar true
 							
 							
 					 }
-					 
+					  
+					 if (fabs(track_lxy1[i]/track_dxyError[i])>5 && fabs(track_d0[i]/track_d0Error[i]) > 2)
+					 {
+							h_invMass2->Fill(invariantMass);
+							h_lxy2->Fill(track_lxy1[i]);
+							h_lxy_err2->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
+							h_chi2_NDF2->Fill(track_chi2[i]/track_ndof[i]);
+							h_delPhi2->Fill(theta);
+							h_cos2->Fill(cosAlpha);
+							h_d0_err2->Fill(fabs(track_d0[i]/track_d0Error[i]));
+							h_dxy_err2->Fill(fabs(track_dxy[i]/track_dxyError[i]));
+							
+							if (dot<-400)
+							{
+								h_invMassLW2->Fill(invariantMass);
+							}
+							
+							
+					 }
 					 
 					 //****************** End Histograms with....
 					 
@@ -359,7 +389,7 @@ bool analyzerE::matchingCuts( bool purity, double pt, int hits, int hits3D, doub
 	
 	
 		
-	  if(purity && pt > 41 && hits >= 6 && hits3D >1   && eta < 2  )
+	  if(purity && pt > 33 && hits >= 6   && eta < 2  )
 	  if(true)
 	  
 	  {
