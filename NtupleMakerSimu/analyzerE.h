@@ -322,7 +322,7 @@ void analyzerE::Init(TTree *tree)
    fChain->SetBranchAddress("track_found", track_found, &b_track_found);
    fChain->SetBranchAddress("track_n3DHits", track_n3DHits, &b_track_n3DHits);
    fChain->SetBranchAddress("track_dxy", track_dxy, &b_track_dxy);
-   fChain->SetBranchAddress("track_dxyError", track_dxy, &b_track_dxy);
+   fChain->SetBranchAddress("track_dxyError", track_dxyError, &b_track_dxyError);
    fChain->SetBranchAddress("track_d0", track_d0, &b_track_d0);
    fChain->SetBranchAddress("track_d0Error", track_d0Error, &b_track_d0Error);
    fChain->SetBranchAddress("track_lxy1", track_lxy1, &b_track_lxy1);
