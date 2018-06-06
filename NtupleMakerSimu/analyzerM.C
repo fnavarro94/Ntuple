@@ -46,7 +46,7 @@ void analyzerM::SlaveBegin(TTree * /*tree*/)
 
    TString option = GetOption();
    
- file = new TFile("DY.root", "recreate");
+ file = new TFile("exotic.root", "recreate");
    
    h_invMassLoose = new TH1F ("InvMassLoose", "Lepton Pair Invariant Mass (loose)", 100, 0 , 600);
    h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
