@@ -144,27 +144,38 @@ public :
   TFile * file;
   
   // Histograms
-  TH1F * nEvents;  
+ TH1F * nEvents;  
   TH1F * h_invMassLoose;
   TH1F * h_invMass;
+  TH1F * h_invMass2;  //uses d0 instead of dxy (in cut)
   TH1F * h_invMassLW;
+  TH1F * h_invMassLW2;
   TH1F * h_lxy_errLoose;
   TH1F * h_lxy_err;
+  TH1F * h_lxy_err2;
   TH1F * h_lxy2_err;
   TH1F * h_lxy;
+  TH1F * h_lxy2;
   TH1F * h_lxyLoose;
   TH1F * h_d0_err;
+  TH1F * h_d0_err2;
   TH1F * h_d0_errLoose;
   TH1F * h_dxy_err;
+  TH1F * h_dxy_err2;
   TH1F * h_dxy_errLoose;
   TH1F * h_conePt;
+  TH1F * h_conePt2;
   TH1F * h_dot;
+  TH1F * h_dot2;
   TH1F * h_chi2_NDF;
+  TH1F * h_chi2_NDF2;
   TH1F * h_chi2_NDFLoose;
   TH1F * h_delPhi;
+  TH1F * h_delPhi2;
   TH1F * h_delPhiLoose;
   TH1F * h_numHitsLoose;
   TH1F * h_cos;
+  TH1F * h_cos2;
   TH1F * h_cosLoose;
    // List of branches
    TBranch        *b_Ev_Branch;   //!
@@ -322,9 +333,9 @@ void analyzer_strict::Init(TTree *tree)
    fChain->SetBranchAddress("track_found", track_found, &b_track_found);
    fChain->SetBranchAddress("track_n3DHits", track_n3DHits, &b_track_n3DHits);
    fChain->SetBranchAddress("track_dxy", track_dxy, &b_track_dxy);
-   fChain->SetBranchAddress("track_dxyError", track_dxy, &b_track_dxy);
-   fChain->SetBranchAddress("track_d0", track_dxy, &b_track_dxy);
-   fChain->SetBranchAddress("track_d0Error", track_dxyError, &b_track_dxyError);
+   fChain->SetBranchAddress("track_dxyError", track_dxyError, &b_track_dxyError);
+   fChain->SetBranchAddress("track_d0", track_d0, &b_track_d0);
+   fChain->SetBranchAddress("track_d0Error", track_d0Error, &b_track_d0Error);
    fChain->SetBranchAddress("track_lxy1", track_lxy1, &b_track_lxy1);
    fChain->SetBranchAddress("track_lxy1Error", track_lxy1Error, &b_track_lxy1Error);
    fChain->SetBranchAddress("track_lxy2", track_lxy2, &b_track_lxy2);
