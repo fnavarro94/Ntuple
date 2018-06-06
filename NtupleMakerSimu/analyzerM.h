@@ -144,27 +144,38 @@ public :
   TFile * file;
   
   // Histograms
-  TH1F * nEvents;  
+ TH1F * nEvents;  
   TH1F * h_invMassLoose;
   TH1F * h_invMass;
+  TH1F * h_invMass2;  //uses d0 instead of dxy (in cut)
   TH1F * h_invMassLW;
+  TH1F * h_invMassLW2;
   TH1F * h_lxy_errLoose;
   TH1F * h_lxy_err;
+  TH1F * h_lxy_err2;
   TH1F * h_lxy2_err;
   TH1F * h_lxy;
+  TH1F * h_lxy2;
   TH1F * h_lxyLoose;
   TH1F * h_d0_err;
+  TH1F * h_d0_err2;
   TH1F * h_d0_errLoose;
   TH1F * h_dxy_err;
+  TH1F * h_dxy_err2;
   TH1F * h_dxy_errLoose;
   TH1F * h_conePt;
+  TH1F * h_conePt2;
   TH1F * h_dot;
+  TH1F * h_dot2;
   TH1F * h_chi2_NDF;
+  TH1F * h_chi2_NDF2;
   TH1F * h_chi2_NDFLoose;
   TH1F * h_delPhi;
+  TH1F * h_delPhi2;
   TH1F * h_delPhiLoose;
   TH1F * h_numHitsLoose;
   TH1F * h_cos;
+  TH1F * h_cos2;
   TH1F * h_cosLoose;
    // List of branches
    TBranch        *b_Ev_Branch;   //!
