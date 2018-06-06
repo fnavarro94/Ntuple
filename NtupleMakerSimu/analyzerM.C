@@ -113,7 +113,8 @@ reset();
 
 //cout<<"number of trigger objects "<<Ev_Branch_numTrigObjM<<endl;
 
-nEvents->Fill(1); 
+nEvents->Fill(1);
+ 
 if (triggerMActivated)
 {
 	triggerTurnOns++;
@@ -122,7 +123,7 @@ if (triggerMActivated)
 
 //****** LeeWick mod
 
-                 
+      /*           
 int ctemp = 0;
 int check = 0;
 for (int i = 0; i< Ev_Branch_numTrack; i++)
@@ -137,7 +138,7 @@ for (int i = 0; i< Ev_Branch_numTrack; i++)
 		cout<<track_dxy[i]<<endl;
 	}
 }
-
+*/
 
 triggerObjects = triggerObjects + Ev_Branch_numTrigObjM;
 if (standardCuts && triggerMActivated)   // quitar true
