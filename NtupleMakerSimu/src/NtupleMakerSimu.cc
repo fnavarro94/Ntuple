@@ -40,6 +40,7 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "DataFormats/HLTReco/interface/TriggerObject.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
+#include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "DataFormats/TrackReco/interface/Track.h"
@@ -357,7 +358,22 @@ NtupleMakerSimu::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
   if (vuelta%1000 ==0){std::cout<<"vuelta: "<<vuelta<<std::endl;}
   event = eventReset;
   using reco::TrackCollection;
-  
+ // BeamSpot object 
+ reco::BeamSpot beamSpot;
+edm::Handle<reco::BeamSpot> beamSpotHandle;
+iEvent.getByLabel("offlineBeamSpot", beamSpotHandle);
+
+if ( beamSpotHandle.isValid() )
+{
+    beamSpot = *beamSpotHandle;
+
+} else
+{
+    edm::LogInfo("MyAnalyzer")
+      << "No beam spot available from EventSetup \n";
+}
+
+ // end BeamSpot object 
   
   Handle<GenParticleCollection> genParticles;
   iEvent.getByLabel("genParticles", genParticles);
@@ -745,7 +761,7 @@ else
 		   event.track_nHits[i] = itTrack->numberOfValidHits();
 		   event.track_n3DHits[i] = itTrack->hitPattern().numberOfValidPixelHits();
 		   event.track_found[i] = itTrack->found();
-		   event.track_dxy[i] = itTrack->dxy();
+		   event.track_dxy[i] = itTrack->dxy(beamSpot);
 		   event.track_d0[i] = itTrack->d0();
 		   event.track_d0Error[i] = itTrack->d0Error();
 		   event.track_dxyError[i] = itTrack->dxyError();
