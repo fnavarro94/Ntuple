@@ -63,22 +63,22 @@ void analyzerE::SlaveBegin(TTree * /*tree*/)
    h_lxy2_err = new TH1F ("lxy2_err", "Transverse decay length significance", 20, 0 , 20);
    h_lxy2_err2 = new TH1F ("lxy2_err2", "Transverse decay length significance (d0)", 20, 0 , 20);
    h_dxy_errLoose = new TH1F ("dxy_errLoose", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
-   h_dxy_err = new TH1F ("dxy_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
-   h_dxy_err2 = new TH1F ("dxy_err2", "Impact parameter / Standar Deviation (d0)", 100, 0 , 20);
-   h_d0_errLoose = new TH1F ("d0_errLoose", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
-   h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 100, 0 , 20);
-   h_d0_err2 = new TH1F ("d0_err2", "Impact parameter / Standar Deviation (d0)", 100, 0 , 20);
-   h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 100, 0 , 20);
-   h_cos = new TH1F ("cos", "Cos(#alpha) lepton pairs", 100, -1.1 , 1.1);
-   h_cos2 = new TH1F ("cos2", "Cos(#alpha) lepton pairs (d0)", 100, -1.1 , 1.1);
-   h_cosLoose = new TH1F ("cosLoose", "Cos(#alpha) lepton pairs (loose)", 100, -1.1 , 1.1);
-   h_delPhi = new TH1F ("delPhi", "lep Pt and vertex distance vector angle", 100, 0 , 1);
-   h_delPhi2 = new TH1F ("delPhi2", "lep Pt and vertex distance vector angle (d0)", 100, 0 , 1);
-   h_delPhiLoose = new TH1F ("delPhiLoose", "lep Pt and vertex distance vector angle (loose)", 100, 0 , 1);
-   h_chi2_NDF = new TH1F ("chi2_NDF", "#chi^{2}/NDF", 100, 0 , 20);
-   h_chi2_NDF2 = new TH1F ("chi2_NDF2", "#chi^{2}/NDF (d0)", 100, 0 , 20);
-   h_chi2_NDFLoose = new TH1F ("chi2_NDFLoose", "#chi^{2}/NDF (loose)", 100, 0 , 20);
-   h_numHitsLoose = new TH1F ("numHitsLoose", "Number of tracker hits between lepton pairs", 100, 0 , 20);
+   h_dxy_err = new TH1F ("dxy_err", "Impact parameter / Standar Deviation", 20, 0 , 20);
+   h_dxy_err2 = new TH1F ("dxy_err2", "Impact parameter / Standar Deviation (d0)", 20, 0 , 20);
+   h_d0_errLoose = new TH1F ("d0_errLoose", "Impact parameter / Standar Deviation (loose)", 20, 0 , 20);
+   h_d0_err = new TH1F ("d0_err", "Impact parameter / Standar Deviation", 20, 0 , 20);
+   h_d0_err2 = new TH1F ("d0_err2", "Impact parameter / Standar Deviation (d0)", 20, 0 , 20);
+   h_conePt = new TH1F ("conePt", "Transverse momentum sum arround isolation cone", 50, 0 , 20);
+   h_cos = new TH1F ("cos", "Cos(#alpha) lepton pairs", 25, -1.1 , 1.1);
+   h_cos2 = new TH1F ("cos2", "Cos(#alpha) lepton pairs (d0)", 25, -1.1 , 1.1);
+   h_cosLoose = new TH1F ("cosLoose", "Cos(#alpha) lepton pairs (loose)", 25, -1.1 , 1.1);
+   h_delPhi = new TH1F ("delPhi", "lep Pt and vertex distance vector angle", 25, 0 , 1);
+   h_delPhi2 = new TH1F ("delPhi2", "lep Pt and vertex distance vector angle (d0)", 25, 0 , 1);
+   h_delPhiLoose = new TH1F ("delPhiLoose", "lep Pt and vertex distance vector angle (loose)", 25, 0 , 1);
+   h_chi2_NDF = new TH1F ("chi2_NDF", "#chi^{2}/NDF", 20, 0 , 20);
+   h_chi2_NDF2 = new TH1F ("chi2_NDF2", "#chi^{2}/NDF (d0)", 20, 0 , 20);
+   h_chi2_NDFLoose = new TH1F ("chi2_NDFLoose", "#chi^{2}/NDF (loose)", 20, 0 , 20);
+   h_numHitsLoose = new TH1F ("numHitsLoose", "Number of tracker hits between lepton pairs", 6, -1 , 5);
    h_dot = new TH1F ("h_dot","Dot product between lepton pair momentum and secVert-primVert distance",100,-10000,10000);
    h_dot2 = new TH1F ("h_dot2","Dot product between lepton pair momentum and secVert-primVert distance (d0)",100,-10000,10000);
    nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
@@ -290,8 +290,17 @@ if (standardCuts && triggerEActivated)   // quitar true
 							
 							
 					 }
+					 double Bx, By, BerrX, BerrY, Berr, dSigma;
+					 
+					 Bx = beamSpot_x;
+					 By = beamSpot_y;
+					 BerrX = beamSpot_xError;
+					 BerrY = beamSpot_yError;
+					 Berr = (Bx*BerrX + By*BerrY)/sqrt(Bx*Bx +By*By);
+					 dSigma = sqrt(track_dxyError[i]*track_dxyError[i] + Berr*Berr);
+					 
 					  
-					 if (fabs(track_lxy1[i]/track_dxyError[i])>5 && fabs(track_d0[i]/track_d0Error[i]) > 2)
+					 if (fabs(track_lxy1[i]/track_dxyError[i])>5 && fabs(track_dxy[i]/dSigma) > 2)
 					 {
 							h_invMass2->Fill(invariantMass);
 							h_lxy2->Fill(track_lxy1[i]);
