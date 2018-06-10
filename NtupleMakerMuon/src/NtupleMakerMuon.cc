@@ -226,6 +226,15 @@ class NtupleMakerMuon : public edm::EDAnalyzer {
 		  char triggerPath[100];
 		  char filter[100];
 		  
+		  //Beam spot
+		  Double_t beamSpot_x = 0;
+		  Double_t beamSpot_y = 0;
+		  Double_t beamSpot_z = 0;
+		  Double_t beamSpot_xError = 0;
+		  Double_t beamSpot_yError = 0;
+		  Double_t beamSpot_zError = 0;
+		  
+		  
 		  }event,eventReset;
 		  //static const struct  mEvent eventReset ;
 
@@ -294,6 +303,28 @@ std::string toFind[2] = {"HLT_L2DoubleMu23_NoVertex", "HLT_L2DoubleMu30_NoVertex
  event.runNumber= iEvent.id().run();
  event.lumiBlock = iEvent.id().luminosityBlock();
  
+ // BeamSpot object 
+ reco::BeamSpot beamSpot;
+edm::Handle<reco::BeamSpot> beamSpotHandle;
+iEvent.getByLabel("offlineBeamSpot", beamSpotHandle);
+
+if ( beamSpotHandle.isValid() )
+{
+    beamSpot = *beamSpotHandle;
+
+} else
+{
+    edm::LogInfo("MyAnalyzer")
+      << "No beam spot available from EventSetup \n";
+}
+  event.beamSpot_x= beamSpotHandle->x0();
+  event.beamSpot_y= beamSpotHandle->y0();
+  event.beamSpot_z= beamSpotHandle->z0();
+  event.beamSpot_xError= beamSpotHandle->x0Error();
+  event.beamSpot_yError= beamSpotHandle->y0Error();
+  event.beamSpot_zError= beamSpotHandle->z0Error();
+
+ // end BeamSpot object 
 
 int trigPathSize = trigNames.size();
 
@@ -741,7 +772,13 @@ NtupleMakerMuon::beginJob()
            mtree->Branch("filter", event.filter, "filter[100]/C");
 		  
 		  
-		 
+		  mtree->Branch("beamSpot_x", &event.beamSpot_x, "beamSpot_x/D");
+          mtree->Branch("beamSpot_y", &event.beamSpot_y, "beamSpot_y/D");
+          mtree->Branch("beamSpot_z", &event.beamSpot_z, "beamSpot_z/D");
+           
+          mtree->Branch("beamSpot_xError", &event.beamSpot_xError, "beamSpot_xError/D");
+          mtree->Branch("beamSpot_yError", &event.beamSpot_yError, "beamSpot_yError/D");
+          mtree->Branch("beamSpot_zError", &event.beamSpot_zError, "beamSpot_zError/D");
 		  
 	
 		
