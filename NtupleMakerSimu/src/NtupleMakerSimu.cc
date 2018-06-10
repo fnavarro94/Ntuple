@@ -302,6 +302,14 @@ class NtupleMakerSimu : public edm::EDAnalyzer {
 		  Bool_t WWMuWasFound = false;
 		  Bool_t WWMuBarWasFound = false;
 		  
+		  // Beam spot info
+		  
+		  Double_t beamSpot_x = 0;
+		  Double_t beamSpot_y = 0;
+		  Double_t beamSpot_z = 0;
+		  Double_t beamSpot_xError = 0;
+		  Double_t beamSpot_yError = 0;
+		  Double_t beamSpot_zError = 0;
 		  
 		  
 		  }event,eventReset;
@@ -372,6 +380,12 @@ if ( beamSpotHandle.isValid() )
     edm::LogInfo("MyAnalyzer")
       << "No beam spot available from EventSetup \n";
 }
+  event.beamSpot_x= beamSpotHandle->x0();
+  event.beamSpot_y= beamSpotHandle->y0();
+  event.beamSpot_z= beamSpotHandle->z0();
+  event.beamSpot_xError= beamSpotHandle->x0Error();
+  event.beamSpot_yError= beamSpotHandle->y0Error();
+  event.beamSpot_zError= beamSpotHandle->z0Error();
 
  // end BeamSpot object 
   
@@ -1080,6 +1094,15 @@ NtupleMakerSimu::beginJob()
            mtree->Branch("ZZMuBarWasFound", &event.ZZMuBarWasFound, "ZZMuBarWasFound/O");
            mtree->Branch("WWMuWasFound", &event.WWMuWasFound, "WWMuWasFound/O");
            mtree->Branch("WWMuBarWasFound", &event.ZZMuWasFound, "WWMuBarWasFound/O");
+           
+           //Beam spot 
+           mtree->Branch("beamSpot_x", &event.beamSpot_x, "beamSpot_x/D");
+           mtree->Branch("beamSpot_y", &event.beamSpot_y, "beamSpot_y/D");
+           mtree->Branch("beamSpot_z", &event.beamSpot_z, "beamSpot_z/D");
+           
+           mtree->Branch("beamSpot_xError", &event.beamSpot_xError, "beamSpot_xError/D");
+           mtree->Branch("beamSpot_yError", &event.beamSpot_yError, "beamSpot_yError/D");
+           mtree->Branch("beamSpot_zError", &event.beamSpot_zError, "beamSpot_zError/D");
           // mtree->Branch("filter", event.filter, "filter[100]/C");
 		  
 		  
