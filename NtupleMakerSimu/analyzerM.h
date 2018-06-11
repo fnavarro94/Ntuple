@@ -5,8 +5,8 @@
 // found on file: exoticNtuple.root
 //////////////////////////////////////////////////////////
 
-#ifndef selector_h
-#define selector_h
+#ifndef analyzerM_h
+#define analyzerM_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -17,7 +17,7 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class selector : public TSelector {
+class analyzerM : public TSelector {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
 
@@ -374,8 +374,8 @@ public :
    TBranch        *b_beamSpot_yError;   //!
    TBranch        *b_beamSpot_zError;   //!
 
-   selector(TTree * /*tree*/ =0) : fChain(0) { }
-   virtual ~selector() { }
+   analyzerM(TTree * /*tree*/ =0) : fChain(0) { }
+   virtual ~analyzerM() { }
    virtual Int_t   Version() const { return 2; }
    virtual void    Begin(TTree *tree);
    virtual void    SlaveBegin(TTree *tree);
@@ -390,15 +390,15 @@ public :
    virtual void    SlaveTerminate();
    virtual void    Terminate();
 
-   ClassDef(selector,0);
+   ClassDef(analyzerM,0);
 };
 
 #endif
 
-#ifdef selector_cxx
-void selector::Init(TTree *tree)
+#ifdef analyzerM_cxx
+void analyzerM::Init(TTree *tree)
 {
-   // The Init() function is called when the selector needs to initialize
+   // The Init() function is called when the analyzerM needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
    // pointers of the tree will be set.
    // It is normally not necessary to make changes to the generated
@@ -560,7 +560,7 @@ void selector::Init(TTree *tree)
    fChain->SetBranchAddress("beamSpot_zError", &beamSpot_zError, &b_beamSpot_zError);
 }
 
-Bool_t selector::Notify()
+Bool_t analyzerM::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -571,4 +571,4 @@ Bool_t selector::Notify()
    return kTRUE;
 }
 
-#endif // #ifdef selector_cxx
+#endif // #ifdef analyzerM_cxx
