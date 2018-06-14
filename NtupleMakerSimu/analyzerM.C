@@ -61,7 +61,7 @@ void analyzerM::SlaveBegin(TTree * /*tree*/)
    h_lxy_errLoose = new TH1F ("lxy_errLoose", "Transverse decay length significance (loose)", 20, 0 , 20);
    h_lxy2_err = new TH1F ("lxy2_err", "Transverse decay length significance", 20, 0 , 20);
    h_lxy2_err2 = new TH1F ("lxy2_err2", "Transverse decay length significance (d0)", 20, 0 , 20);
-   h_dxy_errLoose = new TH1F ("dxy_errLoose", "Impact parameter / Standar Deviation (loose)", 100, 0 , 20);
+   h_dxy_errLoose = new TH1F ("dxy_errLoose", "Impact parameter / Standar Deviation (loose)", 20, 0 , 20);
    h_dxy_err = new TH1F ("dxy_err", "Impact parameter / Standar Deviation", 20, 0 , 20);
    h_dxy_err2 = new TH1F ("dxy_err2", "Impact parameter / Standar Deviation (d0)", 20, 0 , 20);
    h_d0_errLoose = new TH1F ("d0_errLoose", "Impact parameter / Standar Deviation (loose)", 20, 0 , 20);
