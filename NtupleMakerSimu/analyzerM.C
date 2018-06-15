@@ -267,6 +267,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 					h_delPhiLoose->Fill(theta);
 					h_cosLoose->Fill(cosAlpha);
 					h_numHitsLoose->Fill(track_nHits[i]+track_nHits[j]);
+					
 
 					 
 					 // ***************** Histograms with life time related cuts
@@ -299,8 +300,17 @@ if (standardCuts && triggerMActivated)   // quitar true
 					 Berr = (Bx*BerrX + By*BerrY)/sqrt(Bx*Bx +By*By);
 					 dSigma = sqrt(track_dxyError[i]*track_dxyError[i] + Berr*Berr);
 					 
+					 double Vx, Vy, Vz, VerrX, VerrY, Verr,dSigmaV;
+					
+					 Vx = vertex_x[0];
+					 Vy = vertex_y[0];
+					 VerrX = vertex_xError[0];
+					 VerrY = vertex_yError[0];
+					 Verr = (Vx*VerrX + Vy*VerrY)/sqrt(Vx*Vx +Vy*Vy);
+					 dSigmaV = sqrt(track_dxyError[i]*track_dxyError[i] + Verr*Verr);
+					 
 					  
-					 if (fabs(track_lxy1[i]/track_dxyError[i])>5 && fabs(track_dxy[i]/dSigma) > 2)
+					 if (fabs(track_lxy1[i]/dSigmaV)>5 && fabs(track_dxy[i]/dSigma) > 2)
 					 {
 							h_invMass2->Fill(invariantMass);
 							h_lxy2->Fill(track_lxy1[i]);
