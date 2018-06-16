@@ -266,7 +266,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 					h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
 					h_delPhiLoose->Fill(theta);
 					h_cosLoose->Fill(cosAlpha);
-					h_numHitsLoose->Fill(track_nHits[i]+track_nHits[j]);
+					h_numHitsLoose->Fill(track_nTrackerHits[i]+track_nTrackerHits[j]);
 					
 
 					 
