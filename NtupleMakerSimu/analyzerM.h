@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Mon Jun 11 03:24:10 2018 by ROOT version 5.32/00
+// Sat Jun 16 16:39:06 2018 by ROOT version 5.32/00
 // from TTree mtree/Ntuple
-// found on file: exoticNtuple.root
+// found on file: DY_1.root
 //////////////////////////////////////////////////////////
 
 #ifndef analyzerM_h
@@ -32,7 +32,7 @@ public :
    Int_t           Ev_Branch_numVert;
    Bool_t          Ev_Branch_wasTriggerFound;
    Int_t           Ev_Branch_triggerFound;
-   Int_t           vert_numTrack[20000];   //[numVert]
+   Int_t           vert_numTrack[6];   //[numVert]
    Double_t        track_pt[20000];   //[numTrack]
    Double_t        track_ptError[20000];   //[numTrack]
    Double_t        track_px[20000];   //[numTrack]
@@ -50,6 +50,7 @@ public :
    Int_t           track_nHits[20000];   //[numTrack]
    Int_t           track_found[20000];   //[numTrack]
    Int_t           track_n3DHits[20000];   //[numTrack]
+   Int_t           track_nTrackerHits[20000];   //[numTrack]
    Double_t        track_dxy[20000];   //[numTrack]
    Double_t        track_dxyError[20000];   //[numTrack]
    Double_t        track_d0[20000];   //[numTrack]
@@ -67,22 +68,22 @@ public :
    Bool_t          track_tight[20000];   //[numTrack]
    Bool_t          track_loose[20000];   //[numTrack]
    Int_t           track_matchedVertIndex[20000];   //[numTrack]
-   Double_t        trigObjE_pt[10];   //[numTrigObjE]
-   Double_t        trigObjE_px[10];   //[numTrigObjE]
-   Double_t        trigObjE_py[10];   //[numTrigObjE]
-   Double_t        trigObjE_pz[10];   //[numTrigObjE]
-   Double_t        trigObjE_eta[10];   //[numTrigObjE]
-   Double_t        trigObjE_phi[10];   //[numTrigObjE]
+   Double_t        trigObjE_pt[1];   //[numTrigObjE]
+   Double_t        trigObjE_px[1];   //[numTrigObjE]
+   Double_t        trigObjE_py[1];   //[numTrigObjE]
+   Double_t        trigObjE_pz[1];   //[numTrigObjE]
+   Double_t        trigObjE_eta[1];   //[numTrigObjE]
+   Double_t        trigObjE_phi[1];   //[numTrigObjE]
    Bool_t          triggerEActivated;
-   Bool_t          trigObjE_energy[10];   //[numTrigObjE]
-   Double_t        trigObjM_pt[4];   //[numTrigObjM]
-   Double_t        trigObjM_px[4];   //[numTrigObjM]
-   Double_t        trigObjM_py[4];   //[numTrigObjM]
-   Double_t        trigObjM_pz[4];   //[numTrigObjM]
-   Double_t        trigObjM_eta[4];   //[numTrigObjM]
-   Double_t        trigObjM_phi[4];   //[numTrigObjM]
+   Bool_t          trigObjE_energy[1];   //[numTrigObjE]
+   Double_t        trigObjM_pt[2];   //[numTrigObjM]
+   Double_t        trigObjM_px[2];   //[numTrigObjM]
+   Double_t        trigObjM_py[2];   //[numTrigObjM]
+   Double_t        trigObjM_pz[2];   //[numTrigObjM]
+   Double_t        trigObjM_eta[2];   //[numTrigObjM]
+   Double_t        trigObjM_phi[2];   //[numTrigObjM]
    Bool_t          triggerMActivated;
-   Bool_t          trigObjM_energy[4];   //[numTrigObjM]
+   Bool_t          trigObjM_energy[2];   //[numTrigObjM]
    Double_t        vertex1Track_vx[6];   //[numVertTrack]
    Double_t        vertex1Track_vy[6];   //[numVertTrack]
    Double_t        vertex1Track_vz[6];   //[numVertTrack]
@@ -109,64 +110,64 @@ public :
    Double_t        matchedVertex_zError[6];   //[numVertTrack]
    Double_t        matchedVertex_chi2[6];   //[numVertTrack]
    Double_t        matchedVertex_ndof[6];   //[numVertTrack]
-   Double_t        vertex_chi2[10];   //[numVert]
-   Double_t        vertex_ndof[10];   //[numVert]
-   Double_t        vertex_x[10];   //[numVert]
-   Double_t        vertex_y[10];   //[numVert]
-   Double_t        vertex_z[10];   //[numVert]
-   Double_t        vertex_xError[10];   //[numVert]
-   Double_t        vertex_yError[10];   //[numVert]
-   Double_t        vertex_zError[10];   //[numVert]
-   Double_t        vertex_nTracks[10];   //[numVert]
-   Double_t        ak5jet_x[100];   //[numJets]
-   Double_t        ak5jet_y[100];   //[numJets]
-   Double_t        ak5jet_z[100];   //[numJets]
-   Double_t        ak5jet_pt[100];   //[numJets]
-   Double_t        ak5jet_px[100];   //[numJets]
-   Double_t        ak5jet_py[100];   //[numJets]
-   Double_t        ak5jet_pz[100];   //[numJets]
-   Double_t        ak5jet_phi[100];   //[numJets]
-   Double_t        ak5jet_eta[100];   //[numJets]
-   Double_t        ak5jet_mass[100];   //[numJets]
-   Double_t        genMu_phi[10];
-   Double_t        genMu_eta[10];
-   Double_t        genMu_pt[10];
-   Double_t        genMu_px[10];
-   Double_t        genMu_py[10];
-   Double_t        genMu_pz[10];
-   Double_t        genMuBar_phi[10];
-   Double_t        genMuBar_eta[10];
-   Double_t        genMuBar_pt[10];
-   Double_t        genMuBar_px[10];
-   Double_t        genMuBar_py[10];
-   Double_t        genMuBar_pz[10];
-   Double_t        genVert[10];
-   Double_t        ZZgenMu_phi[10];
-   Double_t        ZZgenMu_eta[10];
-   Double_t        ZZgenMu_pt[10];
-   Double_t        ZZgenMu_px[10];
-   Double_t        ZZgenMu_py[10];
-   Double_t        ZZgenMu_pz[10];
-   Double_t        ZZgenMuBar_phi[10];
-   Double_t        ZZgenMuBar_eta[10];
-   Double_t        ZZgenMuBar_pt[10];
-   Double_t        ZZgenMuBar_px[10];
-   Double_t        ZZgenMuBar_py[10];
-   Double_t        ZZgenMuBar_pz[10];
-   Double_t        ZZgenVert[10];
-   Double_t        WWgenMu_phi[10];
-   Double_t        WWgenMu_eta[10];
-   Double_t        WWgenMu_pt[10];
-   Double_t        WWgenMu_px[10];
-   Double_t        WWgenMu_py[10];
-   Double_t        WWgenMu_pz[10];
-   Double_t        WWgenMuBar_phi[10];
-   Double_t        WWgenMuBar_eta[10];
-   Double_t        WWgenMuBar_pt[10];
-   Double_t        WWgenMuBar_px[10];
-   Double_t        WWgenMuBar_py[10];
-   Double_t        WWgenMuBar_pz[10];
-   Double_t        WWgenVert[10];
+   Double_t        vertex_chi2[6];   //[numVert]
+   Double_t        vertex_ndof[6];   //[numVert]
+   Double_t        vertex_x[6];   //[numVert]
+   Double_t        vertex_y[6];   //[numVert]
+   Double_t        vertex_z[6];   //[numVert]
+   Double_t        vertex_xError[6];   //[numVert]
+   Double_t        vertex_yError[6];   //[numVert]
+   Double_t        vertex_zError[6];   //[numVert]
+   Double_t        vertex_nTracks[6];   //[numVert]
+   Double_t        ak5jet_x[73];   //[numJets]
+   Double_t        ak5jet_y[73];   //[numJets]
+   Double_t        ak5jet_z[73];   //[numJets]
+   Double_t        ak5jet_pt[73];   //[numJets]
+   Double_t        ak5jet_px[73];   //[numJets]
+   Double_t        ak5jet_py[73];   //[numJets]
+   Double_t        ak5jet_pz[73];   //[numJets]
+   Double_t        ak5jet_phi[73];   //[numJets]
+   Double_t        ak5jet_eta[73];   //[numJets]
+   Double_t        ak5jet_mass[73];   //[numJets]
+   Double_t        genMu_phi[2];
+   Double_t        genMu_eta[2];
+   Double_t        genMu_pt[2];
+   Double_t        genMu_px[2];
+   Double_t        genMu_py[2];
+   Double_t        genMu_pz[2];
+   Double_t        genMuBar_phi[2];
+   Double_t        genMuBar_eta[2];
+   Double_t        genMuBar_pt[2];
+   Double_t        genMuBar_px[2];
+   Double_t        genMuBar_py[2];
+   Double_t        genMuBar_pz[2];
+   Double_t        genVert[3];
+   Double_t        ZZgenMu_phi[2];
+   Double_t        ZZgenMu_eta[2];
+   Double_t        ZZgenMu_pt[2];
+   Double_t        ZZgenMu_px[2];
+   Double_t        ZZgenMu_py[2];
+   Double_t        ZZgenMu_pz[2];
+   Double_t        ZZgenMuBar_phi[2];
+   Double_t        ZZgenMuBar_eta[2];
+   Double_t        ZZgenMuBar_pt[2];
+   Double_t        ZZgenMuBar_px[2];
+   Double_t        ZZgenMuBar_py[2];
+   Double_t        ZZgenMuBar_pz[2];
+   Double_t        ZZgenVert[3];
+   Double_t        WWgenMu_phi[2];
+   Double_t        WWgenMu_eta[2];
+   Double_t        WWgenMu_pt[2];
+   Double_t        WWgenMu_px[2];
+   Double_t        WWgenMu_py[2];
+   Double_t        WWgenMu_pz[2];
+   Double_t        WWgenMuBar_phi[2];
+   Double_t        WWgenMuBar_eta[2];
+   Double_t        WWgenMuBar_pt[2];
+   Double_t        WWgenMuBar_px[2];
+   Double_t        WWgenMuBar_py[2];
+   Double_t        WWgenMuBar_pz[2];
+   Double_t        WWgenVert[3];
    Char_t          triggerPath[100];
    Bool_t          ZZMuWasFound;
    Bool_t          ZZMuBarWasFound;
@@ -178,6 +179,9 @@ public :
    Double_t        beamSpot_xError;
    Double_t        beamSpot_yError;
    Double_t        beamSpot_zError;
+
+
+
 // Additional variables
   Int_t 		   matchedTrack[20000];
   Int_t 		   matchedTrackLoose[20000];
@@ -245,6 +249,7 @@ public :
    TBranch        *b_track_nHits;   //!
    TBranch        *b_track_found;   //!
    TBranch        *b_track_n3DHits;   //!
+   TBranch        *b_track_nTrackerHits;   //!
    TBranch        *b_track_dxy;   //!
    TBranch        *b_track_dxyError;   //!
    TBranch        *b_track_d0;   //!
@@ -398,7 +403,7 @@ public :
 #ifdef analyzerM_cxx
 void analyzerM::Init(TTree *tree)
 {
-   // The Init() function is called when the analyzerM needs to initialize
+   // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
    // pointers of the tree will be set.
    // It is normally not necessary to make changes to the generated
@@ -430,6 +435,7 @@ void analyzerM::Init(TTree *tree)
    fChain->SetBranchAddress("track_nHits", track_nHits, &b_track_nHits);
    fChain->SetBranchAddress("track_found", track_found, &b_track_found);
    fChain->SetBranchAddress("track_n3DHits", track_n3DHits, &b_track_n3DHits);
+   fChain->SetBranchAddress("track_nTrackerHits", track_nTrackerHits, &b_track_nTrackerHits);
    fChain->SetBranchAddress("track_dxy", track_dxy, &b_track_dxy);
    fChain->SetBranchAddress("track_dxyError", track_dxyError, &b_track_dxyError);
    fChain->SetBranchAddress("track_d0", track_d0, &b_track_d0);
@@ -447,14 +453,14 @@ void analyzerM::Init(TTree *tree)
    fChain->SetBranchAddress("track_tight", track_tight, &b_track_tight);
    fChain->SetBranchAddress("track_loose", track_loose, &b_track_loose);
    fChain->SetBranchAddress("track_matchedVertIndex", track_matchedVertIndex, &b_track_matchedVertIndex);
-   fChain->SetBranchAddress("trigObjE_pt", trigObjE_pt, &b_trigObjE_pt);
-   fChain->SetBranchAddress("trigObjE_px", trigObjE_px, &b_trigObjE_px);
-   fChain->SetBranchAddress("trigObjE_py", trigObjE_py, &b_trigObjE_py);
-   fChain->SetBranchAddress("trigObjE_pz", trigObjE_pz, &b_trigObjE_pz);
-   fChain->SetBranchAddress("trigObjE_eta", trigObjE_eta, &b_trigObjE_eta);
-   fChain->SetBranchAddress("trigObjE_phi", trigObjE_phi, &b_trigObjE_phi);
+   fChain->SetBranchAddress("trigObjE_pt", &trigObjE_pt, &b_trigObjE_pt);
+   fChain->SetBranchAddress("trigObjE_px", &trigObjE_px, &b_trigObjE_px);
+   fChain->SetBranchAddress("trigObjE_py", &trigObjE_py, &b_trigObjE_py);
+   fChain->SetBranchAddress("trigObjE_pz", &trigObjE_pz, &b_trigObjE_pz);
+   fChain->SetBranchAddress("trigObjE_eta", &trigObjE_eta, &b_trigObjE_eta);
+   fChain->SetBranchAddress("trigObjE_phi", &trigObjE_phi, &b_trigObjE_phi);
    fChain->SetBranchAddress("triggerEActivated", &triggerEActivated, &b_triggerEActivated);
-   fChain->SetBranchAddress("trigObjE_energy", trigObjE_energy, &b_trigObjE_energy);
+   fChain->SetBranchAddress("trigObjE_energy", &trigObjE_energy, &b_trigObjE_energy);
    fChain->SetBranchAddress("trigObjM_pt", trigObjM_pt, &b_trigObjM_pt);
    fChain->SetBranchAddress("trigObjM_px", trigObjM_px, &b_trigObjM_px);
    fChain->SetBranchAddress("trigObjM_py", trigObjM_py, &b_trigObjM_py);
