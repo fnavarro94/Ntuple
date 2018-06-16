@@ -173,7 +173,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 
 		for (int j = 0; j< Ev_Branch_numTrigObjM; j++)
 		{
-			bool lepMatch =matchingCuts( track_highPurity[i]  , track_pt[i] , track_nHits[i],track_n3DHits[i], fabs(track_eta[i]));
+			bool lepMatch =matchingCuts( track_highPurity[i]  , track_pt[i] , track_nTrackerHits[i],track_n3DHits[i], fabs(track_eta[i]));
 		
 		  
 		   if (lepMatch)
