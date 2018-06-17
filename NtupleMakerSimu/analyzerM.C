@@ -260,7 +260,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 					h_invMassLoose->Fill(invariantMass);
 					h_lxyLoose->Fill(track_lxy1[i]);
 					h_lxy_errLoose->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
-					h_chi2_NDFLoose->Fill(track_chi2[i]/track_ndof[i]);
+					//h_chi2_NDFLoose->Fill(track_chi2[i]/track_ndof[i]);
 					h_d0_errLoose->Fill(fabs(track_d0[i]/track_d0Error[i]));
 					h_dxy_errLoose->Fill(fabs(track_dxy[i]/track_dxyError[i]));
 					h_lxy2_err->Fill(fabs(track_lxy2[i]/track_dxyError[i]));
@@ -277,7 +277,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 							h_invMass->Fill(invariantMass);
 							h_lxy->Fill(track_lxy1[i]);
 							h_lxy_err->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
-							h_chi2_NDF->Fill(track_chi2[i]/track_ndof[i]);
+							//h_chi2_NDF->Fill(track_chi2[i]/track_ndof[i]);
 							h_delPhi->Fill(theta);
 							h_cos->Fill(cosAlpha);
 							h_d0_err->Fill(fabs(track_d0[i]/track_d0Error[i]));
@@ -315,7 +315,7 @@ if (standardCuts && triggerMActivated)   // quitar true
 							h_invMass2->Fill(invariantMass);
 							h_lxy2->Fill(track_lxy1[i]);
 							h_lxy_err2->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
-							h_chi2_NDF2->Fill(track_chi2[i]/track_ndof[i]);
+							//h_chi2_NDF2->Fill(track_chi2[i]/track_ndof[i]);
 							h_delPhi2->Fill(theta);
 							h_cos2->Fill(cosAlpha);
 							h_d0_err2->Fill(fabs(track_d0[i]/track_d0Error[i]));
