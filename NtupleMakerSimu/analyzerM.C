@@ -44,6 +44,8 @@ void analyzerM::SlaveBegin(TTree * /*tree*/)
    // When running with PROOF SlaveBegin() is called on each slave server.
    // The tree argument is deprecated (on PROOF 0 is passed).
 
+
+    cout<<"STARTED"<<endl;
    TString option = GetOption();
    
  file = new TFile("WZE.root", "recreate");
