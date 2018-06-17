@@ -76,14 +76,14 @@ public :
    Double_t        trigObjE_phi[1];   //[numTrigObjE]
    Bool_t          triggerEActivated;
    Bool_t          trigObjE_energy[1];   //[numTrigObjE]
-   Double_t        trigObjM_pt[2];   //[numTrigObjM]
-   Double_t        trigObjM_px[2];   //[numTrigObjM]
-   Double_t        trigObjM_py[2];   //[numTrigObjM]
-   Double_t        trigObjM_pz[2];   //[numTrigObjM]
-   Double_t        trigObjM_eta[2];   //[numTrigObjM]
-   Double_t        trigObjM_phi[2];   //[numTrigObjM]
+   Double_t        trigObjM_pt[50];   //[numTrigObjM]
+   Double_t        trigObjM_px[50];   //[numTrigObjM]
+   Double_t        trigObjM_py[50];   //[numTrigObjM]
+   Double_t        trigObjM_pz[50];   //[numTrigObjM]
+   Double_t        trigObjM_eta[50];   //[numTrigObjM]
+   Double_t        trigObjM_phi[50];   //[numTrigObjM]
    Bool_t          triggerMActivated;
-   Bool_t          trigObjM_energy[2];   //[numTrigObjM]
+   Bool_t          trigObjM_energy[50];   //[numTrigObjM]
    Double_t        vertex1Track_vx[6];   //[numVertTrack]
    Double_t        vertex1Track_vy[6];   //[numVertTrack]
    Double_t        vertex1Track_vz[6];   //[numVertTrack]
@@ -129,44 +129,44 @@ public :
    Double_t        ak5jet_phi[73];   //[numJets]
    Double_t        ak5jet_eta[73];   //[numJets]
    Double_t        ak5jet_mass[73];   //[numJets]
-   Double_t        genMu_phi[2];
-   Double_t        genMu_eta[2];
-   Double_t        genMu_pt[2];
-   Double_t        genMu_px[2];
-   Double_t        genMu_py[2];
-   Double_t        genMu_pz[2];
-   Double_t        genMuBar_phi[2];
-   Double_t        genMuBar_eta[2];
-   Double_t        genMuBar_pt[2];
-   Double_t        genMuBar_px[2];
-   Double_t        genMuBar_py[2];
-   Double_t        genMuBar_pz[2];
+   Double_t        genMu_phi[50];
+   Double_t        genMu_eta[50];
+   Double_t        genMu_pt[50];
+   Double_t        genMu_px[50];
+   Double_t        genMu_py[50];
+   Double_t        genMu_pz[50];
+   Double_t        genMuBar_phi[50];
+   Double_t        genMuBar_eta[50];
+   Double_t        genMuBar_pt[50];
+   Double_t        genMuBar_px[50];
+   Double_t        genMuBar_py[50];
+   Double_t        genMuBar_pz[50];
    Double_t        genVert[3];
-   Double_t        ZZgenMu_phi[2];
-   Double_t        ZZgenMu_eta[2];
-   Double_t        ZZgenMu_pt[2];
-   Double_t        ZZgenMu_px[2];
-   Double_t        ZZgenMu_py[2];
-   Double_t        ZZgenMu_pz[2];
-   Double_t        ZZgenMuBar_phi[2];
-   Double_t        ZZgenMuBar_eta[2];
-   Double_t        ZZgenMuBar_pt[2];
-   Double_t        ZZgenMuBar_px[2];
-   Double_t        ZZgenMuBar_py[2];
-   Double_t        ZZgenMuBar_pz[2];
+   Double_t        ZZgenMu_phi[50];
+   Double_t        ZZgenMu_eta[50];
+   Double_t        ZZgenMu_pt[50];
+   Double_t        ZZgenMu_px[50];
+   Double_t        ZZgenMu_py[50];
+   Double_t        ZZgenMu_pz[50];
+   Double_t        ZZgenMuBar_phi[50];
+   Double_t        ZZgenMuBar_eta[50];
+   Double_t        ZZgenMuBar_pt[50];
+   Double_t        ZZgenMuBar_px[50];
+   Double_t        ZZgenMuBar_py[50];
+   Double_t        ZZgenMuBar_pz[50];
    Double_t        ZZgenVert[3];
-   Double_t        WWgenMu_phi[2];
-   Double_t        WWgenMu_eta[2];
-   Double_t        WWgenMu_pt[2];
-   Double_t        WWgenMu_px[2];
-   Double_t        WWgenMu_py[2];
-   Double_t        WWgenMu_pz[2];
-   Double_t        WWgenMuBar_phi[2];
-   Double_t        WWgenMuBar_eta[2];
-   Double_t        WWgenMuBar_pt[2];
-   Double_t        WWgenMuBar_px[2];
-   Double_t        WWgenMuBar_py[2];
-   Double_t        WWgenMuBar_pz[2];
+   Double_t        WWgenMu_phi[50];
+   Double_t        WWgenMu_eta[50];
+   Double_t        WWgenMu_pt[50];
+   Double_t        WWgenMu_px[50];
+   Double_t        WWgenMu_py[50];
+   Double_t        WWgenMu_pz[50];
+   Double_t        WWgenMuBar_phi[50];
+   Double_t        WWgenMuBar_eta[50];
+   Double_t        WWgenMuBar_pt[50];
+   Double_t        WWgenMuBar_px[50];
+   Double_t        WWgenMuBar_py[50];
+   Double_t        WWgenMuBar_pz[50];
    Double_t        WWgenVert[3];
    Char_t          triggerPath[100];
    Bool_t          ZZMuWasFound;
