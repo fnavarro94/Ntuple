@@ -68,14 +68,7 @@ public :
    Bool_t          track_tight[20000];   //[numTrack]
    Bool_t          track_loose[20000];   //[numTrack]
    Int_t           track_matchedVertIndex[20000];   //[numTrack]
-/
-/
-/
-/
-/
-/
-/
-/
+
    Double_t        trigObj_pt[50];   //[numTrigObj]
    Double_t        trigObj_px[50];   //[numTrigObj]
    Double_t        trigObj_py[50];   //[numTrigObj]
@@ -267,14 +260,7 @@ public :
    TBranch        *b_track_tight;   //!
    TBranch        *b_track_loose;   //!
    TBranch        *b_track_matchedVertIndex;   //!
-/
-/
-/
-/
-/
-/
-/
-/
+
    TBranch        *b_trigObj_pt;   //!
    TBranch        *b_trigObj_px;   //!
    TBranch        *b_trigObj_py;   //!
@@ -453,14 +439,7 @@ void analyzerM::Init(TTree *tree)
    fChain->SetBranchAddress("track_tight", track_tight, &b_track_tight);
    fChain->SetBranchAddress("track_loose", track_loose, &b_track_loose);
    fChain->SetBranchAddress("track_matchedVertIndex", track_matchedVertIndex, &b_track_matchedVertIndex);
-/
-/
-/
-/
-/
-/
-/
-/
+
    fChain->SetBranchAddress("trigObj_pt", trigObj_pt, &b_trigObj_pt);
    fChain->SetBranchAddress("trigObj_px", trigObj_px, &b_trigObj_px);
    fChain->SetBranchAddress("trigObj_py", trigObj_py, &b_trigObj_py);
