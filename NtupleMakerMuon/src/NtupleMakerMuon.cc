@@ -559,7 +559,7 @@ else
 		   event.track_nTrackerHits[i] = itTrack->hitPattern().numberOfValidTrackerHits();
 		   event.track_found[i] = itTrack->found();
 		   event.track_dxy[i] = itTrack->dxy(beamSpot);
-		   event.track_dxy[i] = itTrack->dxyError();
+		   event.track_dxyError[i] = itTrack->dxyError();
 		   event.track_d0[i] = itTrack->d0();
 		   event.track_d0Error[i] = itTrack->d0Error();
 		   event.track_lxy1[i] = itTrack->dxy(vertex1);
@@ -694,7 +694,7 @@ NtupleMakerMuon::beginJob()
            mtree->Branch("track_n3DHits", event.track_n3DHits, "track_n3DHits[numTrack]/I");
            mtree->Branch("track_nTrackerHits", event.track_nTrackerHits, "track_nTrackerHits[numTrack]/I");
            mtree->Branch("track_dxy", event.track_dxy, "track_dxy[numTrack]/D");
-           mtree->Branch("track_dxyErrpr", event.track_dxyError, "track_dxyError[numTrack]/D");
+           mtree->Branch("track_dxyError", event.track_dxyError, "track_dxyError[numTrack]/D");
            mtree->Branch("track_d0", event.track_d0, "track_d0[numTrack]/D");
            mtree->Branch("track_d0Error", event.track_d0Error, "track_d0Error[numTrack]/D");
            mtree->Branch("track_lxy1", event.track_lxy1, "track_lxy1[numTrack]/D");
