@@ -1,0 +1,12 @@
+
+
+
+
+plotterM.cxx -> uses integral to normailze and just error
+
+plotterM2.cxx -> uses integral to normalize and error of dxy and beam
+
+
+plotterPNM.cxx -> uses number of events to normalize and just errlr
+
+plotterPNM2.cxx -> uses number of events to normalize and dxy and beam error

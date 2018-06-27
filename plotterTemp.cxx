@@ -35,12 +35,12 @@ TFile *fDat = new TFile("DatM.root");
  
  
 
-TH1F * hZZ_lxy= (TH1F*)fZZ->Get("lxy2");
-TH1F * hWZ_lxy= (TH1F*)fWZ->Get("lxy2");
-TH1F * hWW_lxy= (TH1F*)fWW->Get("lxy2");
-TH1F * hDY_lxy= (TH1F*)fDY->Get("lxy2");
-TH1F * hll_lxy= (TH1F*)fll->Get("lxy2");
-TH1F * hDat_lxy= (TH1F*)fDat->Get("lxy2");
+TH1F * hZZ_lxy= (TH1F*)fZZ->Get("lxy");
+TH1F * hWZ_lxy= (TH1F*)fWZ->Get("lxy");
+TH1F * hWW_lxy= (TH1F*)fWW->Get("lxy");
+TH1F * hDY_lxy= (TH1F*)fDY->Get("lxy");
+TH1F * hll_lxy= (TH1F*)fll->Get("lxy");
+TH1F * hDat_lxy= (TH1F*)fDat->Get("lxy");
 
 
 TH1F * hZZ_lxyLoose= (TH1F*)fZZ->Get("lxyLoose");
@@ -51,12 +51,12 @@ TH1F * hll_lxyLoose= (TH1F*)fll->Get("lxyLoose");
 TH1F * hDat_lxyLoose= (TH1F*)fDat->Get("lxyLoose");
 
 
-TH1F * hZZ_lxy_err= (TH1F*)fZZ->Get("lxy_err2");
-TH1F * hWZ_lxy_err= (TH1F*)fWZ->Get("lxy_err2");
-TH1F * hWW_lxy_err= (TH1F*)fWW->Get("lxy_err2");
-TH1F * hDY_lxy_err= (TH1F*)fDY->Get("lxy_err2");
-TH1F * hll_lxy_err= (TH1F*)fll->Get("lxy_err2");
-TH1F * hDat_lxy_err= (TH1F*)fDat->Get("lxy_err2");
+TH1F * hZZ_lxy_err= (TH1F*)fZZ->Get("lxy_err");
+TH1F * hWZ_lxy_err= (TH1F*)fWZ->Get("lxy_err");
+TH1F * hWW_lxy_err= (TH1F*)fWW->Get("lxy_err");
+TH1F * hDY_lxy_err= (TH1F*)fDY->Get("lxy_err");
+TH1F * hll_lxy_err= (TH1F*)fll->Get("lxy_err");
+TH1F * hDat_lxy_err= (TH1F*)fDat->Get("lxy_err");
 
 
 TH1F * hZZ_lxy_errLoose= (TH1F*)fZZ->Get("lxy_errLoose");
@@ -67,12 +67,12 @@ TH1F * hll_lxy_errLoose= (TH1F*)fll->Get("lxy_errLoose");
 TH1F * hDat_lxy_errLoose= (TH1F*)fDat->Get("lxy_errLoose");
 
 
-TH1F * hZZ_InvMass= (TH1F*)fZZ->Get("InvMass2");
-TH1F * hWZ_InvMass= (TH1F*)fWZ->Get("InvMass2");
-TH1F * hWW_InvMass= (TH1F*)fWW->Get("InvMass2");
-TH1F * hDY_InvMass= (TH1F*)fDY->Get("InvMass2");
-TH1F * hll_InvMass= (TH1F*)fll->Get("InvMass2");
-TH1F * hDat_InvMass= (TH1F*)fDat->Get("InvMass2");
+TH1F * hZZ_InvMass= (TH1F*)fZZ->Get("InvMass");
+TH1F * hWZ_InvMass= (TH1F*)fWZ->Get("InvMass");
+TH1F * hWW_InvMass= (TH1F*)fWW->Get("InvMass");
+TH1F * hDY_InvMass= (TH1F*)fDY->Get("InvMass");
+TH1F * hll_InvMass= (TH1F*)fll->Get("InvMass");
+TH1F * hDat_InvMass= (TH1F*)fDat->Get("InvMass");
 
 
 TH1F * hZZ_InvMassLoose= (TH1F*)fZZ->Get("InvMassLoose");
@@ -83,20 +83,22 @@ TH1F * hll_InvMassLoose= (TH1F*)fll->Get("InvMassLoose");
 TH1F * hDat_InvMassLoose= (TH1F*)fDat->Get("InvMassLoose");
 
 
-TH1F * hZZ_InvMassLW= (TH1F*)fZZ->Get("InvMassLW2");
-TH1F * hWZ_InvMassLW= (TH1F*)fWZ->Get("InvMassLW2");
-TH1F * hWW_InvMassLW= (TH1F*)fWW->Get("InvMassLW2");
-TH1F * hDY_InvMassLW= (TH1F*)fDY->Get("InvMassLW2");
-TH1F * hll_InvMassLW= (TH1F*)fll->Get("InvMassLW2");
-TH1F * hDat_InvMassLW= (TH1F*)fDat->Get("InvMassLW2");
 
 
-TH1F * hZZ_d0_err= (TH1F*)fZZ->Get("d0_err2");
-TH1F * hWZ_d0_err= (TH1F*)fWZ->Get("d0_err2");
-TH1F * hWW_d0_err= (TH1F*)fWW->Get("d0_err2");
-TH1F * hDY_d0_err= (TH1F*)fDY->Get("d0_err2");
-TH1F * hll_d0_err= (TH1F*)fll->Get("d0_err2");
-TH1F * hDat_d0_err= (TH1F*)fDat->Get("d0_err2");
+TH1F * hZZ_InvMassLW= (TH1F*)fZZ->Get("InvMassLW");
+TH1F * hWZ_InvMassLW= (TH1F*)fWZ->Get("InvMassLW");
+TH1F * hWW_InvMassLW= (TH1F*)fWW->Get("InvMassLW");
+TH1F * hDY_InvMassLW= (TH1F*)fDY->Get("InvMassLW");
+TH1F * hll_InvMassLW= (TH1F*)fll->Get("InvMassLW");
+TH1F * hDat_InvMassLW= (TH1F*)fDat->Get("InvMassLW");
+
+
+TH1F * hZZ_d0_err= (TH1F*)fZZ->Get("d0_err");
+TH1F * hWZ_d0_err= (TH1F*)fWZ->Get("d0_err");
+TH1F * hWW_d0_err= (TH1F*)fWW->Get("d0_err");
+TH1F * hDY_d0_err= (TH1F*)fDY->Get("d0_err");
+TH1F * hll_d0_err= (TH1F*)fll->Get("d0_err");
+TH1F * hDat_d0_err= (TH1F*)fDat->Get("d0_err");
 
 
 TH1F * hZZ_d0_errLoose= (TH1F*)fZZ->Get("d0_errLoose");
@@ -107,12 +109,12 @@ TH1F * hll_d0_errLoose= (TH1F*)fll->Get("d0_errLoose");
 TH1F * hDat_d0_errLoose= (TH1F*)fDat->Get("d0_errLoose");
 
 
-TH1F * hZZ_dxy_err= (TH1F*)fZZ->Get("dxy_err2");
-TH1F * hWZ_dxy_err= (TH1F*)fWZ->Get("dxy_err2");
-TH1F * hWW_dxy_err= (TH1F*)fWW->Get("dxy_err2");
-TH1F * hDY_dxy_err= (TH1F*)fDY->Get("dxy_err2");
-TH1F * hll_dxy_err= (TH1F*)fll->Get("dxy_err2");
-TH1F * hDat_dxy_err= (TH1F*)fDat->Get("dxy_err2");
+TH1F * hZZ_dxy_err= (TH1F*)fZZ->Get("dxy_err");
+TH1F * hWZ_dxy_err= (TH1F*)fWZ->Get("dxy_err");
+TH1F * hWW_dxy_err= (TH1F*)fWW->Get("dxy_err");
+TH1F * hDY_dxy_err= (TH1F*)fDY->Get("dxy_err");
+TH1F * hll_dxy_err= (TH1F*)fll->Get("dxy_err");
+TH1F * hDat_dxy_err= (TH1F*)fDat->Get("dxy_err");
 
 
 TH1F * hZZ_dxy_errLoose= (TH1F*)fZZ->Get("dxy_errLoose");
@@ -123,12 +125,12 @@ TH1F * hll_dxy_errLoose= (TH1F*)fll->Get("dxy_errLoose");
 TH1F * hDat_dxy_errLoose= (TH1F*)fDat->Get("dxy_errLoose");
 
 
-TH1F * hZZ_cos= (TH1F*)fZZ->Get("cos2");
-TH1F * hWZ_cos= (TH1F*)fWZ->Get("cos2");
-TH1F * hWW_cos= (TH1F*)fWW->Get("cos2");
-TH1F * hDY_cos= (TH1F*)fDY->Get("cos2");
-TH1F * hll_cos= (TH1F*)fll->Get("cos2");
-TH1F * hDat_cos= (TH1F*)fDat->Get("cos2");
+TH1F * hZZ_cos= (TH1F*)fZZ->Get("cos");
+TH1F * hWZ_cos= (TH1F*)fWZ->Get("cos");
+TH1F * hWW_cos= (TH1F*)fWW->Get("cos");
+TH1F * hDY_cos= (TH1F*)fDY->Get("cos");
+TH1F * hll_cos= (TH1F*)fll->Get("cos");
+TH1F * hDat_cos= (TH1F*)fDat->Get("cos");
 
 
 TH1F * hZZ_cosLoose= (TH1F*)fZZ->Get("cosLoose");
@@ -139,12 +141,12 @@ TH1F * hll_cosLoose= (TH1F*)fll->Get("cosLoose");
 TH1F * hDat_cosLoose= (TH1F*)fDat->Get("cosLoose");
 
 
-TH1F * hZZ_delPhi= (TH1F*)fZZ->Get("delPhi2");
-TH1F * hWZ_delPhi= (TH1F*)fWZ->Get("delPhi2");
-TH1F * hWW_delPhi= (TH1F*)fWW->Get("delPhi2");
-TH1F * hDY_delPhi= (TH1F*)fDY->Get("delPhi2");
-TH1F * hll_delPhi= (TH1F*)fll->Get("delPhi2");
-TH1F * hDat_delPhi= (TH1F*)fDat->Get("delPhi2");
+TH1F * hZZ_delPhi= (TH1F*)fZZ->Get("delPhi");
+TH1F * hWZ_delPhi= (TH1F*)fWZ->Get("delPhi");
+TH1F * hWW_delPhi= (TH1F*)fWW->Get("delPhi");
+TH1F * hDY_delPhi= (TH1F*)fDY->Get("delPhi");
+TH1F * hll_delPhi= (TH1F*)fll->Get("delPhi");
+TH1F * hDat_delPhi= (TH1F*)fDat->Get("delPhi");
 
 
 TH1F * hZZ_delPhiLoose= (TH1F*)fZZ->Get("delPhiLoose");
@@ -682,13 +684,13 @@ hll_InvMass->Scale(ll_InvMass_scale);
 double Dat_InvMass_scale = lumi*1/(hDat_InvMass->Integral(-99999999999,999999999999));
 hDat_InvMass->Scale(Dat_InvMass_scale);
 double ZZ_InvMassLoose_scale = lumi*5.9/(hZZ_InvMassLoose->Integral(-99999999999,999999999999));
-hZZ_InvMassLoose->Scale(ZZ_InvMassLoose_scale);
+hZZ_InvMassLoose->Scale(0);
 double WZ_InvMassLoose_scale = lumi*18.2/(hWZ_InvMassLoose->Integral(-99999999999,999999999999));
-hWZ_InvMassLoose->Scale(WZ_InvMassLoose_scale);
+hWZ_InvMassLoose->Scale(0);
 double WW_InvMassLoose_scale = lumi*42/(hWW_InvMassLoose->Integral(-99999999999,999999999999));
-hWW_InvMassLoose->Scale(WW_InvMassLoose_scale);
+hWW_InvMassLoose->Scale(0);
 double DY_InvMassLoose_scale = lumi*3048/(hDY_InvMassLoose->Integral(-99999999999,999999999999));
-hDY_InvMassLoose->Scale(DY_InvMassLoose_scale);
+hDY_InvMassLoose->Scale(0);
 double ll_InvMassLoose_scale = lumi*1/(hll_InvMassLoose->Integral(-99999999999,999999999999));
 hll_InvMassLoose->Scale(ll_InvMassLoose_scale);
 double Dat_InvMassLoose_scale = lumi*1/(hDat_InvMassLoose->Integral(-99999999999,999999999999));
@@ -1271,7 +1273,7 @@ gPad->SetLogy(1);
 
 
 TCanvas *cs_InvMass = new TCanvas("cs_InvMass","cs_InvMass",10,10,700,900);
-cs_InvMass->Divide(2,2);
+//cs_InvMass->Divide(2,2);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_InvMass->SetTitle("InvMass");
 auto legend_InvMass = new TLegend(0.5,0.7,0.9,0.9);
@@ -1288,7 +1290,7 @@ if(hs_InvMass->GetMaximum()>hDat_InvMass->GetMaximum())
 
 hDat_InvMass->SetXTitle("mass [GeV/c^{2}]");
 hDat_InvMass->SetYTitle("Entries");
-cs_InvMass->cd(1); hDat_InvMass->Draw("hist"); cs_InvMass->Update(); hs_InvMass->Draw("same hist");
+//cs_InvMass->cd(1); hDat_InvMass->Draw("hist"); cs_InvMass->Update(); hs_InvMass->Draw("same hist");
 // cs->cd(1);  hs_InvMass->Draw(" hist"); cs->Update(); hDat_InvMass->Draw("hist same");
 legend_InvMass->Draw();
 gPad->Update();
@@ -1309,10 +1311,12 @@ if(hs_InvMassLoose->GetMaximum()>hDat_InvMassLoose->GetMaximum())
 {
 	hDat_InvMassLoose->SetMaximum(2*hs_InvMassLoose->GetMaximum());
 }
+hDat_InvMassLoose->SetLineWidth(2);
+
 
 hDat_InvMassLoose->SetXTitle("mass [GeV/c^{2}]");
 hDat_InvMassLoose->SetYTitle("Entries");
-cs_InvMass->cd(2); hDat_InvMassLoose->Draw("hist"); cs_InvMass->Update(); hs_InvMassLoose->Draw("same hist");
+ hDat_InvMassLoose->Draw("hist"); cs_InvMass->Update(); hs_InvMassLoose->Draw("same hist");
 // cs->cd(1);  hs_InvMassLoose->Draw(" hist"); cs->Update(); hDat_InvMassLoose->Draw("hist same");
 legend_InvMassLoose->Draw();
 gPad->Update();
@@ -1336,7 +1340,7 @@ if(hs_InvMassLW->GetMaximum()>hDat_InvMassLW->GetMaximum())
 
 hDat_InvMassLW->SetXTitle("mass [GeV/c^{2}]");
 hDat_InvMassLW->SetYTitle("Entries");
-cs_InvMass->cd(3); hDat_InvMassLW->Draw("hist"); cs_InvMass->Update(); hs_InvMassLW->Draw("same hist");
+//cs_InvMass->cd(3); hDat_InvMassLW->Draw("hist"); cs_InvMass->Update(); hs_InvMassLW->Draw("same hist");
 // cs->cd(1);  hs_InvMassLW->Draw(" hist"); cs->Update(); hDat_InvMassLW->Draw("hist same");
 legend_InvMassLW->Draw();
 gPad->Update();
