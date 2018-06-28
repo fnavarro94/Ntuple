@@ -285,6 +285,7 @@ void
 NtupleMakerMuon::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
+   using namespace std;
   vuelta++;
   //if (vuelta%1000 ==0){std::cout<<"vuelta: "<<vuelta<<std::endl;}
   event = eventReset;
@@ -559,11 +560,12 @@ else
 		   event.track_chi2[i] = itTrack->chi2(); 
 		   cout<<"7"<<endl;
 		   event.track_ndof[i] = itTrack->ndof(); 
-		   cout<<"8"<<endl;
+		  // cout<<"8"<<endl;
 		   event.track_eta[i] = itTrack->eta();
-		   event.t9rack_etaError[i] = itTrack->etaError();
+		   cout<<"9"<<endl;
+		   event.track_etaError[i] = itTrack->etaError();
 		   cout<<"11"<<endl;
-		   event.t10rack_phi[i] = itTrack->phi();
+		   event.track_phi[i] = itTrack->phi();
 		   cout<<"12"<<endl;
 		   event.track_phiError[i] = itTrack->phiError();
 		   cout<<"13"<<endl;
