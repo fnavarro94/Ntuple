@@ -87,7 +87,7 @@ class NtupleMakerMuon : public edm::EDAnalyzer {
       
       struct mEvent {
 
-          static const Int_t entryMax = 10000;
+          static const Int_t entryMax = 100000;
 		  Int_t eventNumer = 0;
 		  Int_t runNumber = 0;
 		  Int_t lumiBlock = 0;
@@ -285,7 +285,6 @@ void
 NtupleMakerMuon::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
-   using namespace std;
   vuelta++;
   //if (vuelta%1000 ==0){std::cout<<"vuelta: "<<vuelta<<std::endl;}
   event = eventReset;
@@ -540,76 +539,42 @@ else
            //double vz = itTrack->vz();
            
            event.track_pt[i] = itTrack->pt();
-           cout<<" event.track_pt[i] = itTrack->pt();"<<endl;
            event.track_ptError[i] = itTrack->ptError();
-           cout<<"event.track_ptError[i] = itTrack->ptError();"<<endl;
            //std::cout<<event.track_pt[i]<<std::endl;
 		   event.track_px[i] = itTrack->px();
-		   cout<<"1"<<endl;
 		   event.track_py[i] = itTrack->py();
-		   cout<<"2"<<endl;
 		   event.track_pz[i] = itTrack->pz();
-		   cout<<"3"<<endl;
 		   //std::cout<<event.track_px[i]<<" "<<event.track_py[i]<<" "<<event.track_pz[i]<<std::endl;
 		   event.track_vx[i] = itTrack->vx();
-		   cout<<"4"<<endl;
 		   event.track_vy[i] = itTrack->vy();
-		   cout<<"5"<<endl;
 		   event.track_vz[i] = itTrack->vz();
-		   cout<<"6"<<endl;
 		   event.track_chi2[i] = itTrack->chi2(); 
-		   cout<<"7"<<endl;
 		   event.track_ndof[i] = itTrack->ndof(); 
-		  // cout<<"8"<<endl;
 		   event.track_eta[i] = itTrack->eta();
-		   cout<<"9"<<endl;
 		   event.track_etaError[i] = itTrack->etaError();
-		   cout<<"11"<<endl;
 		   event.track_phi[i] = itTrack->phi();
-		   cout<<"12"<<endl;
 		   event.track_phiError[i] = itTrack->phiError();
-		   cout<<"13"<<endl;
 		   event.track_nHits[i] = itTrack->numberOfValidHits();
-		   cout<<"14"<<endl;
 		   event.track_n3DHits[i] = itTrack->hitPattern().numberOfValidPixelHits();
-		   cout<<"15"<<endl;
 		   event.track_nTrackerHits[i] = itTrack->hitPattern().numberOfValidTrackerHits();
-		   cout<<"16"<<endl;
 		   event.track_found[i] = itTrack->found();
-		   cout<<"17"<<endl;
 		   event.track_dxy[i] = itTrack->dxy(beamSpot);
-		   cout<<"18"<<endl;
 		   event.track_dxyError[i] = itTrack->dxyError();
-		   cout<<"19"<<endl;
 		   event.track_d0[i] = itTrack->d0();
-		   cout<<"20"<<endl;
 		   event.track_d0Error[i] = itTrack->d0Error();
-		   cout<<"21"<<endl;
 		   event.track_lxy1[i] = itTrack->dxy(vertex1);
-		   cout<<"22"<<endl;
 		   event.track_lxy1Error[i] = itTrack->dxyError();
-		   cout<<"23"<<endl;
 		   event.track_lxy2[i] = itTrack->dxy(vertex2);
-		   cout<<"24"<<endl;
 		   event.track_lxy2Error[i] = itTrack->dxyError();
-		   cout<<"25"<<endl;
 		   event.track_lxy3[i] = itTrack->dxy(vertex3);
-		   cout<<"26"<<endl;
 		   event.track_lxy3Error[i] = itTrack->dxyError();
-		   cout<<"27"<<endl;
 		   event.track_dz[i] = itTrack->dz();
-		   cout<<"28"<<endl;
 		   event.track_dzError[i] = itTrack->dzError();
-		   cout<<"29"<<endl;
 		   event.track_charge[i] = itTrack->charge();
-		   cout<<"30"<<endl;
 		   //std::cout<<event.track_charge[i]<<std::endl;
 		   event.track_highPurity[i] = itTrack->quality(reco::Track::highPurity);
-		   cout<<"31"<<endl;
 		   event.track_tight[i] = itTrack->quality(reco::Track::tight);
-		   cout<<"32"<<endl;
 		   event.track_loose[i] = itTrack->quality(reco::Track::loose);
-		   cout<<"33"<<endl;
            //std::cout<<"track vx "<<event.track_vx[i]<<std::endl;
         i ++;
         event.numTrack++;
