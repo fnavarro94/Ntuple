@@ -96,6 +96,7 @@ class NtupleMakerMuon : public edm::EDAnalyzer {
 		  Int_t numJets = 0;
 		  Int_t numVert=0;
 		  Bool_t wasTriggerFound = false;
+		  Bool_t wasBeamSpotFound = false;
 		  Int_t triggerFound = 0;
 		  Int_t numVertTrack[entryMax]={0};
 		  
@@ -310,21 +311,26 @@ std::string toFind[2] = {"HLT_L2DoubleMu23_NoVertex", "HLT_L2DoubleMu30_NoVertex
 edm::Handle<reco::BeamSpot> beamSpotHandle;
 iEvent.getByLabel("offlineBeamSpot", beamSpotHandle);
 
+bool beamSpotCheck = false;
+
 if ( beamSpotHandle.isValid() )
 {
     beamSpot = *beamSpotHandle;
-
-} else
-{
-    edm::LogInfo("MyAnalyzer")
-      << "No beam spot available from EventSetup \n";
-}
+    event.wasBeamSpotFound = true;
+    beamSpotCheck = true;
   event.beamSpot_x= beamSpotHandle->x0();
   event.beamSpot_y= beamSpotHandle->y0();
   event.beamSpot_z= beamSpotHandle->z0();
   event.beamSpot_xError= beamSpotHandle->x0Error();
   event.beamSpot_yError= beamSpotHandle->y0Error();
   event.beamSpot_zError= beamSpotHandle->z0Error();
+    
+} else
+{
+    edm::LogInfo("MyAnalyzer")
+      << "No beam spot available from EventSetup \n";
+}
+  
 
  // end BeamSpot object 
 
@@ -558,7 +564,14 @@ else
 		   event.track_n3DHits[i] = itTrack->hitPattern().numberOfValidPixelHits();
 		   event.track_nTrackerHits[i] = itTrack->hitPattern().numberOfValidTrackerHits();
 		   event.track_found[i] = itTrack->found();
-		   event.track_dxy[i] = itTrack->dxy(beamSpot);
+		   if(beamSpotCheck)
+		   {
+		        event.track_dxy[i] = itTrack->dxy(beamSpot);
+	       }
+	       else
+	       {
+			   event.track_dxy[i] = itTrack->dxy();
+		   }
 		   event.track_dxyError[i] = itTrack->dxyError();
 		   event.track_d0[i] = itTrack->d0();
 		   event.track_d0Error[i] = itTrack->d0Error();
@@ -672,7 +685,7 @@ NtupleMakerMuon::beginJob()
  //mtree->Branch("Ev_Branch",&event ,"numTrack/I:numTrigObj/I:numVertTrack/I:numVert/I");
 
  
-           mtree->Branch("Ev_Branch",&event ,"eventNumber/I:runNumber/I:lumiBlock/I:numTrack/I:numTrigObj/I:numJets/I:numVert/I:wasTriggerFound/O:triggerFound/I");
+           mtree->Branch("Ev_Branch",&event ,"eventNumber/I:runNumber/I:lumiBlock/I:numTrack/I:numTrigObj/I:numJets/I:numVert/I:wasTriggerFound/O:wasBeamSpotFound/O:triggerFound/I");
            
 		   mtree->Branch("vert_numTrack",event.numVertTrack,"numVertTrack[numVert]/I");
 		   mtree->Branch("track_pt",event.track_pt,"track_pt[numTrack]/D");
