@@ -336,7 +336,7 @@ if ( beamSpotHandle.isValid() )
 
 int trigPathSize = trigNames.size();
 
-for(int j = 0; j < 3; j++){
+for(int j = 0; j < 2; j++){
 for (unsigned int i = 0; i< trigNames.size(); i++)
 {
 	
@@ -565,7 +565,7 @@ else
 		   event.track_nTrackerHits[i] = itTrack->hitPattern().numberOfValidTrackerHits();
 		   event.track_found[i] = itTrack->found();
 		   if(beamSpotCheck)
-		   {
+		   {    cout<<beamSpot<<endl;
 		        event.track_dxy[i] = itTrack->dxy(beamSpot);
 	       }
 	       else
