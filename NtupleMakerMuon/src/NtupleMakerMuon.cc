@@ -565,7 +565,7 @@ else
 		   event.track_nTrackerHits[i] = itTrack->hitPattern().numberOfValidTrackerHits();
 		   event.track_found[i] = itTrack->found();
 		   if(beamSpotCheck)
-		   {    cout<<beamSpot<<endl;
+		   {   
 		        event.track_dxy[i] = itTrack->dxy(beamSpot);
 	       }
 	       else
