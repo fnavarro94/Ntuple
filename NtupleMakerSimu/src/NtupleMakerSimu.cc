@@ -767,6 +767,7 @@ else
 		   event.track_vx[i] = itTrack->vx();
 		   event.track_vy[i] = itTrack->vy();
 		   event.track_vz[i] = itTrack->vz();
+		   // ==== aqui tomo chi2 y number of degrees of freedom de los tracks
 		   event.track_chi2[i] = itTrack->chi2(); 
 		   event.track_ndof[i] = itTrack->ndof(); 
 		   event.track_eta[i] = itTrack->eta();
