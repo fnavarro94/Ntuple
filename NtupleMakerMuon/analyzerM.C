@@ -340,6 +340,15 @@ if (standardCuts && triggerActivated)   // quitar true
 							
 							
 					 }
+					  if (fabs(track_dxy[i]/dSigma) > 2)
+					 {
+							
+							
+							h_lxy_err2->Fill(fabs(track_lxy1[i]/track_dxyError[i]));
+							
+							
+							
+					 }
 					 
 					 //****************** End Histograms with....
 					 
