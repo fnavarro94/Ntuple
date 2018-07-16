@@ -1,6 +1,6 @@
 { 
 
-double lumi = 5100.227976804;  //   1/pb
+double lumi = .286137;  //   1/pb
 
 THStack *hs_lxy = new THStack("hs_lxy", "");
 THStack *hs_lxyLoose = new THStack("hs_lxyLoose", "");
@@ -26,12 +26,12 @@ THStack *hs_h_dot = new THStack("hs_h_dot", "");
  
  
 
-TFile *fZZ = new TFile("ZZbg.root");
-TFile *fWZ = new TFile("WZbg.root");
-TFile *fWW = new TFile("WWbg.root");
-TFile *fDY = new TFile("DYbg.root");
-TFile *fll = new TFile("ll.root");
-TFile *fDat = new TFile("Dat.root");
+TFile *fZZ = new TFile("ZZM.root");
+TFile *fWZ = new TFile("WZM.root");
+TFile *fWW = new TFile("WWM.root");
+TFile *fDY = new TFile("DYM.root");
+TFile *fll = new TFile("llM.root");
+TFile *fDat = new TFile("DatM.root");
  
  
 
@@ -623,6 +623,90 @@ hWW_h_dot->SetFillColor(kMagenta -3);
 hDY_h_dot->SetFillColor(2);
 
 
+hDat_lxy->SetMarkerStyle(21);
+hDat_lxy->SetMarkerSize(1);
+hDat_lxy->SetLineColor(1);
+hll_lxy->SetLineColor(2);
+hDat_lxyLoose->SetMarkerStyle(21);
+hDat_lxyLoose->SetMarkerSize(1);
+hDat_lxyLoose->SetLineColor(1);
+hll_lxyLoose->SetLineColor(2);
+hDat_lxy_err->SetMarkerStyle(21);
+hDat_lxy_err->SetMarkerSize(1);
+hDat_lxy_err->SetLineColor(1);
+hll_lxy_err->SetLineColor(2);
+hDat_lxy_errLoose->SetMarkerStyle(21);
+hDat_lxy_errLoose->SetMarkerSize(1);
+hDat_lxy_errLoose->SetLineColor(1);
+hll_lxy_errLoose->SetLineColor(2);
+hDat_InvMass->SetMarkerStyle(21);
+hDat_InvMass->SetMarkerSize(1);
+hDat_InvMass->SetLineColor(1);
+hll_InvMass->SetLineColor(2);
+hDat_InvMassLoose->SetMarkerStyle(21);
+hDat_InvMassLoose->SetMarkerSize(1);
+hDat_InvMassLoose->SetLineColor(1);
+hll_InvMassLoose->SetLineColor(2);
+hDat_InvMassLW->SetMarkerStyle(21);
+hDat_InvMassLW->SetMarkerSize(1);
+hDat_InvMassLW->SetLineColor(1);
+hll_InvMassLW->SetLineColor(2);
+hDat_d0_err->SetMarkerStyle(21);
+hDat_d0_err->SetMarkerSize(1);
+hDat_d0_err->SetLineColor(1);
+hll_d0_err->SetLineColor(2);
+hDat_d0_errLoose->SetMarkerStyle(21);
+hDat_d0_errLoose->SetMarkerSize(1);
+hDat_d0_errLoose->SetLineColor(1);
+hll_d0_errLoose->SetLineColor(2);
+hDat_dxy_err->SetMarkerStyle(21);
+hDat_dxy_err->SetMarkerSize(1);
+hDat_dxy_err->SetLineColor(1);
+hll_dxy_err->SetLineColor(2);
+hDat_dxy_errLoose->SetMarkerStyle(21);
+hDat_dxy_errLoose->SetMarkerSize(1);
+hDat_dxy_errLoose->SetLineColor(1);
+hll_dxy_errLoose->SetLineColor(2);
+hDat_cos->SetMarkerStyle(21);
+hDat_cos->SetMarkerSize(1);
+hDat_cos->SetLineColor(1);
+hll_cos->SetLineColor(2);
+hDat_cosLoose->SetMarkerStyle(21);
+hDat_cosLoose->SetMarkerSize(1);
+hDat_cosLoose->SetLineColor(1);
+hll_cosLoose->SetLineColor(2);
+hDat_delPhi->SetMarkerStyle(21);
+hDat_delPhi->SetMarkerSize(1);
+hDat_delPhi->SetLineColor(1);
+hll_delPhi->SetLineColor(2);
+hDat_delPhiLoose->SetMarkerStyle(21);
+hDat_delPhiLoose->SetMarkerSize(1);
+hDat_delPhiLoose->SetLineColor(1);
+hll_delPhiLoose->SetLineColor(2);
+hDat_conePt->SetMarkerStyle(21);
+hDat_conePt->SetMarkerSize(1);
+hDat_conePt->SetLineColor(1);
+hll_conePt->SetLineColor(2);
+hDat_chi2_NDF->SetMarkerStyle(21);
+hDat_chi2_NDF->SetMarkerSize(1);
+hDat_chi2_NDF->SetLineColor(1);
+hll_chi2_NDF->SetLineColor(2);
+hDat_chi2_NDF->SetMarkerStyle(21);
+hDat_chi2_NDF->SetMarkerSize(1);
+hDat_chi2_NDF->SetLineColor(1);
+hll_chi2_NDF->SetLineColor(2);
+hDat_chi2_NDFLoose->SetMarkerStyle(21);
+hDat_chi2_NDFLoose->SetMarkerSize(1);
+hDat_chi2_NDFLoose->SetLineColor(1);
+hll_chi2_NDFLoose->SetLineColor(2);
+hDat_numHitsLoose->SetMarkerStyle(21);
+hDat_numHitsLoose->SetMarkerSize(1);
+hDat_numHitsLoose->SetLineColor(1);
+hll_numHitsLoose->SetLineColor(2);
+hDat_h_dot->SetMarkerStyle(21);
+hDat_h_dot->SetMarkerSize(1);
+hDat_h_dot->SetLineColor(1);
+hll_h_dot->SetLineColor(2);
 double DY_scale = lumi*3048.0/(hDY_lxy->Integral());
 double ZZ_scale = lumi*5.9/(hZZ_lxy->Integral());
 double WZ_scale = lumi*18.2/(hWZ_lxy->Integral());
@@ -1049,6 +1133,20 @@ hs_h_dot->Add(hWW_h_dot);
 hs_h_dot->Add(hDY_h_dot);
 
 
+double m1, m2, m3, mMax;
+m1 = hDat_lxy->GetMaximum();
+m2 = hll_lxy->GetMaximum();
+m3 = hs_lxy->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_lxy->SetMaximum(2*mMax);
 TCanvas *cs_lxy = new TCanvas("cs_lxy","cs_lxy",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_lxy->SetTitle("lxy");
@@ -1059,16 +1157,28 @@ legend_lxy->AddEntry(hWZ_lxy,"WZ","f");
 legend_lxy->AddEntry(hZZ_lxy,"ZZ","f");
 legend_lxy->AddEntry(hDat_lxy,"Data","p");
 legend_lxy->SetFillColor(0);
-hDat_lxy->SetMaximum(2*hs_lxy->GetMaximum());
 hDat_lxy->SetXTitle("mass [GeV/c^{2}]");
 hDat_lxy->SetYTitle("Entries");
-cs_lxy->cd(1); hDat_lxy->Draw("hist"); cs_lxy->Update(); hs_lxy->Draw("same hist");
+cs_lxy->cd(1); hll_lxy->Draw("hist eX0"); cs_lxy->Update(); hs_lxy->Draw("same hist eX0"); cs_lxy->Update(); hDat_lxy->Draw("same  eX0");
 // cs->cd(1);  hs_lxy->Draw(" hist"); cs->Update(); hDat_lxy->Draw("hist same");
 legend_lxy->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_lxyLoose->GetMaximum();
+m2 = hll_lxyLoose->GetMaximum();
+m3 = hs_lxyLoose->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_lxyLoose->SetMaximum(2*mMax);
 TCanvas *cs_lxyLoose = new TCanvas("cs_lxyLoose","cs_lxyLoose",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_lxyLoose->SetTitle("lxyLoose");
@@ -1079,16 +1189,28 @@ legend_lxyLoose->AddEntry(hWZ_lxyLoose,"WZ","f");
 legend_lxyLoose->AddEntry(hZZ_lxyLoose,"ZZ","f");
 legend_lxyLoose->AddEntry(hDat_lxyLoose,"Data","p");
 legend_lxyLoose->SetFillColor(0);
-hDat_lxyLoose->SetMaximum(2*hs_lxyLoose->GetMaximum());
 hDat_lxyLoose->SetXTitle("mass [GeV/c^{2}]");
 hDat_lxyLoose->SetYTitle("Entries");
-cs_lxyLoose->cd(1); hDat_lxyLoose->Draw("hist"); cs_lxyLoose->Update(); hs_lxyLoose->Draw("same hist");
+cs_lxyLoose->cd(1); hll_lxyLoose->Draw("hist eX0"); cs_lxyLoose->Update(); hs_lxyLoose->Draw("same hist eX0"); cs_lxyLoose->Update(); hDat_lxyLoose->Draw("same  eX0");
 // cs->cd(1);  hs_lxyLoose->Draw(" hist"); cs->Update(); hDat_lxyLoose->Draw("hist same");
 legend_lxyLoose->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_lxy_err->GetMaximum();
+m2 = hll_lxy_err->GetMaximum();
+m3 = hs_lxy_err->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_lxy_err->SetMaximum(2*mMax);
 TCanvas *cs_lxy_err = new TCanvas("cs_lxy_err","cs_lxy_err",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_lxy_err->SetTitle("lxy_err");
@@ -1099,16 +1221,28 @@ legend_lxy_err->AddEntry(hWZ_lxy_err,"WZ","f");
 legend_lxy_err->AddEntry(hZZ_lxy_err,"ZZ","f");
 legend_lxy_err->AddEntry(hDat_lxy_err,"Data","p");
 legend_lxy_err->SetFillColor(0);
-hDat_lxy_err->SetMaximum(2*hs_lxy_err->GetMaximum());
 hDat_lxy_err->SetXTitle("mass [GeV/c^{2}]");
 hDat_lxy_err->SetYTitle("Entries");
-cs_lxy_err->cd(1); hDat_lxy_err->Draw("hist"); cs_lxy_err->Update(); hs_lxy_err->Draw("same hist");
+cs_lxy_err->cd(1); hll_lxy_err->Draw("hist eX0"); cs_lxy_err->Update(); hs_lxy_err->Draw("same hist eX0"); cs_lxy_err->Update(); hDat_lxy_err->Draw("same  eX0");
 // cs->cd(1);  hs_lxy_err->Draw(" hist"); cs->Update(); hDat_lxy_err->Draw("hist same");
 legend_lxy_err->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_lxy_errLoose->GetMaximum();
+m2 = hll_lxy_errLoose->GetMaximum();
+m3 = hs_lxy_errLoose->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_lxy_errLoose->SetMaximum(2*mMax);
 TCanvas *cs_lxy_errLoose = new TCanvas("cs_lxy_errLoose","cs_lxy_errLoose",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_lxy_errLoose->SetTitle("lxy_errLoose");
@@ -1119,16 +1253,28 @@ legend_lxy_errLoose->AddEntry(hWZ_lxy_errLoose,"WZ","f");
 legend_lxy_errLoose->AddEntry(hZZ_lxy_errLoose,"ZZ","f");
 legend_lxy_errLoose->AddEntry(hDat_lxy_errLoose,"Data","p");
 legend_lxy_errLoose->SetFillColor(0);
-hDat_lxy_errLoose->SetMaximum(2*hs_lxy_errLoose->GetMaximum());
 hDat_lxy_errLoose->SetXTitle("mass [GeV/c^{2}]");
 hDat_lxy_errLoose->SetYTitle("Entries");
-cs_lxy_errLoose->cd(1); hDat_lxy_errLoose->Draw("hist"); cs_lxy_errLoose->Update(); hs_lxy_errLoose->Draw("same hist");
+cs_lxy_errLoose->cd(1); hll_lxy_errLoose->Draw("hist eX0"); cs_lxy_errLoose->Update(); hs_lxy_errLoose->Draw("same hist eX0"); cs_lxy_errLoose->Update(); hDat_lxy_errLoose->Draw("same  eX0");
 // cs->cd(1);  hs_lxy_errLoose->Draw(" hist"); cs->Update(); hDat_lxy_errLoose->Draw("hist same");
 legend_lxy_errLoose->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_InvMass->GetMaximum();
+m2 = hll_InvMass->GetMaximum();
+m3 = hs_InvMass->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_InvMass->SetMaximum(2*mMax);
 TCanvas *cs_InvMass = new TCanvas("cs_InvMass","cs_InvMass",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_InvMass->SetTitle("InvMass");
@@ -1139,16 +1285,28 @@ legend_InvMass->AddEntry(hWZ_InvMass,"WZ","f");
 legend_InvMass->AddEntry(hZZ_InvMass,"ZZ","f");
 legend_InvMass->AddEntry(hDat_InvMass,"Data","p");
 legend_InvMass->SetFillColor(0);
-hDat_InvMass->SetMaximum(2*hs_InvMass->GetMaximum());
 hDat_InvMass->SetXTitle("mass [GeV/c^{2}]");
 hDat_InvMass->SetYTitle("Entries");
-cs_InvMass->cd(1); hDat_InvMass->Draw("hist"); cs_InvMass->Update(); hs_InvMass->Draw("same hist");
+cs_InvMass->cd(1); hll_InvMass->Draw("hist eX0"); cs_InvMass->Update(); hs_InvMass->Draw("same hist eX0"); cs_InvMass->Update(); hDat_InvMass->Draw("same  eX0");
 // cs->cd(1);  hs_InvMass->Draw(" hist"); cs->Update(); hDat_InvMass->Draw("hist same");
 legend_InvMass->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_InvMassLoose->GetMaximum();
+m2 = hll_InvMassLoose->GetMaximum();
+m3 = hs_InvMassLoose->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_InvMassLoose->SetMaximum(2*mMax);
 TCanvas *cs_InvMassLoose = new TCanvas("cs_InvMassLoose","cs_InvMassLoose",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_InvMassLoose->SetTitle("InvMassLoose");
@@ -1159,16 +1317,28 @@ legend_InvMassLoose->AddEntry(hWZ_InvMassLoose,"WZ","f");
 legend_InvMassLoose->AddEntry(hZZ_InvMassLoose,"ZZ","f");
 legend_InvMassLoose->AddEntry(hDat_InvMassLoose,"Data","p");
 legend_InvMassLoose->SetFillColor(0);
-hDat_InvMassLoose->SetMaximum(2*hs_InvMassLoose->GetMaximum());
 hDat_InvMassLoose->SetXTitle("mass [GeV/c^{2}]");
 hDat_InvMassLoose->SetYTitle("Entries");
-cs_InvMassLoose->cd(1); hDat_InvMassLoose->Draw("hist"); cs_InvMassLoose->Update(); hs_InvMassLoose->Draw("same hist");
+cs_InvMassLoose->cd(1); hll_InvMassLoose->Draw("hist eX0"); cs_InvMassLoose->Update(); hs_InvMassLoose->Draw("same hist eX0"); cs_InvMassLoose->Update(); hDat_InvMassLoose->Draw("same  eX0");
 // cs->cd(1);  hs_InvMassLoose->Draw(" hist"); cs->Update(); hDat_InvMassLoose->Draw("hist same");
 legend_InvMassLoose->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_InvMassLW->GetMaximum();
+m2 = hll_InvMassLW->GetMaximum();
+m3 = hs_InvMassLW->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_InvMassLW->SetMaximum(2*mMax);
 TCanvas *cs_InvMassLW = new TCanvas("cs_InvMassLW","cs_InvMassLW",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_InvMassLW->SetTitle("InvMassLW");
@@ -1179,16 +1349,28 @@ legend_InvMassLW->AddEntry(hWZ_InvMassLW,"WZ","f");
 legend_InvMassLW->AddEntry(hZZ_InvMassLW,"ZZ","f");
 legend_InvMassLW->AddEntry(hDat_InvMassLW,"Data","p");
 legend_InvMassLW->SetFillColor(0);
-hDat_InvMassLW->SetMaximum(2*hs_InvMassLW->GetMaximum());
 hDat_InvMassLW->SetXTitle("mass [GeV/c^{2}]");
 hDat_InvMassLW->SetYTitle("Entries");
-cs_InvMassLW->cd(1); hDat_InvMassLW->Draw("hist"); cs_InvMassLW->Update(); hs_InvMassLW->Draw("same hist");
+cs_InvMassLW->cd(1); hll_InvMassLW->Draw("hist eX0"); cs_InvMassLW->Update(); hs_InvMassLW->Draw("same hist eX0"); cs_InvMassLW->Update(); hDat_InvMassLW->Draw("same  eX0");
 // cs->cd(1);  hs_InvMassLW->Draw(" hist"); cs->Update(); hDat_InvMassLW->Draw("hist same");
 legend_InvMassLW->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_d0_err->GetMaximum();
+m2 = hll_d0_err->GetMaximum();
+m3 = hs_d0_err->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_d0_err->SetMaximum(2*mMax);
 TCanvas *cs_d0_err = new TCanvas("cs_d0_err","cs_d0_err",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_d0_err->SetTitle("d0_err");
@@ -1199,16 +1381,28 @@ legend_d0_err->AddEntry(hWZ_d0_err,"WZ","f");
 legend_d0_err->AddEntry(hZZ_d0_err,"ZZ","f");
 legend_d0_err->AddEntry(hDat_d0_err,"Data","p");
 legend_d0_err->SetFillColor(0);
-hDat_d0_err->SetMaximum(2*hs_d0_err->GetMaximum());
 hDat_d0_err->SetXTitle("mass [GeV/c^{2}]");
 hDat_d0_err->SetYTitle("Entries");
-cs_d0_err->cd(1); hDat_d0_err->Draw("hist"); cs_d0_err->Update(); hs_d0_err->Draw("same hist");
+cs_d0_err->cd(1); hll_d0_err->Draw("hist eX0"); cs_d0_err->Update(); hs_d0_err->Draw("same hist eX0"); cs_d0_err->Update(); hDat_d0_err->Draw("same  eX0");
 // cs->cd(1);  hs_d0_err->Draw(" hist"); cs->Update(); hDat_d0_err->Draw("hist same");
 legend_d0_err->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_d0_errLoose->GetMaximum();
+m2 = hll_d0_errLoose->GetMaximum();
+m3 = hs_d0_errLoose->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_d0_errLoose->SetMaximum(2*mMax);
 TCanvas *cs_d0_errLoose = new TCanvas("cs_d0_errLoose","cs_d0_errLoose",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_d0_errLoose->SetTitle("d0_errLoose");
@@ -1219,16 +1413,28 @@ legend_d0_errLoose->AddEntry(hWZ_d0_errLoose,"WZ","f");
 legend_d0_errLoose->AddEntry(hZZ_d0_errLoose,"ZZ","f");
 legend_d0_errLoose->AddEntry(hDat_d0_errLoose,"Data","p");
 legend_d0_errLoose->SetFillColor(0);
-hDat_d0_errLoose->SetMaximum(2*hs_d0_errLoose->GetMaximum());
 hDat_d0_errLoose->SetXTitle("mass [GeV/c^{2}]");
 hDat_d0_errLoose->SetYTitle("Entries");
-cs_d0_errLoose->cd(1); hDat_d0_errLoose->Draw("hist"); cs_d0_errLoose->Update(); hs_d0_errLoose->Draw("same hist");
+cs_d0_errLoose->cd(1); hll_d0_errLoose->Draw("hist eX0"); cs_d0_errLoose->Update(); hs_d0_errLoose->Draw("same hist eX0"); cs_d0_errLoose->Update(); hDat_d0_errLoose->Draw("same  eX0");
 // cs->cd(1);  hs_d0_errLoose->Draw(" hist"); cs->Update(); hDat_d0_errLoose->Draw("hist same");
 legend_d0_errLoose->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_dxy_err->GetMaximum();
+m2 = hll_dxy_err->GetMaximum();
+m3 = hs_dxy_err->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_dxy_err->SetMaximum(2*mMax);
 TCanvas *cs_dxy_err = new TCanvas("cs_dxy_err","cs_dxy_err",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_dxy_err->SetTitle("dxy_err");
@@ -1239,16 +1445,28 @@ legend_dxy_err->AddEntry(hWZ_dxy_err,"WZ","f");
 legend_dxy_err->AddEntry(hZZ_dxy_err,"ZZ","f");
 legend_dxy_err->AddEntry(hDat_dxy_err,"Data","p");
 legend_dxy_err->SetFillColor(0);
-hDat_dxy_err->SetMaximum(2*hs_dxy_err->GetMaximum());
 hDat_dxy_err->SetXTitle("mass [GeV/c^{2}]");
 hDat_dxy_err->SetYTitle("Entries");
-cs_dxy_err->cd(1); hDat_dxy_err->Draw("hist"); cs_dxy_err->Update(); hs_dxy_err->Draw("same hist");
+cs_dxy_err->cd(1); hll_dxy_err->Draw("hist eX0"); cs_dxy_err->Update(); hs_dxy_err->Draw("same hist eX0"); cs_dxy_err->Update(); hDat_dxy_err->Draw("same  eX0");
 // cs->cd(1);  hs_dxy_err->Draw(" hist"); cs->Update(); hDat_dxy_err->Draw("hist same");
 legend_dxy_err->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_dxy_errLoose->GetMaximum();
+m2 = hll_dxy_errLoose->GetMaximum();
+m3 = hs_dxy_errLoose->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_dxy_errLoose->SetMaximum(2*mMax);
 TCanvas *cs_dxy_errLoose = new TCanvas("cs_dxy_errLoose","cs_dxy_errLoose",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_dxy_errLoose->SetTitle("dxy_errLoose");
@@ -1259,16 +1477,28 @@ legend_dxy_errLoose->AddEntry(hWZ_dxy_errLoose,"WZ","f");
 legend_dxy_errLoose->AddEntry(hZZ_dxy_errLoose,"ZZ","f");
 legend_dxy_errLoose->AddEntry(hDat_dxy_errLoose,"Data","p");
 legend_dxy_errLoose->SetFillColor(0);
-hDat_dxy_errLoose->SetMaximum(2*hs_dxy_errLoose->GetMaximum());
 hDat_dxy_errLoose->SetXTitle("mass [GeV/c^{2}]");
 hDat_dxy_errLoose->SetYTitle("Entries");
-cs_dxy_errLoose->cd(1); hDat_dxy_errLoose->Draw("hist"); cs_dxy_errLoose->Update(); hs_dxy_errLoose->Draw("same hist");
+cs_dxy_errLoose->cd(1); hll_dxy_errLoose->Draw("hist eX0"); cs_dxy_errLoose->Update(); hs_dxy_errLoose->Draw("same hist eX0"); cs_dxy_errLoose->Update(); hDat_dxy_errLoose->Draw("same  eX0");
 // cs->cd(1);  hs_dxy_errLoose->Draw(" hist"); cs->Update(); hDat_dxy_errLoose->Draw("hist same");
 legend_dxy_errLoose->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_cos->GetMaximum();
+m2 = hll_cos->GetMaximum();
+m3 = hs_cos->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_cos->SetMaximum(2*mMax);
 TCanvas *cs_cos = new TCanvas("cs_cos","cs_cos",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_cos->SetTitle("cos");
@@ -1279,16 +1509,28 @@ legend_cos->AddEntry(hWZ_cos,"WZ","f");
 legend_cos->AddEntry(hZZ_cos,"ZZ","f");
 legend_cos->AddEntry(hDat_cos,"Data","p");
 legend_cos->SetFillColor(0);
-hDat_cos->SetMaximum(2*hs_cos->GetMaximum());
 hDat_cos->SetXTitle("mass [GeV/c^{2}]");
 hDat_cos->SetYTitle("Entries");
-cs_cos->cd(1); hDat_cos->Draw("hist"); cs_cos->Update(); hs_cos->Draw("same hist");
+cs_cos->cd(1); hll_cos->Draw("hist eX0"); cs_cos->Update(); hs_cos->Draw("same hist eX0"); cs_cos->Update(); hDat_cos->Draw("same  eX0");
 // cs->cd(1);  hs_cos->Draw(" hist"); cs->Update(); hDat_cos->Draw("hist same");
 legend_cos->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_cosLoose->GetMaximum();
+m2 = hll_cosLoose->GetMaximum();
+m3 = hs_cosLoose->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_cosLoose->SetMaximum(2*mMax);
 TCanvas *cs_cosLoose = new TCanvas("cs_cosLoose","cs_cosLoose",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_cosLoose->SetTitle("cosLoose");
@@ -1299,16 +1541,28 @@ legend_cosLoose->AddEntry(hWZ_cosLoose,"WZ","f");
 legend_cosLoose->AddEntry(hZZ_cosLoose,"ZZ","f");
 legend_cosLoose->AddEntry(hDat_cosLoose,"Data","p");
 legend_cosLoose->SetFillColor(0);
-hDat_cosLoose->SetMaximum(2*hs_cosLoose->GetMaximum());
 hDat_cosLoose->SetXTitle("mass [GeV/c^{2}]");
 hDat_cosLoose->SetYTitle("Entries");
-cs_cosLoose->cd(1); hDat_cosLoose->Draw("hist"); cs_cosLoose->Update(); hs_cosLoose->Draw("same hist");
+cs_cosLoose->cd(1); hll_cosLoose->Draw("hist eX0"); cs_cosLoose->Update(); hs_cosLoose->Draw("same hist eX0"); cs_cosLoose->Update(); hDat_cosLoose->Draw("same  eX0");
 // cs->cd(1);  hs_cosLoose->Draw(" hist"); cs->Update(); hDat_cosLoose->Draw("hist same");
 legend_cosLoose->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_delPhi->GetMaximum();
+m2 = hll_delPhi->GetMaximum();
+m3 = hs_delPhi->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_delPhi->SetMaximum(2*mMax);
 TCanvas *cs_delPhi = new TCanvas("cs_delPhi","cs_delPhi",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_delPhi->SetTitle("delPhi");
@@ -1319,16 +1573,28 @@ legend_delPhi->AddEntry(hWZ_delPhi,"WZ","f");
 legend_delPhi->AddEntry(hZZ_delPhi,"ZZ","f");
 legend_delPhi->AddEntry(hDat_delPhi,"Data","p");
 legend_delPhi->SetFillColor(0);
-hDat_delPhi->SetMaximum(2*hs_delPhi->GetMaximum());
 hDat_delPhi->SetXTitle("mass [GeV/c^{2}]");
 hDat_delPhi->SetYTitle("Entries");
-cs_delPhi->cd(1); hDat_delPhi->Draw("hist"); cs_delPhi->Update(); hs_delPhi->Draw("same hist");
+cs_delPhi->cd(1); hll_delPhi->Draw("hist eX0"); cs_delPhi->Update(); hs_delPhi->Draw("same hist eX0"); cs_delPhi->Update(); hDat_delPhi->Draw("same  eX0");
 // cs->cd(1);  hs_delPhi->Draw(" hist"); cs->Update(); hDat_delPhi->Draw("hist same");
 legend_delPhi->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_delPhiLoose->GetMaximum();
+m2 = hll_delPhiLoose->GetMaximum();
+m3 = hs_delPhiLoose->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_delPhiLoose->SetMaximum(2*mMax);
 TCanvas *cs_delPhiLoose = new TCanvas("cs_delPhiLoose","cs_delPhiLoose",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_delPhiLoose->SetTitle("delPhiLoose");
@@ -1339,16 +1605,28 @@ legend_delPhiLoose->AddEntry(hWZ_delPhiLoose,"WZ","f");
 legend_delPhiLoose->AddEntry(hZZ_delPhiLoose,"ZZ","f");
 legend_delPhiLoose->AddEntry(hDat_delPhiLoose,"Data","p");
 legend_delPhiLoose->SetFillColor(0);
-hDat_delPhiLoose->SetMaximum(2*hs_delPhiLoose->GetMaximum());
 hDat_delPhiLoose->SetXTitle("mass [GeV/c^{2}]");
 hDat_delPhiLoose->SetYTitle("Entries");
-cs_delPhiLoose->cd(1); hDat_delPhiLoose->Draw("hist"); cs_delPhiLoose->Update(); hs_delPhiLoose->Draw("same hist");
+cs_delPhiLoose->cd(1); hll_delPhiLoose->Draw("hist eX0"); cs_delPhiLoose->Update(); hs_delPhiLoose->Draw("same hist eX0"); cs_delPhiLoose->Update(); hDat_delPhiLoose->Draw("same  eX0");
 // cs->cd(1);  hs_delPhiLoose->Draw(" hist"); cs->Update(); hDat_delPhiLoose->Draw("hist same");
 legend_delPhiLoose->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_conePt->GetMaximum();
+m2 = hll_conePt->GetMaximum();
+m3 = hs_conePt->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_conePt->SetMaximum(2*mMax);
 TCanvas *cs_conePt = new TCanvas("cs_conePt","cs_conePt",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_conePt->SetTitle("conePt");
@@ -1359,16 +1637,28 @@ legend_conePt->AddEntry(hWZ_conePt,"WZ","f");
 legend_conePt->AddEntry(hZZ_conePt,"ZZ","f");
 legend_conePt->AddEntry(hDat_conePt,"Data","p");
 legend_conePt->SetFillColor(0);
-hDat_conePt->SetMaximum(2*hs_conePt->GetMaximum());
 hDat_conePt->SetXTitle("mass [GeV/c^{2}]");
 hDat_conePt->SetYTitle("Entries");
-cs_conePt->cd(1); hDat_conePt->Draw("hist"); cs_conePt->Update(); hs_conePt->Draw("same hist");
+cs_conePt->cd(1); hll_conePt->Draw("hist eX0"); cs_conePt->Update(); hs_conePt->Draw("same hist eX0"); cs_conePt->Update(); hDat_conePt->Draw("same  eX0");
 // cs->cd(1);  hs_conePt->Draw(" hist"); cs->Update(); hDat_conePt->Draw("hist same");
 legend_conePt->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_chi2_NDF->GetMaximum();
+m2 = hll_chi2_NDF->GetMaximum();
+m3 = hs_chi2_NDF->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_chi2_NDF->SetMaximum(2*mMax);
 TCanvas *cs_chi2_NDF = new TCanvas("cs_chi2_NDF","cs_chi2_NDF",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_chi2_NDF->SetTitle("chi2_NDF");
@@ -1379,16 +1669,28 @@ legend_chi2_NDF->AddEntry(hWZ_chi2_NDF,"WZ","f");
 legend_chi2_NDF->AddEntry(hZZ_chi2_NDF,"ZZ","f");
 legend_chi2_NDF->AddEntry(hDat_chi2_NDF,"Data","p");
 legend_chi2_NDF->SetFillColor(0);
-hDat_chi2_NDF->SetMaximum(2*hs_chi2_NDF->GetMaximum());
 hDat_chi2_NDF->SetXTitle("mass [GeV/c^{2}]");
 hDat_chi2_NDF->SetYTitle("Entries");
-cs_chi2_NDF->cd(1); hDat_chi2_NDF->Draw("hist"); cs_chi2_NDF->Update(); hs_chi2_NDF->Draw("same hist");
+cs_chi2_NDF->cd(1); hll_chi2_NDF->Draw("hist eX0"); cs_chi2_NDF->Update(); hs_chi2_NDF->Draw("same hist eX0"); cs_chi2_NDF->Update(); hDat_chi2_NDF->Draw("same  eX0");
 // cs->cd(1);  hs_chi2_NDF->Draw(" hist"); cs->Update(); hDat_chi2_NDF->Draw("hist same");
 legend_chi2_NDF->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_chi2_NDF->GetMaximum();
+m2 = hll_chi2_NDF->GetMaximum();
+m3 = hs_chi2_NDF->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_chi2_NDF->SetMaximum(2*mMax);
 TCanvas *cs_chi2_NDF = new TCanvas("cs_chi2_NDF","cs_chi2_NDF",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_chi2_NDF->SetTitle("chi2_NDF");
@@ -1399,16 +1701,28 @@ legend_chi2_NDF->AddEntry(hWZ_chi2_NDF,"WZ","f");
 legend_chi2_NDF->AddEntry(hZZ_chi2_NDF,"ZZ","f");
 legend_chi2_NDF->AddEntry(hDat_chi2_NDF,"Data","p");
 legend_chi2_NDF->SetFillColor(0);
-hDat_chi2_NDF->SetMaximum(2*hs_chi2_NDF->GetMaximum());
 hDat_chi2_NDF->SetXTitle("mass [GeV/c^{2}]");
 hDat_chi2_NDF->SetYTitle("Entries");
-cs_chi2_NDF->cd(1); hDat_chi2_NDF->Draw("hist"); cs_chi2_NDF->Update(); hs_chi2_NDF->Draw("same hist");
+cs_chi2_NDF->cd(1); hll_chi2_NDF->Draw("hist eX0"); cs_chi2_NDF->Update(); hs_chi2_NDF->Draw("same hist eX0"); cs_chi2_NDF->Update(); hDat_chi2_NDF->Draw("same  eX0");
 // cs->cd(1);  hs_chi2_NDF->Draw(" hist"); cs->Update(); hDat_chi2_NDF->Draw("hist same");
 legend_chi2_NDF->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_chi2_NDFLoose->GetMaximum();
+m2 = hll_chi2_NDFLoose->GetMaximum();
+m3 = hs_chi2_NDFLoose->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_chi2_NDFLoose->SetMaximum(2*mMax);
 TCanvas *cs_chi2_NDFLoose = new TCanvas("cs_chi2_NDFLoose","cs_chi2_NDFLoose",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_chi2_NDFLoose->SetTitle("chi2_NDFLoose");
@@ -1419,16 +1733,28 @@ legend_chi2_NDFLoose->AddEntry(hWZ_chi2_NDFLoose,"WZ","f");
 legend_chi2_NDFLoose->AddEntry(hZZ_chi2_NDFLoose,"ZZ","f");
 legend_chi2_NDFLoose->AddEntry(hDat_chi2_NDFLoose,"Data","p");
 legend_chi2_NDFLoose->SetFillColor(0);
-hDat_chi2_NDFLoose->SetMaximum(2*hs_chi2_NDFLoose->GetMaximum());
 hDat_chi2_NDFLoose->SetXTitle("mass [GeV/c^{2}]");
 hDat_chi2_NDFLoose->SetYTitle("Entries");
-cs_chi2_NDFLoose->cd(1); hDat_chi2_NDFLoose->Draw("hist"); cs_chi2_NDFLoose->Update(); hs_chi2_NDFLoose->Draw("same hist");
+cs_chi2_NDFLoose->cd(1); hll_chi2_NDFLoose->Draw("hist eX0"); cs_chi2_NDFLoose->Update(); hs_chi2_NDFLoose->Draw("same hist eX0"); cs_chi2_NDFLoose->Update(); hDat_chi2_NDFLoose->Draw("same  eX0");
 // cs->cd(1);  hs_chi2_NDFLoose->Draw(" hist"); cs->Update(); hDat_chi2_NDFLoose->Draw("hist same");
 legend_chi2_NDFLoose->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_numHitsLoose->GetMaximum();
+m2 = hll_numHitsLoose->GetMaximum();
+m3 = hs_numHitsLoose->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_numHitsLoose->SetMaximum(2*mMax);
 TCanvas *cs_numHitsLoose = new TCanvas("cs_numHitsLoose","cs_numHitsLoose",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_numHitsLoose->SetTitle("numHitsLoose");
@@ -1439,16 +1765,28 @@ legend_numHitsLoose->AddEntry(hWZ_numHitsLoose,"WZ","f");
 legend_numHitsLoose->AddEntry(hZZ_numHitsLoose,"ZZ","f");
 legend_numHitsLoose->AddEntry(hDat_numHitsLoose,"Data","p");
 legend_numHitsLoose->SetFillColor(0);
-hDat_numHitsLoose->SetMaximum(2*hs_numHitsLoose->GetMaximum());
 hDat_numHitsLoose->SetXTitle("mass [GeV/c^{2}]");
 hDat_numHitsLoose->SetYTitle("Entries");
-cs_numHitsLoose->cd(1); hDat_numHitsLoose->Draw("hist"); cs_numHitsLoose->Update(); hs_numHitsLoose->Draw("same hist");
+cs_numHitsLoose->cd(1); hll_numHitsLoose->Draw("hist eX0"); cs_numHitsLoose->Update(); hs_numHitsLoose->Draw("same hist eX0"); cs_numHitsLoose->Update(); hDat_numHitsLoose->Draw("same  eX0");
 // cs->cd(1);  hs_numHitsLoose->Draw(" hist"); cs->Update(); hDat_numHitsLoose->Draw("hist same");
 legend_numHitsLoose->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
 
+m1 = hDat_h_dot->GetMaximum();
+m2 = hll_h_dot->GetMaximum();
+m3 = hs_h_dot->GetMaximum();
+mMax = m1;
+if (mMax<m2)
+{
+mMax = m2;
+}
+if(mMax < m3)
+{
+mMax = m3;
+}
+hll_h_dot->SetMaximum(2*mMax);
 TCanvas *cs_h_dot = new TCanvas("cs_h_dot","cs_h_dot",10,10,700,900);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_h_dot->SetTitle("h_dot");
@@ -1459,10 +1797,9 @@ legend_h_dot->AddEntry(hWZ_h_dot,"WZ","f");
 legend_h_dot->AddEntry(hZZ_h_dot,"ZZ","f");
 legend_h_dot->AddEntry(hDat_h_dot,"Data","p");
 legend_h_dot->SetFillColor(0);
-hDat_h_dot->SetMaximum(2*hs_h_dot->GetMaximum());
 hDat_h_dot->SetXTitle("mass [GeV/c^{2}]");
 hDat_h_dot->SetYTitle("Entries");
-cs_h_dot->cd(1); hDat_h_dot->Draw("hist"); cs_h_dot->Update(); hs_h_dot->Draw("same hist");
+cs_h_dot->cd(1); hll_h_dot->Draw("hist eX0"); cs_h_dot->Update(); hs_h_dot->Draw("same hist eX0"); cs_h_dot->Update(); hDat_h_dot->Draw("same  eX0");
 // cs->cd(1);  hs_h_dot->Draw(" hist"); cs->Update(); hDat_h_dot->Draw("hist same");
 legend_h_dot->Draw();
 gPad->Update();
