@@ -54,6 +54,11 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/TrackReco/interface/Track.h"
+
+#include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+
 //
 // class declaration
 //
@@ -215,7 +220,7 @@ class NtupleMakerMuon : public edm::EDAnalyzer {
 		  Double_t test_leaf[entryMax] = {0};
 		  
 		  // Jet Data
-		  
+		   
 		  Double_t ak5jet_x[entryMax] = {0};
 		  Double_t ak5jet_y[entryMax] = {0};
 		  Double_t ak5jet_z[entryMax] = {0};
@@ -292,7 +297,7 @@ NtupleMakerMuon::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
   using reco::TrackCollection;
   
   
-  
+  KalmanVertexFitter fitter;
   
   edm::Handle<edm::TriggerResults> trigResults; //Our trigger result object
 edm::InputTag trigResultsTag("TriggerResults","","HLT");
@@ -400,7 +405,27 @@ else
    
    Handle<TrackCollection> tracks;
    iEvent.getByLabel(trackTags_,tracks);
+   
+   //                             secondary vertex reco experiment
+   
+   // get RECO tracks from the event
+    edm::Handle<reco::TrackCollection> tks;
+    iEvent.getByLabel(trackTags_, tks);
+
+    //get the builder:
+    edm::ESHandle<TransientTrackBuilder> theB;
+    iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",theB);
+    //do the conversion:
+    std::vector<reco::TransientTrack> t_tks = (*theB).build(tks);
+    
+   
+   std::vector<reco::TransientTrack> trackVec;
+   trackVec.push_back(t_tks[0]);
+   trackVec.push_back(t_tks[1]);
+  TransientVertex myVertex = fitter.vertex(trackVec);
+   std::cout<<myVertex.position().x()<<std::endl;
   
+  //                             end of experiment
    Handle<reco::VertexCollection> vertHand;
    iEvent.getByLabel( "offlinePrimaryVertices",vertHand);
    
@@ -459,6 +484,8 @@ else
        itTrack != itVert->tracks_begin() +6 && itTrack != itVert->tracks_end();
        ++itTrack){ 
 		NvertTracks++;
+		
+		 
 		   // matching vertex track to track
 		  // int k = 0;
 		   //int vertexIndex = 0;
@@ -536,10 +563,14 @@ else
    event.numTrack=0;
    Ntracks = 0;
 	     
+	     
+	     
    for(TrackCollection::const_iterator itTrack = tracks->begin();
        itTrack != tracks->end();                      
        ++itTrack) {
         Ntracks++;
+        
+		
            //double vx = itTrack->vx();
            //double vy = itTrack->vy();
            //double vz = itTrack->vz();
@@ -593,6 +624,7 @@ else
         event.numTrack++;
   }
   
+  //trTransientVertex myVertex = fitter.vertex(trackVec);
 	     
   //std::cout<<event.numVert<<std::endl;
    
