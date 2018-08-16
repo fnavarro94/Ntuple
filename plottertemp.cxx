@@ -1,6 +1,6 @@
 { 
 
-double lumi = .286137;  //   1/pb
+double lumi = 2333;  //   1/pb
 
 THStack *hs_lxy = new THStack("hs_lxy", "");
 THStack *hs_lxyLoose = new THStack("hs_lxyLoose", "");
@@ -707,136 +707,214 @@ hDat_h_dot->SetMarkerStyle(21);
 hDat_h_dot->SetMarkerSize(1);
 hDat_h_dot->SetLineColor(1);
 hll_h_dot->SetLineColor(2);
-double DY_scale = lumi*3048.0/(hDY_lxy->Integral());
-double ZZ_scale = lumi*5.9/(hZZ_lxy->Integral());
-double WZ_scale = lumi*18.2/(hWZ_lxy->Integral());
-double WW_scale = lumi*42.0/(hWW_lxy->Integral());
+TH1F * hZZ_nEvents = (TH1F*)fZZ->Get("nEvents");
+TH1F * hWZ_nEvents = (TH1F*)fWZ->Get("nEvents");
+TH1F * hWW_nEvents = (TH1F*)fWW->Get("nEvents");
+TH1F * hDY_nEvents = (TH1F*)fDY->Get("nEvents");
+TH1F * hll_nEvents = (TH1F*)fll->Get("nEvents");
+double ZZ_lxy_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_lxy->Scale(ZZ_lxy_scale);
+double WZ_lxy_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_lxy->Scale(WZ_lxy_scale);
+double WW_lxy_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_lxy->Scale(WW_lxy_scale);
+double DY_lxy_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_lxy->Scale(DY_lxy_scale);
+double ll_lxy_scale = lumi*1/(hll_nEvents->Integral());
+hll_lxy->Scale(ll_lxy_scale);
+double ZZ_lxyLoose_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_lxyLoose->Scale(ZZ_lxyLoose_scale);
+double WZ_lxyLoose_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_lxyLoose->Scale(WZ_lxyLoose_scale);
+double WW_lxyLoose_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_lxyLoose->Scale(WW_lxyLoose_scale);
+double DY_lxyLoose_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_lxyLoose->Scale(DY_lxyLoose_scale);
+double ll_lxyLoose_scale = lumi*1/(hll_nEvents->Integral());
+hll_lxyLoose->Scale(ll_lxyLoose_scale);
+double ZZ_lxy_err_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_lxy_err->Scale(ZZ_lxy_err_scale);
+double WZ_lxy_err_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_lxy_err->Scale(WZ_lxy_err_scale);
+double WW_lxy_err_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_lxy_err->Scale(WW_lxy_err_scale);
+double DY_lxy_err_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_lxy_err->Scale(DY_lxy_err_scale);
+double ll_lxy_err_scale = lumi*1/(hll_nEvents->Integral());
+hll_lxy_err->Scale(ll_lxy_err_scale);
+double ZZ_lxy_errLoose_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_lxy_errLoose->Scale(ZZ_lxy_errLoose_scale);
+double WZ_lxy_errLoose_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_lxy_errLoose->Scale(WZ_lxy_errLoose_scale);
+double WW_lxy_errLoose_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_lxy_errLoose->Scale(WW_lxy_errLoose_scale);
+double DY_lxy_errLoose_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_lxy_errLoose->Scale(DY_lxy_errLoose_scale);
+double ll_lxy_errLoose_scale = lumi*1/(hll_nEvents->Integral());
+hll_lxy_errLoose->Scale(ll_lxy_errLoose_scale);
+double ZZ_InvMass_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_InvMass->Scale(ZZ_InvMass_scale);
+double WZ_InvMass_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_InvMass->Scale(WZ_InvMass_scale);
+double WW_InvMass_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_InvMass->Scale(WW_InvMass_scale);
+double DY_InvMass_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_InvMass->Scale(DY_InvMass_scale);
+double ll_InvMass_scale = lumi*1/(hll_nEvents->Integral());
+hll_InvMass->Scale(ll_InvMass_scale);
+double ZZ_InvMassLoose_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_InvMassLoose->Scale(ZZ_InvMassLoose_scale);
+double WZ_InvMassLoose_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_InvMassLoose->Scale(WZ_InvMassLoose_scale);
+double WW_InvMassLoose_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_InvMassLoose->Scale(WW_InvMassLoose_scale);
+double DY_InvMassLoose_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_InvMassLoose->Scale(DY_InvMassLoose_scale);
+double ll_InvMassLoose_scale = lumi*1/(hll_nEvents->Integral());
+hll_InvMassLoose->Scale(ll_InvMassLoose_scale);
+double ZZ_InvMassLW_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_InvMassLW->Scale(ZZ_InvMassLW_scale);
+double WZ_InvMassLW_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_InvMassLW->Scale(WZ_InvMassLW_scale);
+double WW_InvMassLW_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_InvMassLW->Scale(WW_InvMassLW_scale);
+double DY_InvMassLW_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_InvMassLW->Scale(DY_InvMassLW_scale);
+double ll_InvMassLW_scale = lumi*1/(hll_nEvents->Integral());
+hll_InvMassLW->Scale(ll_InvMassLW_scale);
+double ZZ_d0_err_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_d0_err->Scale(ZZ_d0_err_scale);
+double WZ_d0_err_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_d0_err->Scale(WZ_d0_err_scale);
+double WW_d0_err_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_d0_err->Scale(WW_d0_err_scale);
+double DY_d0_err_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_d0_err->Scale(DY_d0_err_scale);
+double ll_d0_err_scale = lumi*1/(hll_nEvents->Integral());
+hll_d0_err->Scale(ll_d0_err_scale);
+double ZZ_d0_errLoose_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_d0_errLoose->Scale(ZZ_d0_errLoose_scale);
+double WZ_d0_errLoose_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_d0_errLoose->Scale(WZ_d0_errLoose_scale);
+double WW_d0_errLoose_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_d0_errLoose->Scale(WW_d0_errLoose_scale);
+double DY_d0_errLoose_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_d0_errLoose->Scale(DY_d0_errLoose_scale);
+double ll_d0_errLoose_scale = lumi*1/(hll_nEvents->Integral());
+hll_d0_errLoose->Scale(ll_d0_errLoose_scale);
+double ZZ_dxy_err_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_dxy_err->Scale(ZZ_dxy_err_scale);
+double WZ_dxy_err_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_dxy_err->Scale(WZ_dxy_err_scale);
+double WW_dxy_err_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_dxy_err->Scale(WW_dxy_err_scale);
+double DY_dxy_err_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_dxy_err->Scale(DY_dxy_err_scale);
+double ll_dxy_err_scale = lumi*1/(hll_nEvents->Integral());
+hll_dxy_err->Scale(ll_dxy_err_scale);
+double ZZ_dxy_errLoose_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_dxy_errLoose->Scale(ZZ_dxy_errLoose_scale);
+double WZ_dxy_errLoose_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_dxy_errLoose->Scale(WZ_dxy_errLoose_scale);
+double WW_dxy_errLoose_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_dxy_errLoose->Scale(WW_dxy_errLoose_scale);
+double DY_dxy_errLoose_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_dxy_errLoose->Scale(DY_dxy_errLoose_scale);
+double ll_dxy_errLoose_scale = lumi*1/(hll_nEvents->Integral());
+hll_dxy_errLoose->Scale(ll_dxy_errLoose_scale);
+double ZZ_cos_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_cos->Scale(ZZ_cos_scale);
+double WZ_cos_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_cos->Scale(WZ_cos_scale);
+double WW_cos_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_cos->Scale(WW_cos_scale);
+double DY_cos_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_cos->Scale(DY_cos_scale);
+double ll_cos_scale = lumi*1/(hll_nEvents->Integral());
+hll_cos->Scale(ll_cos_scale);
+double ZZ_cosLoose_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_cosLoose->Scale(ZZ_cosLoose_scale);
+double WZ_cosLoose_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_cosLoose->Scale(WZ_cosLoose_scale);
+double WW_cosLoose_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_cosLoose->Scale(WW_cosLoose_scale);
+double DY_cosLoose_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_cosLoose->Scale(DY_cosLoose_scale);
+double ll_cosLoose_scale = lumi*1/(hll_nEvents->Integral());
+hll_cosLoose->Scale(ll_cosLoose_scale);
+double ZZ_delPhi_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_delPhi->Scale(ZZ_delPhi_scale);
+double WZ_delPhi_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_delPhi->Scale(WZ_delPhi_scale);
+double WW_delPhi_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_delPhi->Scale(WW_delPhi_scale);
+double DY_delPhi_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_delPhi->Scale(DY_delPhi_scale);
+double ll_delPhi_scale = lumi*1/(hll_nEvents->Integral());
+hll_delPhi->Scale(ll_delPhi_scale);
+double ZZ_delPhiLoose_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_delPhiLoose->Scale(ZZ_delPhiLoose_scale);
+double WZ_delPhiLoose_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_delPhiLoose->Scale(WZ_delPhiLoose_scale);
+double WW_delPhiLoose_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_delPhiLoose->Scale(WW_delPhiLoose_scale);
+double DY_delPhiLoose_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_delPhiLoose->Scale(DY_delPhiLoose_scale);
+double ll_delPhiLoose_scale = lumi*1/(hll_nEvents->Integral());
+hll_delPhiLoose->Scale(ll_delPhiLoose_scale);
+double ZZ_conePt_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_conePt->Scale(ZZ_conePt_scale);
+double WZ_conePt_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_conePt->Scale(WZ_conePt_scale);
+double WW_conePt_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_conePt->Scale(WW_conePt_scale);
+double DY_conePt_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_conePt->Scale(DY_conePt_scale);
+double ll_conePt_scale = lumi*1/(hll_nEvents->Integral());
+hll_conePt->Scale(ll_conePt_scale);
+double ZZ_chi2_NDF_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_chi2_NDF->Scale(ZZ_chi2_NDF_scale);
+double WZ_chi2_NDF_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_chi2_NDF->Scale(WZ_chi2_NDF_scale);
+double WW_chi2_NDF_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_chi2_NDF->Scale(WW_chi2_NDF_scale);
+double DY_chi2_NDF_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_chi2_NDF->Scale(DY_chi2_NDF_scale);
+double ll_chi2_NDF_scale = lumi*1/(hll_nEvents->Integral());
+hll_chi2_NDF->Scale(ll_chi2_NDF_scale);
+double ZZ_chi2_NDFLoose_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_chi2_NDFLoose->Scale(ZZ_chi2_NDFLoose_scale);
+double WZ_chi2_NDFLoose_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_chi2_NDFLoose->Scale(WZ_chi2_NDFLoose_scale);
+double WW_chi2_NDFLoose_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_chi2_NDFLoose->Scale(WW_chi2_NDFLoose_scale);
+double DY_chi2_NDFLoose_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_chi2_NDFLoose->Scale(DY_chi2_NDFLoose_scale);
+double ll_chi2_NDFLoose_scale = lumi*1/(hll_nEvents->Integral());
+hll_chi2_NDFLoose->Scale(ll_chi2_NDFLoose_scale);
+double ZZ_numHitsLoose_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_numHitsLoose->Scale(ZZ_numHitsLoose_scale);
+double WZ_numHitsLoose_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_numHitsLoose->Scale(WZ_numHitsLoose_scale);
+double WW_numHitsLoose_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_numHitsLoose->Scale(WW_numHitsLoose_scale);
+double DY_numHitsLoose_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_numHitsLoose->Scale(DY_numHitsLoose_scale);
+double ll_numHitsLoose_scale = lumi*1/(hll_nEvents->Integral());
+hll_numHitsLoose->Scale(ll_numHitsLoose_scale);
+double ZZ_h_dot_scale = lumi*5.9/(hZZ_nEvents->Integral());
+hZZ_h_dot->Scale(ZZ_h_dot_scale);
+double WZ_h_dot_scale = lumi*18.2/(hWZ_nEvents->Integral());
+hWZ_h_dot->Scale(WZ_h_dot_scale);
+double WW_h_dot_scale = lumi*42/(hWW_nEvents->Integral());
+hWW_h_dot->Scale(WW_h_dot_scale);
+double DY_h_dot_scale = lumi*3048/(hDY_nEvents->Integral());
+hDY_h_dot->Scale(DY_h_dot_scale);
+double ll_h_dot_scale = lumi*1/(hll_nEvents->Integral());
+hll_h_dot->Scale(ll_h_dot_scale);
 
 
-hZZ_lxy->Scale(ZZ_scale);
-hWZ_lxy->Scale(WZ_scale);
-hWW_lxy->Scale(WW_scale);
-hDY_lxy->Scale(DY_scale);
 
-
-hZZ_lxyLoose->Scale(ZZ_scale);
-hWZ_lxyLoose->Scale(WZ_scale);
-hWW_lxyLoose->Scale(WW_scale);
-hDY_lxyLoose->Scale(DY_scale);
-
-
-hZZ_lxy_err->Scale(ZZ_scale);
-hWZ_lxy_err->Scale(WZ_scale);
-hWW_lxy_err->Scale(WW_scale);
-hDY_lxy_err->Scale(DY_scale);
-
-
-hZZ_lxy_errLoose->Scale(ZZ_scale);
-hWZ_lxy_errLoose->Scale(WZ_scale);
-hWW_lxy_errLoose->Scale(WW_scale);
-hDY_lxy_errLoose->Scale(DY_scale);
-
-
-hZZ_InvMass->Scale(ZZ_scale);
-hWZ_InvMass->Scale(WZ_scale);
-hWW_InvMass->Scale(WW_scale);
-hDY_InvMass->Scale(DY_scale);
-
-
-hZZ_InvMassLoose->Scale(ZZ_scale);
-hWZ_InvMassLoose->Scale(WZ_scale);
-hWW_InvMassLoose->Scale(WW_scale);
-hDY_InvMassLoose->Scale(DY_scale);
-
-
-hZZ_InvMassLW->Scale(ZZ_scale);
-hWZ_InvMassLW->Scale(WZ_scale);
-hWW_InvMassLW->Scale(WW_scale);
-hDY_InvMassLW->Scale(DY_scale);
-
-
-hZZ_d0_err->Scale(ZZ_scale);
-hWZ_d0_err->Scale(WZ_scale);
-hWW_d0_err->Scale(WW_scale);
-hDY_d0_err->Scale(DY_scale);
-
-
-hZZ_d0_errLoose->Scale(ZZ_scale);
-hWZ_d0_errLoose->Scale(WZ_scale);
-hWW_d0_errLoose->Scale(WW_scale);
-hDY_d0_errLoose->Scale(DY_scale);
-
-
-hZZ_dxy_err->Scale(ZZ_scale);
-hWZ_dxy_err->Scale(WZ_scale);
-hWW_dxy_err->Scale(WW_scale);
-hDY_dxy_err->Scale(DY_scale);
-
-
-hZZ_dxy_errLoose->Scale(ZZ_scale);
-hWZ_dxy_errLoose->Scale(WZ_scale);
-hWW_dxy_errLoose->Scale(WW_scale);
-hDY_dxy_errLoose->Scale(DY_scale);
-
-
-hZZ_cos->Scale(ZZ_scale);
-hWZ_cos->Scale(WZ_scale);
-hWW_cos->Scale(WW_scale);
-hDY_cos->Scale(DY_scale);
-
-
-hZZ_cosLoose->Scale(ZZ_scale);
-hWZ_cosLoose->Scale(WZ_scale);
-hWW_cosLoose->Scale(WW_scale);
-hDY_cosLoose->Scale(DY_scale);
-
-
-hZZ_delPhi->Scale(ZZ_scale);
-hWZ_delPhi->Scale(WZ_scale);
-hWW_delPhi->Scale(WW_scale);
-hDY_delPhi->Scale(DY_scale);
-
-
-hZZ_delPhiLoose->Scale(ZZ_scale);
-hWZ_delPhiLoose->Scale(WZ_scale);
-hWW_delPhiLoose->Scale(WW_scale);
-hDY_delPhiLoose->Scale(DY_scale);
-
-
-hZZ_conePt->Scale(ZZ_scale);
-hWZ_conePt->Scale(WZ_scale);
-hWW_conePt->Scale(WW_scale);
-hDY_conePt->Scale(DY_scale);
-
-
-hZZ_chi2_NDF->Scale(ZZ_scale);
-hWZ_chi2_NDF->Scale(WZ_scale);
-hWW_chi2_NDF->Scale(WW_scale);
-hDY_chi2_NDF->Scale(DY_scale);
-
-
-hZZ_chi2_NDF->Scale(ZZ_scale);
-hWZ_chi2_NDF->Scale(WZ_scale);
-hWW_chi2_NDF->Scale(WW_scale);
-hDY_chi2_NDF->Scale(DY_scale);
-
-
-hZZ_chi2_NDFLoose->Scale(ZZ_scale);
-hWZ_chi2_NDFLoose->Scale(WZ_scale);
-hWW_chi2_NDFLoose->Scale(WW_scale);
-hDY_chi2_NDFLoose->Scale(DY_scale);
-
-
-hZZ_numHitsLoose->Scale(ZZ_scale);
-hWZ_numHitsLoose->Scale(WZ_scale);
-hWW_numHitsLoose->Scale(WW_scale);
-hDY_numHitsLoose->Scale(DY_scale);
-
-
-hZZ_h_dot->Scale(ZZ_scale);
-hWZ_h_dot->Scale(WZ_scale);
-hWW_h_dot->Scale(WW_scale);
-hDY_h_dot->Scale(DY_scale);
 
 
 hZZ_lxy->SetStats(0);
@@ -1223,7 +1301,12 @@ legend_lxy_err->AddEntry(hDat_lxy_err,"Data","p");
 legend_lxy_err->SetFillColor(0);
 hDat_lxy_err->SetXTitle("mass [GeV/c^{2}]");
 hDat_lxy_err->SetYTitle("Entries");
-cs_lxy_err->cd(1); hll_lxy_err->Draw("hist eX0"); cs_lxy_err->Update(); hs_lxy_err->Draw("same hist eX0"); cs_lxy_err->Update(); hDat_lxy_err->Draw("same  eX0");
+hll_lxy_err->SetXTitle("L_{xy}/#sigma_{xy}");
+hll_lxy_err->SetYTitle("Entries");
+hll_lxy_err->SetTitle("CMS  #sqrt{s}=7 TeV  L = 2.33 fb^{-1}");
+TLine *line = new TLine(5,0,5,hll_lxy_err->GetMaximum());
+line->SetLineStyle(9);
+cs_lxy_err->cd(1); hll_lxy_err->Draw("hist eX0"); cs_lxy_err->Update(); hs_lxy_err->Draw("same hist eX0"); cs_lxy_err->Update(); hDat_lxy_err->Draw("same  eX0"); line->Draw();
 // cs->cd(1);  hs_lxy_err->Draw(" hist"); cs->Update(); hDat_lxy_err->Draw("hist same");
 legend_lxy_err->Draw();
 gPad->Update();
