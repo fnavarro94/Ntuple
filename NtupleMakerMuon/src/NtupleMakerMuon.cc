@@ -420,11 +420,18 @@ else
     
    
    std::vector<reco::TransientTrack> trackVec;
+
+   if ( t_tks.size()>2){
+
    trackVec.push_back(t_tks[0]);
-   trackVec.push_back(t_tks[1]);
+    
+
+   trackVec.push_back(t_tks[1]); 
   TransientVertex myVertex = fitter.vertex(trackVec);
-   std::cout<<myVertex.position().x()<<std::endl;
   
+    if (myVertex.isValid())
+     std::cout<<myVertex.position().x()<<std::endl;
+  }
   //                             end of experiment
    Handle<reco::VertexCollection> vertHand;
    iEvent.getByLabel( "offlinePrimaryVertices",vertHand);
