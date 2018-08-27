@@ -186,7 +186,7 @@ else
 	cout<<"trigger Not found"<<endl;
 }
 
-
+cout<<filterName<<endl;
 
 
 
@@ -196,14 +196,14 @@ if (trigIndex != trigPathSize)
 bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));   // may cause vector::_M_range_check exeption
     
     //event.triggerActivated = passTrig;
-    cout<<passTrig<<endl;
+    cout<<"was trigger activated: "<<(int)passTrig<<endl;
 }
 else
 {
 	//event.triggerActivated=false;
 }
    
-   cout<<cmsStandardCuts(iEvent, iSetup)<<endl;
+   //cout<<cmsStandardCuts(iEvent, iSetup)<<endl;
 
 
 
