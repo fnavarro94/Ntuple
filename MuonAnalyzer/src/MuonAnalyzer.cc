@@ -140,6 +140,69 @@ MuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    using namespace edm;
    using namespace std;
    
+   
+edm::Handle<edm::TriggerResults> trigResults; //Our trigger result object
+edm::InputTag trigResultsTag("TriggerResults","","HLT");
+iEvent.getByLabel(trigResultsTag,trigResults);
+const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
+ 
+std::string pathName = "none";
+std::string toFind[2] = {"HLT_L2DoubleMu23_NoVertex", "HLT_L2DoubleMu30_NoVertex"};
+
+   
+int trigPathSize = trigNames.size();
+int triggerFound=9;
+for(int j = 0; j < 2; j++){
+for (unsigned int i = 0; i< trigNames.size(); i++)
+{
+	
+	
+	std::string trig = trigNames.triggerName(i);
+	if ( trig.find(toFind[j]) !=std::string::npos ){
+		
+		
+		triggerFound=j;
+		pathName = trig;
+		i = trigNames.size();
+		j = 3;
+		
+		}
+		
+	}
+}
+
+std::string filterName = "none";
+
+if (triggerFound == 0)
+{
+	filterName = "hltL2DoubleMu23NoVertexL2PreFiltered";
+}
+else if (triggerFound == 1)
+{
+	filterName = "hltL2DoubleMu30NoVertexL2PreFiltered";
+}
+else
+{
+	cout<<"trigger Not found"<<endl;
+}
+
+
+
+
+
+int trigIndex = trigNames.triggerIndex(pathName);
+if (trigIndex != trigPathSize)
+{
+bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));   // may cause vector::_M_range_check exeption
+    
+    //event.triggerActivated = passTrig;
+    cout<<passTrig<<endl;
+}
+else
+{
+	//event.triggerActivated=false;
+}
+   
    cout<<cmsStandardCuts(iEvent, iSetup)<<endl;
 
 
@@ -241,7 +304,8 @@ MuonAnalyzer::cmsStandardCuts(const edm::Event& iEvent, const edm::EventSetup& i
 	   for(TrackCollection::const_iterator itTrack = tracks->begin();
        itTrack != tracks->end();                      
        ++itTrack) 
-       {
+       {   int num = tracks->size();
+		   std::cout<<num<<std::endl;
 		   numTracks ++;
 		   
 		   if (itTrack->quality(reco::Track::highPurity))
