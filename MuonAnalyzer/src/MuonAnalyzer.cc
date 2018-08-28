@@ -88,10 +88,10 @@ class MuonAnalyzer : public edm::EDAnalyzer {
      double mCos(double , double , double , double  );
      double mTheta(double , double , double , double );
      double invMass(double , double , double , double  , double ,  double );
-      TTree * mtree;
+   //   TTree * mtree;
       TFile * mfile;
      // TH1F * h_;
-      TH1F *h_invMass;
+      TH1F * h_invMass;
       int vuelta;
       int NvertTracks = 0, Ntracks = 0;
       int numJets2 = 0;
@@ -146,7 +146,7 @@ MuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    using namespace edm;
    using namespace reco;
    using namespace std;
-   
+  
 Handle<TrackCollection> tracks;
 iEvent.getByLabel(trackTags_,tracks);
    
@@ -291,6 +291,7 @@ if (standardCuts && passTrig )
 }
 
 
+
 int  i =0, j=0;
 for(TrackCollection::const_iterator itTrack1 = tracks->begin();
        itTrack1 != tracks->end();                      
@@ -317,8 +318,12 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					
 				   
 				   std::vector<reco::TransientTrack> trackVec;
-
-				   if ( t_tks.size()>2){
+                    int a = i;
+                    if(i < j && a > -9)
+                    {
+						a = j
+					}
+				   if ( t_tks.size()>a){
 
 				   trackVec.push_back(t_tks[i]);
 					
@@ -326,7 +331,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				   trackVec.push_back(t_tks[j]); 
 				   TransientVertex myVertex = fitter.vertex(trackVec);
 				  
-					
+		 
 				  
               if (myVertex.isValid())
 					 {
@@ -374,22 +379,20 @@ i++;
    ESHandle<SetupData> pSetup;
    iSetup.get<SetupRecord>().get(pSetup);
 #endif
-mtree->Fill();
-
+//mtree->Fill();
 
 }
 
 // ------------ method called once each job just before starting event loop  ------------
 void 
 MuonAnalyzer::beginJob()
-{
+{TH1::AddDirectory(true);
  vuelta = 0;
  const char* of = outFile_.c_str();
  mfile = new TFile(of, "recreate");
- mtree = new TTree("mtree","Ntuple");
  
-
-		  
+ h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+	  
 	
 		
 		
