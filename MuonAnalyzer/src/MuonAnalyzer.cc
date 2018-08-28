@@ -83,6 +83,7 @@ class MuonAnalyzer : public edm::EDAnalyzer {
       
      bool cmsStandardCuts(const edm::Event&, const edm::EventSetup&);
      bool matchingCuts( bool , double , int , int , double);
+     double deltaR(double , double , double, double);
       TTree * mtree;
       TFile * mfile;
      // TH1F * h_;
@@ -215,6 +216,12 @@ else
 bool standardCuts = cmsStandardCuts(iEvent, iSetup);
 
 
+int matchedTrack[tracks->size()];
+for (int i = 0; i<(int)tracks->size(); i++)
+{
+	matchedTrack[i] = 0;
+}
+cout<<matchedTrack[0]<<endl;
 std::string e_filterName(filterName); // dataset photones (para filtrar electrones)
    
 
@@ -227,9 +234,11 @@ trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filter
       
       const trigger::TriggerObjectCollection & e_trigObjColl(trigEvent->getObjects());
      
+     
   
 if (standardCuts && passTrig )
 {
+ int i = 0;
  for(TrackCollection::const_iterator itTrack = tracks->begin();
        itTrack != tracks->end();                      
        ++itTrack) 
@@ -238,14 +247,28 @@ if (standardCuts && passTrig )
 		  {
 			   const trigger::TriggerObject& obj = e_trigObjColl[*keyIt];
 			   cout<<obj.pt()<<endl;
+			   bool lepMatchCut =matchingCuts( itTrack->quality(reco::Track::highPurity)  , itTrack->pt() , itTrack->hitPattern().numberOfValidTrackerHits(),itTrack->hitPattern().numberOfValidPixelHits(), itTrack->eta());
+		
+		  
+		   if (lepMatchCut)
+		   { 
+			    if(deltaR(itTrack->phi(), itTrack->eta(), obj.phi(), obj.eta())< 0.1 )
+			   {  
+				   matchedTrack[i] = 1;
+				   
+			      
+			   }
+			   
+		   } 
 			  
 		  }
+		  i++;
 	   }
 	
 	
-}
-}
 
+}
+}
 
 
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
@@ -396,7 +419,18 @@ MuonAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D, double
 	
 	return ret;
 }
-
+double 
+MuonAnalyzer::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, double obj2Eta)
+{
+	double dPhi = obj1Phi - obj2Phi;
+	if (abs(dPhi)>3.1415/2)
+	{
+		dPhi =  3.1415 -dPhi;
+	}
+	double dEta = obj1Eta - obj2Eta;
+	double dR = sqrt(dPhi*dPhi + dEta*dEta);
+	return dR;
+}
 
 // ------------ method called when starting to processes a run  ------------
 void 
