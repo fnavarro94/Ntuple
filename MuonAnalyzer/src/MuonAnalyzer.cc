@@ -82,7 +82,7 @@ class MuonAnalyzer : public edm::EDAnalyzer {
       virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
       
      bool cmsStandardCuts(const edm::Event&, const edm::EventSetup&);
-      
+     bool matchingCuts( bool , double , int , int , double);
       TTree * mtree;
       TFile * mfile;
      // TH1F * h_;
@@ -138,13 +138,22 @@ void
 MuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
+   using namespace reco;
    using namespace std;
    
+Handle<TrackCollection> tracks;
+iEvent.getByLabel(trackTags_,tracks);
    
-edm::Handle<edm::TriggerResults> trigResults; //Our trigger result object
+edm::Handle<edm::TriggerResults> trigResults; 
 edm::InputTag trigResultsTag("TriggerResults","","HLT");
+edm::InputTag trigEventTag("hltTriggerSummaryAOD","","HLT");
 iEvent.getByLabel(trigResultsTag,trigResults);
 const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
+
+
+//data process=HLT, MC depends, Spring11 is REDIGI311X
+edm::Handle<trigger::TriggerEvent> trigEvent; 
+iEvent.getByLabel(trigEventTag,trigEvent);
  
 std::string pathName = "none";
 std::string toFind[2] = {"HLT_L2DoubleMu23_NoVertex", "HLT_L2DoubleMu30_NoVertex"};
@@ -189,22 +198,53 @@ else
 cout<<filterName<<endl;
 
 
-
+bool passTrig;
 int trigIndex = trigNames.triggerIndex(pathName);
 if (trigIndex != trigPathSize)
 {
-bool passTrig=trigResults->accept(trigNames.triggerIndex(pathName));   // may cause vector::_M_range_check exeption
+    passTrig=trigResults->accept(trigNames.triggerIndex(pathName));   // may cause vector::_M_range_check exeption
     
     //event.triggerActivated = passTrig;
     cout<<"was trigger activated: "<<(int)passTrig<<endl;
 }
 else
 {
-	//event.triggerActivated=false;
+	passTrig=false;
 }
    
-   //cout<<cmsStandardCuts(iEvent, iSetup)<<endl;
+bool standardCuts = cmsStandardCuts(iEvent, iSetup);
 
+
+std::string e_filterName(filterName); // dataset photones (para filtrar electrones)
+   
+
+trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filterName,"",trigEventTag.process())); 
+  
+ if(e_filterIndex<trigEvent->sizeFilters()){ 
+	  
+	 
+      const trigger::Keys& trigKeys = trigEvent->filterKeys(e_filterIndex); 
+      
+      const trigger::TriggerObjectCollection & e_trigObjColl(trigEvent->getObjects());
+     
+  
+if (standardCuts && passTrig )
+{
+ for(TrackCollection::const_iterator itTrack = tracks->begin();
+       itTrack != tracks->end();                      
+       ++itTrack) 
+       {
+		  for(trigger::Keys::const_iterator keyIt=trigKeys.begin();keyIt!=trigKeys.end();++keyIt)
+		  {
+			   const trigger::TriggerObject& obj = e_trigObjColl[*keyIt];
+			   cout<<obj.pt()<<endl;
+			  
+		  }
+	   }
+	
+	
+}
+}
 
 
 
@@ -283,7 +323,7 @@ MuonAnalyzer::cmsStandardCuts(const edm::Event& iEvent, const edm::EventSetup& i
        {
 		  
 		    for(reco::Vertex::trackRef_iterator itTrack = itVert->tracks_begin();
-       itTrack != itVert->tracks_begin() +6 && itTrack != itVert->tracks_end();
+       itTrack != itVert->tracks_end();
        ++itTrack)
            {
 		        
@@ -335,6 +375,27 @@ MuonAnalyzer::cmsStandardCuts(const edm::Event& iEvent, const edm::EventSetup& i
 
 
 
+
+bool 
+MuonAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D, double eta)
+{
+	bool ret = false;
+	
+	
+		
+	  if(purity && pt > 33 && hits >= 6   && eta < 2  )
+	  if(true)
+	  
+	  {
+		  ret = true;
+
+	  }	
+	 
+	  
+
+	
+	return ret;
+}
 
 
 // ------------ method called when starting to processes a run  ------------
