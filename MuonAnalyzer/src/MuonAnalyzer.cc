@@ -272,6 +272,25 @@ if (standardCuts && passTrig )
 }
 
 
+int  i =0, j=0;
+for(TrackCollection::const_iterator itTrack1 = tracks->begin();
+       itTrack1 != tracks->end();                      
+       ++itTrack1) 
+{
+	if (itTrack1->charge()==1 && matchedTrack[i] == 1 ){
+	for(TrackCollection::const_iterator itTrack2 = tracks->begin();
+       itTrack2 != tracks->end();                      
+       ++itTrack2) 
+       {
+		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1 && deltaR(itTrack->pt(), itTrack1->eta(), itTrack2->pt(), itTrack2->eta()) )
+		
+		j ++;   
+	   }
+   }
+i++;
+}
+
+
 
 //   Compare mathced tracks to see if they originated from the same vertex
 
