@@ -292,12 +292,13 @@ if (standardCuts && passTrig )
 
 
 
-int  i =0, j=0;
+int  i =0;
 for(TrackCollection::const_iterator itTrack1 = tracks->begin();
        itTrack1 != tracks->end();                      
        ++itTrack1) 
 {
 	if (itTrack1->charge()==1 && matchedTrack[i] == 1 ){
+	int	j=0;
 	for(TrackCollection::const_iterator itTrack2 = tracks->begin();
        itTrack2 != tracks->end();                      
        ++itTrack2) 
@@ -318,12 +319,8 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					
 				   
 				   std::vector<reco::TransientTrack> trackVec;
-                    int a = i;
-                    if(i < j && a > -9)
-                    {
-						a = j;
-					}
-				   if ( (int)t_tks.size()>a){
+                    
+				   if ( (int)t_tks.size()>2){
 
 				   trackVec.push_back(t_tks[i]);
 					
