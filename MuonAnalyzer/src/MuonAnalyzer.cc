@@ -87,9 +87,11 @@ class MuonAnalyzer : public edm::EDAnalyzer {
      double conePt(int , int , double , double , int ,const edm::Event& , const edm::EventSetup& );
      double mCos(double , double , double , double  );
      double mTheta(double , double , double , double );
+     double invMass(double , double , double , double  , double ,  double );
       TTree * mtree;
       TFile * mfile;
      // TH1F * h_;
+      TH1F *h_invMass;
       int vuelta;
       int NvertTracks = 0, Ntracks = 0;
       int numJets2 = 0;
@@ -158,6 +160,20 @@ const edm::TriggerNames& trigNames = iEvent.triggerNames(*trigResults);
 //data process=HLT, MC depends, Spring11 is REDIGI311X
 edm::Handle<trigger::TriggerEvent> trigEvent; 
 iEvent.getByLabel(trigEventTag,trigEvent);
+
+// get primary vertex coordinates
+Handle<reco::VertexCollection> vertHand;
+   iEvent.getByLabel( "offlinePrimaryVertices",vertHand);
+double vertex_x, vertex_y;
+ for(reco::VertexCollection::const_iterator itVert = vertHand->begin();
+       itVert != vertHand->begin()+6 && itVert != vertHand->end();
+       ++itVert)
+       {
+		   vertex_x=itVert->x();
+		   vertex_y = itVert->y();
+	   }
+ 
+ 
  
 std::string pathName = "none";
 std::string toFind[2] = {"HLT_L2DoubleMu23_NoVertex", "HLT_L2DoubleMu30_NoVertex"};
@@ -287,7 +303,8 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
        {
 		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1 && deltaR(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta())> 0.2 )
 		   {  
-			   // Secondary vertex is reconstructed
+			   
+ // Secondary vertex is reconstructed
 			   // get RECO tracks from the event
 					edm::Handle<reco::TrackCollection> tks;
 					iEvent.getByLabel(trackTags_, tks);
@@ -303,22 +320,36 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 
 				   if ( t_tks.size()>2){
 
-				   trackVec.push_back(t_tks[0]);
+				   trackVec.push_back(t_tks[i]);
 					
 
-				   trackVec.push_back(t_tks[1]); 
+				   trackVec.push_back(t_tks[j]); 
 				   TransientVertex myVertex = fitter.vertex(trackVec);
 				  
-					if (myVertex.isValid())
-					 std::cout<<myVertex.position().x()<<std::endl;
-				  }
-			   
+					
+				  
+              if (myVertex.isValid())
+					 {
+			   double secVert_x =(double)myVertex.position().x();
+			   double secVert_y =(double)myVertex.position().y();
+			   cout<<secVert_x<<secVert_y<<endl;
 			   double conePt_var=conePt(i , j, itTrack1->eta(), itTrack1->phi(),  tracks->size(), iEvent,iSetup);
-			   //double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]);   hacer esto despues de reconstruir el vertice secundario
+			   
 			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
-			   cout<<conePt_var<<cosAlpha<<endl;
+			  double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),vertex_x-secVert_x,  vertex_y-secVert_y);
+			   cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
+			   if (conePt_var < 4 && cosAlpha > -0.95/*0.8 ipara electron*/)
+					
+					{
+						double invariantMass;
+					 invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
+				         h_invMass->Fill(invariantMass);
+				 
+				 
+				 }
 			   
-			   
+		   }
+		   }
 		   }
 		
 		j ++;   
@@ -531,7 +562,24 @@ MuonAnalyzer::mTheta(double ax, double ay, double bx, double by)
 	theta  = acos(cosAlpha);
 	return theta;
 }
+double 
+MuonAnalyzer::invMass(double px1, double py1, double pz1, double px2 , double py2,  double pz2)
+{
+  double E1 =  sqrt(px1*px1 + py1*py1 + pz1*pz1);  // asummes rest mass energy to be negligible
+  double E2 =  sqrt(px2*px2 + py2*py2 + pz2*pz2);
+  
+  double E = E1+E2;
+  double px = px1 + px2;
+  double py = py1 + py2;
+  double pz = pz1 + pz2;
+  double mass = sqrt(E*E - px*px - py*py - pz*pz);
+  
+  return mass;
+  
+  
 
+	
+}
 // ------------ method called when starting to processes a run  ------------
 void 
 MuonAnalyzer::beginRun(edm::Run const&, edm::EventSetup const&)
