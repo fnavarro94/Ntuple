@@ -84,6 +84,9 @@ class MuonAnalyzer : public edm::EDAnalyzer {
      bool cmsStandardCuts(const edm::Event&, const edm::EventSetup&);
      bool matchingCuts( bool , double , int , int , double);
      double deltaR(double , double , double, double);
+     double conePt(int , int , double , double , int ,const edm::Event& , const edm::EventSetup& );
+     double mCos(double , double , double , double  );
+     double mTheta(double , double , double , double );
       TTree * mtree;
       TFile * mfile;
      // TH1F * h_;
@@ -282,7 +285,41 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
        itTrack2 != tracks->end();                      
        ++itTrack2) 
        {
-		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1 && deltaR(itTrack->pt(), itTrack1->eta(), itTrack2->pt(), itTrack2->eta()) )
+		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1 && deltaR(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta())> 0.2 )
+		   {  
+			   // Secondary vertex is reconstructed
+			   // get RECO tracks from the event
+					edm::Handle<reco::TrackCollection> tks;
+					iEvent.getByLabel(trackTags_, tks);
+                    KalmanVertexFitter fitter;
+					//get the builder:
+					edm::ESHandle<TransientTrackBuilder> theB;
+					iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",theB);
+					//do the conversion:
+					std::vector<reco::TransientTrack> t_tks = (*theB).build(tks);
+					
+				   
+				   std::vector<reco::TransientTrack> trackVec;
+
+				   if ( t_tks.size()>2){
+
+				   trackVec.push_back(t_tks[0]);
+					
+
+				   trackVec.push_back(t_tks[1]); 
+				   TransientVertex myVertex = fitter.vertex(trackVec);
+				  
+					if (myVertex.isValid())
+					 std::cout<<myVertex.position().x()<<std::endl;
+				  }
+			   
+			   double conePt_var=conePt(i , j, itTrack1->eta(), itTrack1->phi(),  tracks->size(), iEvent,iSetup);
+			   //double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),vertex_x[0]-track_vx[i],  vertex_y[0]-track_vy[i]);   hacer esto despues de reconstruir el vertice secundario
+			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
+			   cout<<conePt_var<<cosAlpha<<endl;
+			   
+			   
+		   }
 		
 		j ++;   
 	   }
@@ -456,6 +493,43 @@ MuonAnalyzer::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, double obj2
 	double dEta = obj1Eta - obj2Eta;
 	double dR = sqrt(dPhi*dPhi + dEta*dEta);
 	return dR;
+}
+double 
+MuonAnalyzer::conePt(int forbiddenIndex1, int forbiddenIndex2, double eta, double phi, int numTracks,const edm::Event& iEvent, const edm::EventSetup& iSetup )
+{  
+	using namespace edm;
+	using namespace reco;
+    Handle<TrackCollection> tracks;
+   iEvent.getByLabel(trackTags_,tracks);
+    int i =0;
+	double sumPt = 0.0;
+	for(TrackCollection::const_iterator itTrack = tracks->begin();
+       itTrack != tracks->end();                      
+       ++itTrack) 
+	{
+		if(deltaR(phi, eta, itTrack->phi(), itTrack->eta()) < 0.3 && deltaR(phi, eta, itTrack->phi(), itTrack->eta()) > 0.03 && i != forbiddenIndex1 && i != forbiddenIndex2)
+		{
+			sumPt = itTrack->pt() +sumPt;
+			i++;
+		}
+	}
+	
+	return sumPt;
+}
+double 
+MuonAnalyzer::mCos(double phi1, double eta1, double phi2, double eta2 )
+{double cosAlpha = cos(eta1)*cos(phi1)*cos(eta2)*cos(phi2) + cos(eta1)*sin(phi1)*cos(eta2)*sin(phi2) + sin(eta1)*cos(eta2);
+	
+	return cosAlpha;
+}
+double 
+MuonAnalyzer::mTheta(double ax, double ay, double bx, double by)
+{
+	double cosAlpha = ax*bx + ay*by;
+	double theta;
+	cosAlpha = cosAlpha/sqrt(ax*ax+ay*ay)*sqrt(bx*bx+by*by);
+	theta  = acos(cosAlpha);
+	return theta;
 }
 
 // ------------ method called when starting to processes a run  ------------
