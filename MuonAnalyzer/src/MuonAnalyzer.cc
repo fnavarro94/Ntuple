@@ -227,7 +227,8 @@ std::string e_filterName(filterName); // dataset photones (para filtrar electron
 
 trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filterName,"",trigEventTag.process())); 
   
- if(e_filterIndex<trigEvent->sizeFilters()){ 
+ if(e_filterIndex<trigEvent->sizeFilters())
+ { 
 	  
 	 
       const trigger::Keys& trigKeys = trigEvent->filterKeys(e_filterIndex); 
@@ -269,6 +270,12 @@ if (standardCuts && passTrig )
 
 }
 }
+
+
+
+//   Compare mathced tracks to see if they originated from the same vertex
+
+
 
 
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
