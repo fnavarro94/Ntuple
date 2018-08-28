@@ -215,7 +215,7 @@ else
 	cout<<"trigger Not found"<<endl;
 }
 
-cout<<filterName<<endl;
+//cout<<filterName<<endl;
 
 
 bool passTrig;
@@ -225,7 +225,7 @@ if (trigIndex != trigPathSize)
     passTrig=trigResults->accept(trigNames.triggerIndex(pathName));   // may cause vector::_M_range_check exeption
     
     //event.triggerActivated = passTrig;
-    cout<<"was trigger activated: "<<(int)passTrig<<endl;
+    //cout<<"was trigger activated: "<<(int)passTrig<<endl;
 }
 else
 {
@@ -240,7 +240,7 @@ for (int i = 0; i<(int)tracks->size(); i++)
 {
 	matchedTrack[i] = 0;
 }
-cout<<matchedTrack[0]<<endl;
+//cout<<matchedTrack[0]<<endl;
 std::string e_filterName(filterName); // dataset photones (para filtrar electrones)
    
 
@@ -266,7 +266,7 @@ if (standardCuts && passTrig )
 		  for(trigger::Keys::const_iterator keyIt=trigKeys.begin();keyIt!=trigKeys.end();++keyIt)
 		  {
 			   const trigger::TriggerObject& obj = e_trigObjColl[*keyIt];
-			   cout<<obj.pt()<<endl;
+			  // cout<<obj.pt()<<endl;
 			   bool lepMatchCut =matchingCuts( itTrack->quality(reco::Track::highPurity)  , itTrack->pt() , itTrack->hitPattern().numberOfValidTrackerHits(),itTrack->hitPattern().numberOfValidPixelHits(), itTrack->eta());
 		
 		  
@@ -461,8 +461,8 @@ MuonAnalyzer::cmsStandardCuts(const edm::Event& iEvent, const edm::EventSetup& i
 	   for(TrackCollection::const_iterator itTrack = tracks->begin();
        itTrack != tracks->end();                      
        ++itTrack) 
-       {   int num = tracks->size();
-		   std::cout<<num<<std::endl;
+       {   
+		  
 		   numTracks ++;
 		   
 		   if (itTrack->quality(reco::Track::highPurity))
