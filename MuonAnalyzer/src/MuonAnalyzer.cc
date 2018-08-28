@@ -164,9 +164,9 @@ iEvent.getByLabel(trigEventTag,trigEvent);
 // get primary vertex coordinates
 Handle<reco::VertexCollection> vertHand;
    iEvent.getByLabel( "offlinePrimaryVertices",vertHand);
-double vertex_x, vertex_y;
+double vertex_x=0, vertex_y=0;
  for(reco::VertexCollection::const_iterator itVert = vertHand->begin();
-       itVert != vertHand->begin()+6 && itVert != vertHand->end();
+       itVert != vertHand->begin()+1&& itVert != vertHand->end();
        ++itVert)
        {
 		   vertex_x=itVert->x();
@@ -332,13 +332,13 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					 {
 			   double secVert_x =(double)myVertex.position().x();
 			   double secVert_y =(double)myVertex.position().y();
-			   cout<<secVert_x<<secVert_y<<endl;
+			   //cout<<secVert_x<<secVert_y<<endl;
 			   double conePt_var=conePt(i , j, itTrack1->eta(), itTrack1->phi(),  tracks->size(), iEvent,iSetup);
 			   
 			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
-			  double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),vertex_x-secVert_x,  vertex_y-secVert_y);
-			   cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
-			   if (conePt_var < 4 && cosAlpha > -0.95/*0.8 ipara electron*/)
+			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),vertex_x-secVert_x,  vertex_y-secVert_y);
+			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
+			   if (conePt_var < 4 && cosAlpha > -0.95 && theta < 0.2/*0.8 ipara electron*/)
 					
 					{
 						double invariantMass;
