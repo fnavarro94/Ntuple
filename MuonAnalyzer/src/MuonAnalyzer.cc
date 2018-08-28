@@ -321,9 +321,9 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
                     int a = i;
                     if(i < j && a > -9)
                     {
-						a = j
+						a = j;
 					}
-				   if ( t_tks.size()>a){
+				   if ( (int)t_tks.size()>a){
 
 				   trackVec.push_back(t_tks[i]);
 					
