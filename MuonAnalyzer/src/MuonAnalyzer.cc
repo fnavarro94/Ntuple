@@ -256,7 +256,7 @@ trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filter
      
      
   
-if ((standardCuts && passTrig) || true)
+if ((standardCuts && passTrig) )
 {
  int i = 0;
  for(TrackCollection::const_iterator itTrack = tracks->begin();
