@@ -330,7 +330,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				  
 		 
 				  
-              if (myVertex.isValid())
+              if (myVertex.isValid() && myVertex.normalisedChiSquared() < 5)
 					 {
 			   double secVert_x =(double)myVertex.position().x();
 			   double secVert_y =(double)myVertex.position().y();
