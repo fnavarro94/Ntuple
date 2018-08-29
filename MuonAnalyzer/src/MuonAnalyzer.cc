@@ -256,7 +256,7 @@ trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filter
      
      
   
-if (standardCuts && passTrig || true)
+if ((standardCuts && passTrig) || true)
 {
  int i = 0;
  for(TrackCollection::const_iterator itTrack = tracks->begin();
@@ -303,7 +303,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
        itTrack2 != tracks->end();                      
        ++itTrack2) 
        {
-		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1 && deltaR(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta())> 0.2 )
+		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1   /*&& deltaR(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta())> 0.2*/ )
 		   {  
 			   
  // Secondary vertex is reconstructed
@@ -340,7 +340,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
 			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),vertex_x-secVert_x,  vertex_y-secVert_y);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
-			   if (/*conePt_var < 4 && cosAlpha > -0.95 && theta < 0.2/*0.8 ipara electron*/)
+			   if ((conePt_var < 4 && cosAlpha > -0.95 && theta < 0.2 )|| true)
 					
 					{
 						double invariantMass;
