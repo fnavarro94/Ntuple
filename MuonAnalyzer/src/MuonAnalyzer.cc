@@ -171,8 +171,22 @@ double vertex_x=0, vertex_y=0;
        {
 		   vertex_x=itVert->x();
 		   vertex_y = itVert->y();
+		   
+		   if (vertex_x && vertex_y){}
 	   }
- 
+ reco::BeamSpot beamSpot;
+edm::Handle<reco::BeamSpot> beamSpotHandle;
+iEvent.getByLabel("offlineBeamSpot", beamSpotHandle);
+
+
+double beamX = 0;
+double beamY = 0;
+if ( beamSpotHandle.isValid() )
+{
+    beamSpot = *beamSpotHandle; 
+    beamX = beamSpot.x0();
+    beamY = beamSpot.y0();
+}
  
  
 std::string pathName = "none";
@@ -338,7 +352,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   double conePt_var=conePt(i , j, itTrack1->eta(), itTrack1->phi(),  tracks->size(), iEvent,iSetup);
 			   
 			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
-			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -vertex_x,  secVert_y-vertex_y);
+			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -beamX,  secVert_y-beamY);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			  cout<<"theta: "<<theta*180/3.1415<<endl;
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 || theta > (3.1415/2) -0.2 )))
