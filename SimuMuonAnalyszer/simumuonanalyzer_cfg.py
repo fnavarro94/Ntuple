@@ -14,10 +14,10 @@ process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cf
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
-process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/FT_53_LV5_AN1_RUNA.db')
-#process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/START53_LV6A1.db')
-process.GlobalTag.globaltag = 'FT_53_LV5_AN1::All'
-#process.GlobalTag.globaltag = 'START53_LV6A1::All'
+#process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/FT_53_LV5_AN1_RUNA.db')
+process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/START53_LV6A1.db')
+#process.GlobalTag.globaltag = 'FT_53_LV5_AN1::All'
+process.GlobalTag.globaltag = 'START53_LV6A1::All'
 
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
