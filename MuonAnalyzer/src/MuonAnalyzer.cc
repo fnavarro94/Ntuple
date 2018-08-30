@@ -355,7 +355,8 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -beamX,  secVert_y-beamY);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			  cout<<"theta: "<<theta*180/3.1415<<endl;
-			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 || theta > (3.1415/2) -0.2 )))
+			  cout<<"disp "<<secVert_x -beamX<<endl;
+			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
 						double invariantMass;
