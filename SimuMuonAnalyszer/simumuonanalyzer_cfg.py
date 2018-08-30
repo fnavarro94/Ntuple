@@ -21,30 +21,31 @@ process.GlobalTag.globaltag = 'START53_LV6A1::All'
 
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
+    duplicateCheckMode = cms.untracked.string('noDuplicateCheck'),
     fileNames = cms.untracked.vstring(
-'simu/recosimu10.root',
-'simu/recosimu11.root',
-'simu/recosimu12.root',
-'simu/recosimu13.root',
-'simu/recosimu14.root',
-'simu/recosimu15.root',
-'simu/recosimu16.root',
-'simu/recosimu1.root',
-'simu/recosimu2.root',
-'simu/recosimu3.root',
-'simu/recosimu4.root',
-'simu/recosimu5.root',
-'simu/recosimu6.root',
-'simu/recosimu7.root',
-'simu/recosimu8.root',
-'simu/recosimu9.root'
+'file:simu/recofile:simu10.root',
+'file:simu/recofile:simu11.root',
+'file:simu/recofile:simu12.root',
+'file:simu/recofile:simu13.root',
+'file:simu/recofile:simu14.root',
+'file:simu/recofile:simu15.root',
+'file:simu/recofile:simu16.root',
+'file:simu/recofile:simu1.root',
+'file:simu/recofile:simu2.root',
+'file:simu/recofile:simu3.root',
+'file:simu/recofile:simu4.root',
+'file:simu/recofile:simu5.root',
+'file:simu/recofile:simu6.root',
+'file:simu/recofile:simu7.root',
+'file:simu/recofile:simu8.root',
+'file:simu/recofile:simu9.root'
 
    )
 )
 
 process.demo = cms.EDAnalyzer('SimuMuonAnalyzer'
     , tracks = cms.untracked.InputTag('generalTracks'),
-      outFile = cms.string("simu.root")
+      outFile = cms.string("file:simu.root")
 )
 
 
