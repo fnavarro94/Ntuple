@@ -338,7 +338,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   double conePt_var=conePt(i , j, itTrack1->eta(), itTrack1->phi(),  tracks->size(), iEvent,iSetup);
 			   
 			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
-			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),vertex_x-secVert_x,  vertex_y-secVert_y);
+			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -vertex_x,  secVert_y-vertex_y);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			  cout<<"theta: "<<theta<<endl;
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 || theta > (3.1415/2) -0.2 )))
@@ -559,7 +559,8 @@ MuonAnalyzer::mTheta(double ax, double ay, double bx, double by)
 {
 	double cosAlpha = ax*bx + ay*by;
 	double theta;
-	cosAlpha = -cosAlpha/sqrt(ax*ax+ay*ay)*sqrt(bx*bx+by*by);
+	cosAlpha = cosAlpha/sqrt(ax*ax+ay*ay)*sqrt(bx*bx+by*by);
+	std::cout<<"cosAlpha: "<<cosAlpha<<std::endl;
 	theta  = acos(cosAlpha);
 	return theta;
 }
