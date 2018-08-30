@@ -559,7 +559,7 @@ MuonAnalyzer::mTheta(double ax, double ay, double bx, double by)
 {
 	double cosAlpha = ax*bx + ay*by;
 	double theta;
-	cosAlpha = cosAlpha/sqrt(ax*ax+ay*ay)*sqrt(bx*bx+by*by);
+	cosAlpha = -cosAlpha/sqrt(ax*ax+ay*ay)*sqrt(bx*bx+by*by);
 	theta  = acos(cosAlpha);
 	return theta;
 }
