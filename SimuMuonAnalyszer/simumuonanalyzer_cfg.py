@@ -21,6 +21,7 @@ process.GlobalTag.globaltag = 'START53_LV6A1::All'
 
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
+    duplicateCheckMode = cms.untracked.string('noDuplicateCheck'),
     fileNames = cms.untracked.vstring(
 'file:simu/recofile:simu10.root',
 'file:simu/recofile:simu11.root',
