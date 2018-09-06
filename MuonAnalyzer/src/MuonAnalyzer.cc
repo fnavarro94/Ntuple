@@ -88,6 +88,7 @@ class MuonAnalyzer : public edm::EDAnalyzer {
      double mCos(double , double , double , double  );
      double mTheta(double , double , double , double );
      double invMass(double , double , double , double  , double ,  double );
+     bool impactParameterCut(reco::TrackCollection::const_iterator, reco::TrackCollection::const_iterator, reco::BeamSpot );
    //   TTree * mtree;
       TFile * mfile;
      // TH1F * h_;
@@ -364,7 +365,8 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
-					
+					    double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
+					    
 						
 						double tdl = sqrt(secVert_x*secVert_x + secVert_y*secVert_y);
 						double tdl_err = myVertex.positionError().cyx();
@@ -375,6 +377,10 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				         h_invMass->Fill(invariantMass);
 				         h_lxy_err->Fill(tdl/tdl_err);
 				    //with lifetime related cuts
+				         if (IPC && tdl/tdl_err > 5)
+				         {
+							 h_invMass_LC->Fill(invariantMass);
+						 }
 				    
 				 }
 			   
@@ -608,6 +614,27 @@ MuonAnalyzer::invMass(double px1, double py1, double pz1, double px2 , double py
   
 
 	
+}
+bool
+MuonAnalyzer::impactParameterCut(reco::TrackCollection::const_iterator it1, reco::TrackCollection::const_iterator it2, reco::BeamSpot beamSpot)
+{    
+	double dxy1, dxy1Err, dxy2, dxy2Err, sig1, sig2;
+	bool ret = false;
+	dxy1 = it1->dxy(beamSpot);
+	dxy2 = it2->dxy(beamSpot);
+	dxy1Err = it1->dxyError();
+	dxy2Err = it2->dxyError();
+	
+	sig1 = dxy1/dxy1Err;
+	sig2 = dxy2/dxy2Err;
+	
+	if (sig1 > 2 && sig2 > 2)
+	{
+		ret = true;
+	}
+	
+	
+	return ret;
 }
 // ------------ method called when starting to processes a run  ------------
 void 
