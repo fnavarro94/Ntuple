@@ -82,7 +82,7 @@ class MuonAnalyzer : public edm::EDAnalyzer {
       virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
       
      bool cmsStandardCuts(const edm::Event&, const edm::EventSetup&);
-     bool matchingCuts( bool , double , int , int , double);
+     bool matchingCuts( bool , double , int , int , double, double, double);
      double deltaR(double , double , double, double);
      double conePt(int , int , double , double , int ,const edm::Event& , const edm::EventSetup& );
      double mCos(double , double , double , double  );
@@ -92,6 +92,9 @@ class MuonAnalyzer : public edm::EDAnalyzer {
       TFile * mfile;
      // TH1F * h_;
       TH1F * h_invMass;
+      TH1F * h_invMass_LC;
+      TH1F * h_lxy_err;
+      
       int vuelta;
       int NvertTracks = 0, Ntracks = 0;
       int numJets2 = 0;
@@ -270,7 +273,7 @@ trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filter
      
      
   
-if ((standardCuts && passTrig) )
+if ((standardCuts && passTrig && beamSpotHandle.isValid()) )
 {
  int i = 0;
  for(TrackCollection::const_iterator itTrack = tracks->begin();
@@ -281,7 +284,7 @@ if ((standardCuts && passTrig) )
 		  {
 			   const trigger::TriggerObject& obj = e_trigObjColl[*keyIt];
 			  // cout<<obj.pt()<<endl;
-			   bool lepMatchCut =matchingCuts( itTrack->quality(reco::Track::highPurity)  , itTrack->pt() , itTrack->hitPattern().numberOfValidTrackerHits(),itTrack->hitPattern().numberOfValidPixelHits(), itTrack->eta());
+			   bool lepMatchCut =matchingCuts( itTrack->quality(reco::Track::highPurity)  , itTrack->pt() , itTrack->hitPattern().numberOfValidTrackerHits(),itTrack->hitPattern().numberOfValidPixelHits(), itTrack->eta(), itTrack->dxy(beamSpot), itTrack->dxyError());
 		
 		  
 		   if (lepMatchCut)
@@ -361,11 +364,18 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
+					
+						
+						double tdl = sqrt(secVert_x*secVert_x + secVert_y*secVert_y);
+						double tdl_err = myVertex.positionError().cyx();
+						
+				     //without lifetime related cuts
 						double invariantMass;
 					 invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 				         h_invMass->Fill(invariantMass);
-				 
-				 
+				         h_lxy_err->Fill(tdl/tdl_err);
+				    //with lifetime related cuts
+				    
 				 }
 			   
 		   }
@@ -512,13 +522,13 @@ MuonAnalyzer::cmsStandardCuts(const edm::Event& iEvent, const edm::EventSetup& i
 
 
 bool 
-MuonAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D, double eta)
+MuonAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D, double eta, double dxy, double dxyError)
 {
 	bool ret = false;
 	
-	
+	  double trans = dxy/dxyError;
 		
-	  if(purity && pt > 33 && hits >= 6   && eta < 2  )
+	  if(purity && pt > 33 && hits >= 6   && eta < 2  && hits3D >1 && trans > -1)
 	  if(true)
 	  
 	  {
