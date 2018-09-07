@@ -540,9 +540,9 @@ MuonAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D, double
 {
 	bool ret = false;
 	
-	  double trans = dxy/dxyError;
+	
 		
-	  if(purity && pt > 33 && hits >= 6   && eta < 2  && hits3D >1 && trans > -1)
+	  if(purity && pt > 33 && hits >= 6   && eta < 2  && hits3D >1)
 	  if(true)
 	  
 	  {
