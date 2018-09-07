@@ -370,7 +370,9 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					   
 						
 						double tdl = sqrt(secVert_x*secVert_x + secVert_y*secVert_y);
-						double tdl_err = myVertex.positionError().cxx();
+						double tdl_errx = myVertex.positionError().cxx();
+						double tdl_erry = myVertex.positionError().cyy();
+						double tdl_err = ((secVert_x*tdl_errx)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) + ((secVert_y*tdl_erry)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) ;
 						cout<< tdl_err<<endl;
 				     //without lifetime related cuts
 						double invariantMass;
@@ -378,7 +380,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					 invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 				         h_invMass->Fill(invariantMass);
 				         
-				         h_lxy_err->Fill(tdl/(tdl_err*10000000));
+				         h_lxy_err->Fill(tdl/(tdl_err));
 				         
 				    //with lifetime related cuts
 				         if (IPC && tdl/tdl_err > 5)
