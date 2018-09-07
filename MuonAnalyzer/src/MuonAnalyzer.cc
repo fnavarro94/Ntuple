@@ -370,7 +370,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					   
 						
 						double tdl = sqrt(secVert_x*secVert_x + secVert_y*secVert_y);
-						double tdl_err = myVertex.positionError().cyx();
+						double tdl_err = myVertex.positionError().cxx();
 						cout<< tdl_err<<endl;
 				     //without lifetime related cuts
 						double invariantMass;
@@ -378,7 +378,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					 invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 				         h_invMass->Fill(invariantMass);
 				         
-				         //h_lxy_err->Fill(tdl/tdl_err);
+				         h_lxy_err->Fill(tdl/(tdl_err*10000000));
 				         
 				    //with lifetime related cuts
 				         if (IPC && tdl/tdl_err > 5)
@@ -428,7 +428,8 @@ MuonAnalyzer::beginJob()
  mfile = new TFile(of, "recreate");
  
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
-	  
+ h_invMass_LC = new TH1F ("InvMass_LC", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_lxy_err = new TH1F ("Lxy_err", "Transeverse decay length",20,0,20); 	  
 	
 		
 		
