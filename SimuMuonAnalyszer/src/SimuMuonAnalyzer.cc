@@ -82,16 +82,20 @@ class SimuMuonAnalyzer : public edm::EDAnalyzer {
       virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
       
      bool cmsStandardCuts(const edm::Event&, const edm::EventSetup&);
-     bool matchingCuts( bool , double , int , int , double);
+     bool matchingCuts( bool , double , int , int , double, double, double);
      double deltaR(double , double , double, double);
      double conePt(int , int , double , double , int ,const edm::Event& , const edm::EventSetup& );
      double mCos(double , double , double , double  );
      double mTheta(double , double , double , double );
      double invMass(double , double , double , double  , double ,  double );
+     bool impactParameterCut(reco::TrackCollection::const_iterator, reco::TrackCollection::const_iterator, reco::BeamSpot );
    //   TTree * mtree;
       TFile * mfile;
      // TH1F * h_;
       TH1F * h_invMass;
+      TH1F * h_invMass_LC;
+      TH1F * h_lxy_err;
+      
       int vuelta;
       int NvertTracks = 0, Ntracks = 0;
       int numJets2 = 0;
@@ -146,7 +150,7 @@ SimuMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
    using namespace edm;
    using namespace reco;
    using namespace std;
-  
+
 Handle<TrackCollection> tracks;
 iEvent.getByLabel(trackTags_,tracks);
    
@@ -270,7 +274,7 @@ trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filter
      
      
   
-if ((standardCuts && passTrig) )
+if ((standardCuts && passTrig && beamSpotHandle.isValid()) )
 {
  int i = 0;
  for(TrackCollection::const_iterator itTrack = tracks->begin();
@@ -281,7 +285,7 @@ if ((standardCuts && passTrig) )
 		  {
 			   const trigger::TriggerObject& obj = e_trigObjColl[*keyIt];
 			  // cout<<obj.pt()<<endl;
-			   bool lepMatchCut =matchingCuts( itTrack->quality(reco::Track::highPurity)  , itTrack->pt() , itTrack->hitPattern().numberOfValidTrackerHits(),itTrack->hitPattern().numberOfValidPixelHits(), itTrack->eta());
+			   bool lepMatchCut =matchingCuts( itTrack->quality(reco::Track::highPurity)  , itTrack->pt() , itTrack->hitPattern().numberOfValidTrackerHits(),itTrack->hitPattern().numberOfValidPixelHits(), itTrack->eta(), itTrack->dxy(beamSpot), itTrack->dxyError());
 		
 		  
 		   if (lepMatchCut)
@@ -354,18 +358,37 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
 			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -beamX,  secVert_y-beamY);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
-			  //cout<<"theta: "<<theta*180/3.1415<<endl;
-			  //cout<<"disp "<<secVert_x -beamX<<endl;
-			  //cout<<"beam "<<beamX<<endl;
-			  //cout<<"secVert "<<secVert_x<<endl;
-			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 99990.2 )))
+			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
+			  cout<<"disp "<<secVert_x -beamX<<endl;
+			  cout<<"beam "<<beamX<<endl;
+			  cout<<"secVert "<<secVert_x<<endl;*/
+			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
+					    bool IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
+					    //double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
+					   
+						
+						double tdl = sqrt(secVert_x*secVert_x + secVert_y*secVert_y);
+						double tdl_errx = myVertex.positionError().cxx();
+						double tdl_erry = myVertex.positionError().cyy();
+						double tdl_err = ((secVert_x*tdl_errx)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) + ((secVert_y*tdl_erry)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) ;
+						cout<< tdl_err<<endl;
+				     //without lifetime related cuts
 						double invariantMass;
+						
 					 invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 				         h_invMass->Fill(invariantMass);
-				 
-				 
+				         
+				         h_lxy_err->Fill(tdl/(tdl_err));
+				         
+				    //with lifetime related cuts
+				         if (IPC && tdl/tdl_err > 5)
+				         {
+							 h_invMass_LC->Fill(invariantMass);
+						 }
+						 
+				    
 				 }
 			   
 		   }
@@ -407,7 +430,8 @@ SimuMuonAnalyzer::beginJob()
  mfile = new TFile(of, "recreate");
  
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
-	  
+ h_invMass_LC = new TH1F ("InvMass_LC", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_lxy_err = new TH1F ("Lxy_err", "Transeverse decay length",20,0,20); 	  
 	
 		
 		
@@ -512,13 +536,13 @@ SimuMuonAnalyzer::cmsStandardCuts(const edm::Event& iEvent, const edm::EventSetu
 
 
 bool 
-SimuMuonAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D, double eta)
+SimuMuonAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D, double eta, double dxy, double dxyError)
 {
 	bool ret = false;
 	
-	
+	  double trans = dxy/dxyError;
 		
-	  if(purity && pt > 33 && hits >= 6   && eta < 2  )
+	  if(purity && pt > 33 && hits >= 6   && eta < 2  && hits3D >1 && trans > -1)
 	  if(true)
 	  
 	  {
@@ -576,8 +600,8 @@ SimuMuonAnalyzer::mTheta(double ax, double ay, double bx, double by)
 {
 	double cosAlpha = ax*bx + ay*by;
 	double theta;
-	cosAlpha = cosAlpha/sqrt(ax*ax+ay*ay)*sqrt(bx*bx+by*by);
-	std::cout<<"cosAlpha: "<<cosAlpha<<std::endl;
+	cosAlpha = cosAlpha/(sqrt(ax*ax+ay*ay)*sqrt(bx*bx+by*by));
+	//std::cout<<"cosAlpha: "<<cosAlpha<<std::endl;
 	theta  = acos(cosAlpha);
 	return theta;
 }
@@ -598,6 +622,27 @@ SimuMuonAnalyzer::invMass(double px1, double py1, double pz1, double px2 , doubl
   
 
 	
+}
+bool
+SimuMuonAnalyzer::impactParameterCut(reco::TrackCollection::const_iterator it1, reco::TrackCollection::const_iterator it2, reco::BeamSpot beamSpot)
+{    
+	double dxy1, dxy1Err, dxy2, dxy2Err, sig1, sig2;
+	bool ret = false;
+	dxy1 = it1->dxy(beamSpot);
+	dxy2 = it2->dxy(beamSpot);
+	dxy1Err = it1->dxyError();
+	dxy2Err = it2->dxyError();
+	
+	sig1 = dxy1/dxy1Err;
+	sig2 = dxy2/dxy2Err;
+	
+	if (sig1 > 2 && sig2 > 2)
+	{
+		ret = true;
+	}
+	
+	
+	return ret;
 }
 // ------------ method called when starting to processes a run  ------------
 void 
