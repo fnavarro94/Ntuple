@@ -150,7 +150,7 @@ MuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    using namespace edm;
    using namespace reco;
    using namespace std;
-  
+
 Handle<TrackCollection> tracks;
 iEvent.getByLabel(trackTags_,tracks);
    
@@ -358,29 +358,34 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
 			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -beamX,  secVert_y-beamY);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
-			  cout<<"theta: "<<theta*180/3.1415<<endl;
+			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
 			  cout<<"disp "<<secVert_x -beamX<<endl;
 			  cout<<"beam "<<beamX<<endl;
-			  cout<<"secVert "<<secVert_x<<endl;
+			  cout<<"secVert "<<secVert_x<<endl;*/
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
-					    double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
-					    
+					    bool IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
+					    //double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
+					   
 						
 						double tdl = sqrt(secVert_x*secVert_x + secVert_y*secVert_y);
 						double tdl_err = myVertex.positionError().cyx();
-						
+						cout<< tdl_err<<endl;
 				     //without lifetime related cuts
 						double invariantMass;
+						
 					 invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 				         h_invMass->Fill(invariantMass);
-				         h_lxy_err->Fill(tdl/tdl_err);
+				         
+				         //h_lxy_err->Fill(tdl/tdl_err);
+				         
 				    //with lifetime related cuts
 				         if (IPC && tdl/tdl_err > 5)
 				         {
 							 h_invMass_LC->Fill(invariantMass);
 						 }
+						 
 				    
 				 }
 			   
