@@ -96,6 +96,11 @@ class SimuMuonAnalyzer : public edm::EDAnalyzer {
       TH1F * h_invMass_LC;
       TH1F * h_lxy_err;
       
+      int primerif = 0;
+      int segundoif = 0;
+      int tercerif = 0;
+      int matches = 0;
+      
       int vuelta;
       int NvertTracks = 0, Ntracks = 0;
       int numJets2 = 0;
@@ -274,8 +279,10 @@ trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filter
      
      
   
-if ((standardCuts && passTrig && beamSpotHandle.isValid()) )
+if (((standardCuts && passTrig)) && beamSpotHandle.isValid()  )
 {
+	
+ 
  int i = 0;
  for(TrackCollection::const_iterator itTrack = tracks->begin();
        itTrack != tracks->end();                      
@@ -285,7 +292,7 @@ if ((standardCuts && passTrig && beamSpotHandle.isValid()) )
 		  {
 			   const trigger::TriggerObject& obj = e_trigObjColl[*keyIt];
 			  // cout<<obj.pt()<<endl;
-			   bool lepMatchCut =matchingCuts( itTrack->quality(reco::Track::highPurity)  , itTrack->pt() , itTrack->hitPattern().numberOfValidTrackerHits(),itTrack->hitPattern().numberOfValidPixelHits(), itTrack->eta(), itTrack->dxy(beamSpot), itTrack->dxyError());
+			   bool lepMatchCut =matchingCuts(itTrack->quality(reco::Track::highPurity)  , itTrack->pt() , itTrack->hitPattern().numberOfValidTrackerHits(),itTrack->hitPattern().numberOfValidPixelHits(), itTrack->eta(), itTrack->dxy(beamSpot), itTrack->dxyError());
 		
 		  
 		   if (lepMatchCut)
@@ -293,7 +300,7 @@ if ((standardCuts && passTrig && beamSpotHandle.isValid()) )
 			    if(deltaR(itTrack->phi(), itTrack->eta(), obj.phi(), obj.eta())< 0.1 )
 			   {  
 				   matchedTrack[i] = 1;
-				   
+				   matches++;
 			      
 			   }
 			   
@@ -316,13 +323,15 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
        ++itTrack1) 
 {
 	if (itTrack1->charge()==1 && matchedTrack[i] == 1 ){
+		primerif++;
 	int	j=0;
 	for(TrackCollection::const_iterator itTrack2 = tracks->begin();
        itTrack2 != tracks->end();                      
        ++itTrack2) 
        {
 		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1   && deltaR(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta())> 0.2 )
-		   {  
+		   {   
+			   
 			   
  // Secondary vertex is reconstructed
 			   // get RECO tracks from the event
@@ -348,7 +357,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				  
 		 
 				  
-              if (myVertex.isValid() && myVertex.normalisedChiSquared() < 5)
+              if (myVertex.isValid() && (myVertex.normalisedChiSquared() < 5   ))
 					 {
 			   double secVert_x =(double)myVertex.position().x();
 			   double secVert_y =(double)myVertex.position().y();
@@ -362,9 +371,10 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  cout<<"disp "<<secVert_x -beamX<<endl;
 			  cout<<"beam "<<beamX<<endl;
 			  cout<<"secVert "<<secVert_x<<endl;*/
-			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
+			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )) )
 					
 					{
+						tercerif++;
 					    bool IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
 					    //double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
 					   
@@ -449,7 +459,10 @@ SimuMuonAnalyzer::beginJob()
 // ------------ method called once each job just after ending the event loop  ------------
 void 
 SimuMuonAnalyzer::endJob() {
-
+std::cout<<"primer if "<<primerif<<std::endl;
+std::cout<<"segundo if "<<segundoif<<std::endl;
+std::cout<<"tercer if "<<tercerif<<std::endl;
+std::cout<<"matches "<<matches<<std::endl;
 //mtree->Write();
 //std::cout<<"num traks "<<Ntracks<<" num vertTraks "<<NvertTracks<<std::endl;
 mfile->Write();
@@ -540,9 +553,9 @@ SimuMuonAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D, do
 {
 	bool ret = false;
 	
-	  double trans = dxy/dxyError;
+	  
 		
-	  if(purity && pt > 33 && hits >= 6   && eta < 2  && hits3D >1 && trans > -1)
+	  if(purity && pt > 33 && hits >= 6   && eta < 2  && hits3D >1)
 	  if(true)
 	  
 	  {
