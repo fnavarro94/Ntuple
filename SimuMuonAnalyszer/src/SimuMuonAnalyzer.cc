@@ -379,7 +379,9 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					    //double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
 					   
 						
-						double tdl = sqrt(secVert_x*secVert_x + secVert_y*secVert_y);
+						double tdl_x = secVert - beamX;
+						double tdl_y = secVert_y - beamY;
+						double tdl = sqrt(tdl_x*tdl_x + tdl_y*tdl_y);
 						double tdl_errx = myVertex.positionError().cxx();
 						double tdl_erry = myVertex.positionError().cyy();
 						double tdl_err = ((secVert_x*tdl_errx)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) + ((secVert_y*tdl_erry)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) ;
