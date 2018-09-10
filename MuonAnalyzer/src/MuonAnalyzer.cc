@@ -185,11 +185,15 @@ iEvent.getByLabel("offlineBeamSpot", beamSpotHandle);
 
 double beamX = 0;
 double beamY = 0;
+double beamXErr = 0;
+double beamYErr = 0;
 if ( beamSpotHandle.isValid() )
 {
     beamSpot = *beamSpotHandle; 
     beamX = beamSpot.x0();
     beamY = beamSpot.y0();
+    beamXErr = beamSpot.x0Error();
+    beamYErr = beamSpot.y0Error();
 }
  
  
@@ -371,8 +375,8 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 						double tdl_x = secVert_x - beamX;
 						double tdl_y = secVert_y - beamY;
 						double tdl = sqrt(tdl_x*tdl_x + tdl_y*tdl_y);
-						double tdl_errx = myVertex.positionError().cxx();
-						double tdl_erry = myVertex.positionError().cyy();
+						double tdl_errx = myVertex.positionError().cxx() + beamXError;
+						double tdl_erry = myVertex.positionError().cyy() + beamYError;
 						double tdl_err = ((secVert_x*tdl_errx)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) + ((secVert_y*tdl_erry)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) ;
 						cout<< tdl_err<<endl;
 				     //without lifetime related cuts
