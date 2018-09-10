@@ -375,8 +375,8 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 						double tdl_x = secVert_x - beamX;
 						double tdl_y = secVert_y - beamY;
 						double tdl = sqrt(tdl_x*tdl_x + tdl_y*tdl_y);
-						double tdl_errx = myVertex.positionError().cxx() + beamXError;
-						double tdl_erry = myVertex.positionError().cyy() + beamYError;
+						double tdl_errx = myVertex.positionError().cxx() + beamXErr;
+						double tdl_erry = myVertex.positionError().cyy() + beamYErr;
 						double tdl_err = ((secVert_x*tdl_errx)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) + ((secVert_y*tdl_erry)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) ;
 						cout<< tdl_err<<endl;
 				     //without lifetime related cuts
