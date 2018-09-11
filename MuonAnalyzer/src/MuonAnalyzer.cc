@@ -375,14 +375,18 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					{
 					    bool IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
 					    //double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
-					   
+					    double secVertErrx = myVertex.positionError().cxx();
+					    double secVertErry = myVertex.positionError().cyy();
 						double tdl_x = secVert_x - vertex_x;
 						double tdl_y = secVert_y - vertex_y;
 						double tdl = sqrt(tdl_x*tdl_x + tdl_y*tdl_y);
-						double tdl_errx = myVertex.positionError().cxx() + vertex_xError;
-						double tdl_erry = myVertex.positionError().cyy() + vertex_yError;
-						double tdl_err = sqrt(tdl_errx*tdl_errx + tdl_erry*tdl_erry);
-						//double tdl_err = ((secVert_x*tdl_errx)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) + ((secVert_y*tdl_erry)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) ;
+						double tdl_errx = secVertErrx + vertex_xError;
+						double tdl_erry = secVertErry + vertex_yError;
+						//double tdl_err = sqrt(tdl_errx*tdl_errx + tdl_erry*tdl_erry);
+						double difx = (secVert_x)/(sqrt((secVert_x*secVert_x)+(secVert_y*secVert_y)));
+						double dify = (secVert_y)/(sqrt((secVert_x*secVert_x)+(secVert_y*secVert_y)));
+						double tot_variance = difx*difx*tdl_errx +dify*dify*tdl_erry; 
+						double tdl_err = sqrt(tot_variance);
 						cout<< tdl_err<<endl;
 				     //without lifetime related cuts
 						double invariantMass;
