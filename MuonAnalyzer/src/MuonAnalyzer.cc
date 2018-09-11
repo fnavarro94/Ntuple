@@ -95,6 +95,7 @@ class MuonAnalyzer : public edm::EDAnalyzer {
       TH1F * h_invMass;
       TH1F * h_invMass_LC;
       TH1F * h_lxy_err;
+      TH1F * h_lxy;
       
       int vuelta;
       int NvertTracks = 0, Ntracks = 0;
@@ -168,13 +169,15 @@ iEvent.getByLabel(trigEventTag,trigEvent);
 // get primary vertex coordinates
 Handle<reco::VertexCollection> vertHand;
    iEvent.getByLabel( "offlinePrimaryVertices",vertHand);
-double vertex_x=0, vertex_y=0;
+double vertex_x=0, vertex_y=0, vertex_xError=0, vertex_yError=0;
  for(reco::VertexCollection::const_iterator itVert = vertHand->begin();
        itVert != vertHand->begin()+1&& itVert != vertHand->end();
        ++itVert)
        {
 		   vertex_x=itVert->x();
 		   vertex_y = itVert->y();
+		   vertex_xError=itVert->xError();
+		   vertex_yError=itVert->yError();
 		   
 		   if (vertex_x && vertex_y){}
 	   }
@@ -194,6 +197,7 @@ if ( beamSpotHandle.isValid() )
     beamY = beamSpot.y0();
     beamXErr = beamSpot.x0Error();
     beamYErr = beamSpot.y0Error();
+    if(beamX && beamY && beamXErr && beamYErr){}
 }
  
  
@@ -360,7 +364,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   double conePt_var=conePt(i , j, itTrack1->eta(), itTrack1->phi(),  tracks->size(), iEvent,iSetup);
 			   
 			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
-			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -beamX,  secVert_y-beamY);
+			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -vertex_x,  secVert_y-vertex_y);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
 			  cout<<"disp "<<secVert_x -beamX<<endl;
@@ -372,12 +376,12 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					    bool IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
 					    //double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
 					   
-						double tdl_x = secVert_x - beamX;
-						double tdl_y = secVert_y - beamY;
+						double tdl_x = secVert_x - vertex_x;
+						double tdl_y = secVert_y - vertex_y;
 						double tdl = sqrt(tdl_x*tdl_x + tdl_y*tdl_y);
-						double tdl_errx = myVertex.positionError().cxx() + beamXErr;
-						double tdl_erry = myVertex.positionError().cyy() + beamYErr;
-						double tdl_err = tdl_errx*tdl_errx + tdl_erry*tdl_erry;
+						double tdl_errx = myVertex.positionError().cxx() + vertex_xError;
+						double tdl_erry = myVertex.positionError().cyy() + vertex_yError;
+						double tdl_err = sqrt(tdl_errx*tdl_errx + tdl_erry*tdl_erry);
 						//double tdl_err = ((secVert_x*tdl_errx)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) + ((secVert_y*tdl_erry)/(sqrt(secVert_x*secVert_x+secVert_y*secVert_y))) ;
 						cout<< tdl_err<<endl;
 				     //without lifetime related cuts
