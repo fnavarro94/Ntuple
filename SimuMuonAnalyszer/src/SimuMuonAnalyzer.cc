@@ -96,6 +96,7 @@ class SimuMuonAnalyzer : public edm::EDAnalyzer {
       TH1F * h_invMass_LC;
       TH1F * h_lxy_err;
       TH1F * h_lxy;
+      TH1F * nEvents;
       
       int vuelta;
       int NvertTracks = 0, Ntracks = 0;
@@ -151,7 +152,7 @@ SimuMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
    using namespace edm;
    using namespace reco;
    using namespace std;
-
+nEvents->Fill(1); 
 Handle<TrackCollection> tracks;
 iEvent.getByLabel(trackTags_,tracks);
    
@@ -446,7 +447,7 @@ SimuMuonAnalyzer::beginJob()
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMass_LC = new TH1F ("InvMass_LC", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_lxy_err = new TH1F ("Lxy_err", "Transeverse decay length",20,0,20); 	  
-	
+ nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
 		
 		
 }
