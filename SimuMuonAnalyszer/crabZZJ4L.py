@@ -519,8 +519,7 @@ config.Data.userInputFiles = ['root://eospublic.cern.ch//eos/opendata/cms/MonteC
 'root://eospublic.cern.ch//eos/opendata/cms/MonteCarlo2011/Summer11LegDR/ZZJetsTo4L_TuneZ2_7TeV-madgraph-tauola/AODSIM/PU_S13_START53_LV6-v1/020000/FE48CD3F-D7B7-E311-88FB-003048FFD754.root',
 'root://eospublic.cern.ch//eos/opendata/cms/MonteCarlo2011/Summer11LegDR/ZZJetsTo4L_TuneZ2_7TeV-madgraph-tauola/AODSIM/PU_S13_START53_LV6-v1/020000/FE7FEF3C-DBB7-E311-8938-003048FFCB9E.root',
 'root://eospublic.cern.ch//eos/opendata/cms/MonteCarlo2011/Summer11LegDR/ZZJetsTo4L_TuneZ2_7TeV-madgraph-tauola/AODSIM/PU_S13_START53_LV6-v1/020000/FECBB71A-C1B7-E311-8897-00261894395B.root',
-'root://eospublic.cern.ch//eos/opendata/cms/MonteCarlo2011/Summer11LegDR/ZZJetsTo4L_TuneZ2_7TeV-madgraph-tauola/AODSIM/PU_S13_START53_LV6-v1/020000/FED8033A-CBB7-E311-8401-002590593920.root',
-
+'root://eospublic.cern.ch//eos/opendata/cms/MonteCarlo2011/Summer11LegDR/ZZJetsTo4L_TuneZ2_7TeV-madgraph-tauola/AODSIM/PU_S13_START53_LV6-v1/020000/FED8033A-CBB7-E311-8401-002590593920.root'
 ]
 config.Data.publication = False
 #config.Data.userInputFiles = ['dummy.root']
