@@ -330,7 +330,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
        itTrack2 != tracks->end();                      
        ++itTrack2) 
        {
-		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1    )
+		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1   && deltaR(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta())> 0.2 )
 		   {  
 			   
  // Secondary vertex is reconstructed
@@ -364,14 +364,14 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   //cout<<secVert_x<<secVert_y<<endl;
 			   double conePt_var=conePt(i , j, itTrack1->eta(), itTrack1->phi(),  tracks->size(), iEvent,iSetup);
 			   
-			   //double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
+			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
 			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -vertex_x,  secVert_y-vertex_y);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
 			  cout<<"disp "<<secVert_x -beamX<<endl;
 			  cout<<"beam "<<beamX<<endl;
 			  cout<<"secVert "<<secVert_x<<endl;*/
-			   if ((conePt_var < 4  && (theta < 0.8 )))
+			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
 					    bool IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
@@ -557,7 +557,7 @@ SimuElectronAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D
 	
 	
 		
-	  if(purity && pt > 41 && hits >= 6   && eta < 2  && hits3D >1)
+	  if(purity && pt > 33 && hits >= 6   && eta < 2  && hits3D >1)
 	  if(true)
 	  
 	  {
