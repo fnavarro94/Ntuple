@@ -10,9 +10,9 @@ THStack *hs_InvMass = new THStack("hs_InvMass", "");
  
  
 
-TFile *fZZ = new TFile("ZZM.root");
+TFile *fZZ = new TFile("ZZJM.root");
 TFile *fWZ = new TFile("WZM.root");
-TFile *fWW = new TFile("WWM.root");
+TFile *fWW = new TFile("WWJM.root");
 TFile *fDY = new TFile("DYM.root");
 TFile *fll = new TFile("llM.root");
 TFile *fDat = new TFile("DatM.root");
@@ -105,7 +105,7 @@ TH1F * hWW_nEvents = (TH1F*)fWW->Get("nEvents");
 TH1F * hDY_nEvents = (TH1F*)fDY->Get("nEvents");
 //TH1F * hll_nEvents = (TH1F*)fll->Get("nEvents");
 
-double ZZ_lxy_err_scale = lumi*7.67/(hZZ_nEvents->Integral());
+double ZZ_lxy_err_scale = lumi*0.106/(hZZ_nEvents->Integral());
 hZZ_lxy_err->Scale(ZZ_lxy_err_scale);
 double WZ_lxy_err_scale = lumi*0.868/(hWZ_nEvents->Integral());
 hWZ_lxy_err->Scale(WZ_lxy_err_scale);
@@ -116,7 +116,7 @@ hDY_lxy_err->Scale(DY_lxy_err_scale);
 double ll_lxy_err_scale = lumi*1/(4000);
 hll_lxy_err->Scale(ll_lxy_err_scale);
 
-double ZZ_InvMass_scale = lumi*7.67/(hZZ_nEvents->Integral());
+double ZZ_InvMass_scale = lumi*0.106/(hZZ_nEvents->Integral());
 hZZ_InvMass->Scale(ZZ_InvMass_scale);
 double WZ_InvMass_scale = lumi*0.868/(hWZ_nEvents->Integral());
 hWZ_InvMass->Scale(WZ_InvMass_scale);
@@ -180,12 +180,17 @@ if(mMax < m3)
 {
 mMax = m3;
 }
-hll_lxy_err->SetMaximum(2*mMax);
-hll_lxy_err->SetMinimum(.001);
-TCanvas *cs_lxy_err = new TCanvas("cs_lxy_err","cs_lxy_err",10,10,700,900);
+hll_lxy_err->SetMaximum(400000);
+hll_lxy_err->SetMinimum(.002);
+TCanvas *cs_lxy_err = new TCanvas("cs_lxy_err","cs_lxy_err",10,10,700,700);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_lxy_err->SetTitle("lxy_err");
+auto legend_lxy_err2 = new TLegend(0.15,0.87,0.55,0.80);
+legend_lxy_err2->SetHeader("#mu^{+}#mu^{-}");
+
+
 auto legend_lxy_err = new TLegend(0.5,0.7,0.9,0.9);
+legend_lxy_err->AddEntry(hll_lxy_err,"H(1000)#rightarrow XX(350), 1 pb","l");
 legend_lxy_err->AddEntry(hDY_lxy_err,"Z/#gamma*#rightarrow #mu#mu","f");
 legend_lxy_err->AddEntry(hWW_lxy_err,"WW","f");
 legend_lxy_err->AddEntry(hWZ_lxy_err,"WZ","f");
@@ -201,7 +206,12 @@ TLine *line = new TLine(5,0,5,hll_lxy_err->GetMaximum());
 line->SetLineStyle(9);
 cs_lxy_err->cd(1); hll_lxy_err->Draw("hist eX0"); cs_lxy_err->Update(); hs_lxy_err->Draw("same hist eX0"); cs_lxy_err->Update(); hDat_lxy_err->Draw("same  eX0"); line->Draw();
 // cs->cd(1);  hs_lxy_err->Draw(" hist"); cs->Update(); hDat_lxy_err->Draw("hist same");
+legend_lxy_err2->SetFillStyle(0);
+legend_lxy_err->SetFillStyle(0);
+legend_lxy_err2->SetBorderSize(0);
+legend_lxy_err->SetBorderSize(0);
 legend_lxy_err->Draw();
+legend_lxy_err2->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
@@ -219,30 +229,36 @@ if(mMax < m3)
 mMax = m3;
 }
 hll_InvMass->SetMaximum(2*mMax);
-TCanvas *cs_InvMass = new TCanvas("cs_InvMass","cs_InvMass",10,10,700,900);
+TCanvas *cs_InvMass = new TCanvas("cs_InvMass","cs_InvMass",10,10,700,700);
 TText T; T.SetTextFont(42); T.SetTextAlign(21);
 hs_InvMass->SetTitle("InvMass");
 auto legend_InvMass = new TLegend(0.5,0.7,0.9,0.9);
+legend_InvMass->AddEntry(hll_InvMass,"H(1000)#rightarrow XX(350), 1 pb","l");
 legend_InvMass->AddEntry(hDY_InvMass,"Z/#gamma*#rightarrow #mu#mu","f");
 legend_InvMass->AddEntry(hWW_InvMass,"WW","f");
 legend_InvMass->AddEntry(hWZ_InvMass,"WZ","f");
 legend_InvMass->AddEntry(hZZ_InvMass,"ZZ","f");
 legend_InvMass->AddEntry(hDat_InvMass,"Data","p");
+
 legend_InvMass->SetFillColor(0);
 hDat_InvMass->SetXTitle("mass [GeV/c^{2}]");
 hDat_InvMass->SetYTitle("Entries");
 cs_InvMass->cd(1); hll_InvMass->Draw("hist eX0"); cs_InvMass->Update(); hs_InvMass->Draw("same hist eX0"); cs_InvMass->Update(); hDat_InvMass->Draw("same  eX0");
 // cs->cd(1);  hs_InvMass->Draw(" hist"); cs->Update(); hDat_InvMass->Draw("hist same");
+legend_InvMass->SetFillStyle(0);
+legend_InvMass->SetBorderSize(0);
 legend_InvMass->Draw();
 gPad->Update();
 gPad->SetLogy(1);
 
-TCanvas *cs_InvMass2 = new TCanvas("cs_InvMass2","cs_InvMass2",10,10,700,900);
+TCanvas *cs_InvMass2 = new TCanvas("cs_InvMass2","cs_InvMass2",10,10,700,700);
+
 hDat_InvMass->SetTitle("CMS  #sqrt{s}=7 TeV  L = 2.33 fb^{-1}");
 hDat_InvMass->SetMarkerStyle(20);
 cs_InvMass2->cd(1);
 //gStyle->SetErrorX(0);
 hDat_InvMass->Draw("e1 ex0");
+hDat_InvMass->SetMaximum(200000);
 hDat_InvMass->SetMinimum(1);
 
 gPad->SetLogy(1);
