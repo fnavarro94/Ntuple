@@ -152,10 +152,10 @@ SimuElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
    using namespace edm;
    using namespace reco;
    using namespace std;
-nEvents->Fill(1); 
+
 Handle<TrackCollection> tracks;
 iEvent.getByLabel(trackTags_,tracks);
-   
+nEvents->Fill(1); 
 edm::Handle<edm::TriggerResults> trigResults; 
 edm::InputTag trigResultsTag("TriggerResults","","HLT");
 edm::InputTag trigEventTag("hltTriggerSummaryAOD","","HLT");
@@ -203,7 +203,8 @@ if ( beamSpotHandle.isValid() )
  
  
 std::string pathName = "none";
-std::string toFind[2] = {"HLT_L2DoubleMu23_NoVertex_v9", "HLT_L2DoubleMu30_NoVertex"};
+std::string toFind[3] = {"HLT_DoublePhoton43_HEVT","HLT_DoublePhoton33_HEVT", "HLT_DoublePhoton38_HEVT"};
+
 
    
 int trigPathSize = trigNames.size();
@@ -229,21 +230,20 @@ for (unsigned int i = 0; i< trigNames.size(); i++)
 
 std::string filterName = "none";
 
+//cout<<filterName<<endl;
+
 if (triggerFound == 0)
 {
-	filterName = "hltL2DoubleMu23NoVertexL2PreFiltered";
+	filterName = "hltDoubleEG43HEVTDoubleFilter";
 }
 else if (triggerFound == 1)
 {
-	filterName = "hltL2DoubleMu30NoVertexL2PreFiltered";
+	filterName = "hltDoubleEG33HEVTDoubleFilter";
 }
-else
+else 
 {
-	cout<<"trigger Not found"<<endl;
+	filterName = "hltDoubleEG38HEVTDoubleFilter";
 }
-
-//cout<<filterName<<endl;
-
 
 bool passTrig;
 int trigIndex = trigNames.triggerIndex(pathName);
@@ -330,7 +330,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
        itTrack2 != tracks->end();                      
        ++itTrack2) 
        {
-		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1   && deltaR(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta())> 0.2 )
+		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1    )
 		   {  
 			   
  // Secondary vertex is reconstructed
@@ -364,14 +364,14 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   //cout<<secVert_x<<secVert_y<<endl;
 			   double conePt_var=conePt(i , j, itTrack1->eta(), itTrack1->phi(),  tracks->size(), iEvent,iSetup);
 			   
-			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
+			   //double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
 			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -vertex_x,  secVert_y-vertex_y);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
 			  cout<<"disp "<<secVert_x -beamX<<endl;
 			  cout<<"beam "<<beamX<<endl;
 			  cout<<"secVert "<<secVert_x<<endl;*/
-			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
+			   if ((conePt_var < 4  && (theta < 0.8 )))
 					
 					{
 					    bool IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
@@ -557,7 +557,7 @@ SimuElectronAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D
 	
 	
 		
-	  if(purity && pt > 33 && hits >= 6   && eta < 2  && hits3D >1)
+	  if(purity && pt > 41 && hits >= 6   && eta < 2  && hits3D >1)
 	  if(true)
 	  
 	  {
