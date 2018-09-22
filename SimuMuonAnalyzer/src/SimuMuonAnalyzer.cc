@@ -94,6 +94,8 @@ class SimuMuonAnalyzer : public edm::EDAnalyzer {
       TFile * mfile;
      // TH1F * h_;
       TH1F * h_invMass;
+      TH1F * h_invMass_lwCut;
+      TH1F * h_invMass_lwCut_inv;
       TH1F * h_invMass_LC;
       TH1F * h_lxy_err;
       TH1F * h_lxy;
@@ -402,7 +404,14 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					 invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 					     h_dotP->Fill(dot);
 				         h_invMass->Fill(invariantMass);
-				         
+				         if(dot<0)
+				         {
+							 h_invMass_lwCut->Fill(invariantMass);
+						 }
+						 if(dot>0)
+						 {
+							 h_invMass_lwCut_inv->Fill(invariantMass);
+						 }
 				         double lxy_err = tdl/(tdl_err);
 				         if (lxy_err > 20)
 				         {lxy_err = 19;}
@@ -456,6 +465,8 @@ SimuMuonAnalyzer::beginJob()
  mfile = new TFile(of, "recreate");
  
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv = new TH1F ("InvMass_lwCut_inv", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMass_LC = new TH1F ("InvMass_LC", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_lxy_err = new TH1F ("Lxy_err", "Transeverse decay length",20,0,20); 	  
  h_dotP = new TH1F ("dotP", "vertex-momentum dot product",50,-10,10); 	  
