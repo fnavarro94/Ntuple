@@ -88,21 +88,27 @@ class ElectronAnalyzer : public edm::EDAnalyzer {
      double mCos(double , double , double , double  );
      double mTheta(double , double , double , double );
      double invMass(double , double , double , double  , double ,  double );
+     double dotProduct(double , double , double , double );
      bool impactParameterCut(reco::TrackCollection::const_iterator, reco::TrackCollection::const_iterator, reco::BeamSpot );
    //   TTree * mtree;
-      TFile * mfile;
+        TFile * mfile;
      // TH1F * h_;
       TH1F * h_invMass;
+      TH1F * h_invMass_lwCut;
+      TH1F * h_invMass_lwCut_inv;
       TH1F * h_invMass_LC;
       TH1F * h_lxy_err;
       TH1F * h_lxy;
+      TH1F * h_dotP;
+      TH1F * h_theta;
       TH1F * nEvents;
+      
       
       int vuelta;
       int NvertTracks = 0, Ntracks = 0;
       int numJets2 = 0;
-      
-    
+      double dotMax = 0;
+      double dotMin = 0;
 		 
 
       // ----------member data ---------------------------
@@ -374,6 +380,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   if ((conePt_var < 4 && (theta < 0.8 )))
 					
 					{
+					   
 					    bool IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
 					    //double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
 					    double secVertErrx = myVertex.positionError().cxx();
@@ -391,11 +398,22 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 						cout<< tdl_err<<endl;
 				     //without lifetime related cuts
 						double invariantMass;
+						double dot;
+						dot = dotProduct(secVert_x-vertex_x, secVert_y-vertex_y, itTrack1->px()+itTrack2->px(),itTrack1->py()+itTrack2->py());
+						if(dot> dotMax){dotMax=dot;}
+						if (dot< dotMin){dotMin=dot;}
 						
-					 invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
+					     invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
+					     h_dotP->Fill(dot);
 				         h_invMass->Fill(invariantMass);
-				         
-				         h_lxy_err->Fill(tdl/(tdl_err));
+				        
+						 
+						 h_invMass_lwCut_inv->Fill(invariantMass);
+						 
+				         double lxy_err = tdl/(tdl_err);
+				         if (lxy_err > 20)
+				         {lxy_err = 19;}
+				         h_lxy_err->Fill(lxy_err);
 				         
 				    //with lifetime related cuts
 				         if (IPC && tdl/tdl_err > 5)
@@ -405,6 +423,15 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 						 
 				    
 				 }
+				 if ((conePt_var < 4 && (theta >3.1514 -0.8 )))
+					
+					{
+				
+					   double invariantMass;
+					   invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
+					   h_invMass_lwCut->Fill(invariantMass);
+		    
+				   }
 			   
 		   }
 		   }
@@ -445,10 +472,13 @@ ElectronAnalyzer::beginJob()
  mfile = new TFile(of, "recreate");
  
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv = new TH1F ("InvMass_lwCut_inv", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMass_LC = new TH1F ("InvMass_LC", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_lxy_err = new TH1F ("Lxy_err", "Transeverse decay length",20,0,20); 	  
+ h_dotP = new TH1F ("dotP", "vertex-momentum dot product",50,-10,10); 	  
+ h_theta = new TH1F ("theta", "primary-secondary vertex displacement and lepton total momentum angle",50,0,4); 	  
  nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
-		
 		
 }
 
@@ -618,6 +648,10 @@ ElectronAnalyzer::mTheta(double ax, double ay, double bx, double by)
 	cosAlpha = cosAlpha/(sqrt(ax*ax+ay*ay)*sqrt(bx*bx+by*by));
 	//std::cout<<"cosAlpha: "<<cosAlpha<<std::endl;
 	theta  = acos(cosAlpha);
+	if (theta > 3.1514)
+	{
+		theta =  2*3.1514-theta;
+	}
 	return theta;
 }
 double 
@@ -637,6 +671,13 @@ ElectronAnalyzer::invMass(double px1, double py1, double pz1, double px2 , doubl
   
 
 	
+}
+double
+ElectronAnalyzer::dotProduct(double x1, double y1 , double x2, double y2)
+{
+	double ret;
+	ret = x1*x2+y1*y2;
+	return ret;
 }
 bool
 ElectronAnalyzer::impactParameterCut(reco::TrackCollection::const_iterator it1, reco::TrackCollection::const_iterator it2, reco::BeamSpot beamSpot)

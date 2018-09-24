@@ -100,7 +100,9 @@ class SimuMuonAnalyzer : public edm::EDAnalyzer {
       TH1F * h_lxy_err;
       TH1F * h_lxy;
       TH1F * h_dotP;
+      TH1F * h_theta;
       TH1F * nEvents;
+      
       
       int vuelta;
       int NvertTracks = 0, Ntracks = 0;
@@ -376,6 +378,8 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  cout<<"disp "<<secVert_x -beamX<<endl;
 			  cout<<"beam "<<beamX<<endl;
 			  cout<<"secVert "<<secVert_x<<endl;*/
+			  cout<<theta<<endl;
+			  h_theta->Fill(theta);
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
@@ -401,17 +405,13 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 						if(dot> dotMax){dotMax=dot;}
 						if (dot< dotMin){dotMin=dot;}
 						
-					 invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
+					     invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 					     h_dotP->Fill(dot);
 				         h_invMass->Fill(invariantMass);
-				         if(dot<0)
-				         {
-							 h_invMass_lwCut->Fill(invariantMass);
-						 }
-						 if(dot>0)
-						 {
-							 h_invMass_lwCut_inv->Fill(invariantMass);
-						 }
+				        
+						 
+						 h_invMass_lwCut_inv->Fill(invariantMass);
+						 
 				         double lxy_err = tdl/(tdl_err);
 				         if (lxy_err > 20)
 				         {lxy_err = 19;}
@@ -425,6 +425,15 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 						 
 				    
 				 }
+				 if ((conePt_var < 4 && cosAlpha > -0.95 && (theta >3.1514- 0.2 )))
+					
+					{
+				
+					   double invariantMass;
+					   invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
+					   h_invMass_lwCut->Fill(invariantMass);
+		    
+				   }
 			   
 		   }
 		   }
@@ -470,6 +479,7 @@ SimuMuonAnalyzer::beginJob()
  h_invMass_LC = new TH1F ("InvMass_LC", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_lxy_err = new TH1F ("Lxy_err", "Transeverse decay length",20,0,20); 	  
  h_dotP = new TH1F ("dotP", "vertex-momentum dot product",50,-10,10); 	  
+ h_theta = new TH1F ("theta", "primary-secondary vertex displacement and lepton total momentum angle",50,0,4); 	  
  nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
 		
 		
@@ -644,6 +654,10 @@ SimuMuonAnalyzer::mTheta(double ax, double ay, double bx, double by)
 	cosAlpha = cosAlpha/(sqrt(ax*ax+ay*ay)*sqrt(bx*bx+by*by));
 	//std::cout<<"cosAlpha: "<<cosAlpha<<std::endl;
 	theta  = acos(cosAlpha);
+	if (theta > 3.1514)
+	{
+		theta =  2*3.1514-theta;
+	}
 	return theta;
 }
 double 
