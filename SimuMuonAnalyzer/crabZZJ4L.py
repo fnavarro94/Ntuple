@@ -10,7 +10,7 @@ config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'simumuonanalyzer_cfg.py'
 config.JobType.maxJobRuntimeMin = 1000
 #config.JobType.inputFiles = ['list.txt','pyScript.py']
-config.JobType.outputFiles = ['ZZ.root']
+config.JobType.outputFiles = ['simu.root']
 #config.Data.inputDataset = '/SingleElectron/Run2011A-12Oct2013-v1/AOD'
 #config.Data.inputDataset = '/EG/Run2010A-Apr21ReReco-v1/AOD'
 config.Data.userInputFiles = ['root://eospublic.cern.ch//eos/opendata/cms/MonteCarlo2011/Summer11LegDR/ZZJetsTo4L_TuneZ2_7TeV-madgraph-tauola/AODSIM/PU_S13_START53_LV6-v1/00000/069D252D-7BB8-E311-B341-003048FFD760.root',
@@ -525,7 +525,7 @@ config.Data.publication = False
 #config.Data.userInputFiles = ['dummy.root']
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'FileBased'
-config.Data.unitsPerJob = 200
+config.Data.unitsPerJob = 150
 
 
 config.Site.storageSite = 'T2_US_Nebraska'
