@@ -95,7 +95,26 @@ class SimuMuonAnalyzer : public edm::EDAnalyzer {
      // TH1F * h_;
       TH1F * h_invMass;
       TH1F * h_invMass_lwCut;
+      TH1F * h_invMass_lwCut1;
+      TH1F * h_invMass_lwCut2;
+      TH1F * h_invMass_lwCut3;
+      TH1F * h_invMass_lwCut4;
+      TH1F * h_invMass_lwCut5;
+      TH1F * h_invMass_lwCut6;
+      TH1F * h_invMass_lwCut7;
+      TH1F * h_invMass_lwCut8;
+      TH1F * h_invMass_lwCut9;
+      
       TH1F * h_invMass_lwCut_inv;
+      TH1F * h_invMass_lwCut_inv1;
+      TH1F * h_invMass_lwCut_inv2;
+      TH1F * h_invMass_lwCut_inv3;
+      TH1F * h_invMass_lwCut_inv4;
+      TH1F * h_invMass_lwCut_inv5;
+      TH1F * h_invMass_lwCut_inv6;
+      TH1F * h_invMass_lwCut_inv7;
+      TH1F * h_invMass_lwCut_inv8;
+      TH1F * h_invMass_lwCut_inv9;
       TH1F * h_invMass_LC;
       TH1F * h_lxy_err;
       TH1F * h_lxy;
@@ -411,6 +430,15 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				        
 						 
 						 h_invMass_lwCut_inv->Fill(invariantMass);
+						 if (theta < 0.18){h_invMass_lwCut_inv1->Fill(invariantMass);}
+						 if (theta < 0.16){h_invMass_lwCut_inv2->Fill(invariantMass);}
+						 if (theta < 0.14){h_invMass_lwCut_inv3->Fill(invariantMass);}
+						 if (theta < 0.12){h_invMass_lwCut_inv4->Fill(invariantMass);}
+						 if (theta < 0.10){h_invMass_lwCut_inv5->Fill(invariantMass);}
+						 if (theta < 0.08){h_invMass_lwCut_inv6->Fill(invariantMass);}
+						 if (theta < 0.06){h_invMass_lwCut_inv7->Fill(invariantMass);}
+						 if (theta < 0.04){h_invMass_lwCut_inv8->Fill(invariantMass);}
+						 if (theta < 0.02){h_invMass_lwCut_inv9->Fill(invariantMass);}
 						 
 				         double lxy_err = tdl/(tdl_err);
 				         if (lxy_err > 20)
@@ -432,6 +460,17 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					   double invariantMass;
 					   invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 					   h_invMass_lwCut->Fill(invariantMass);
+					   
+					   if (theta > 3.1514 -0.18){h_invMass_lwCut1->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.16){h_invMass_lwCut2->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.14){h_invMass_lwCut3->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.12){h_invMass_lwCut4->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.10){h_invMass_lwCut5->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.08){h_invMass_lwCut6->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.06){h_invMass_lwCut7->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.04){h_invMass_lwCut8->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.02){h_invMass_lwCut9->Fill(invariantMass);}
+					  
 		    
 				   }
 			   
@@ -475,7 +514,26 @@ SimuMuonAnalyzer::beginJob()
  
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMass_lwCut = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut1 = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut2 = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut3 = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut4 = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut5 = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut6 = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut7 = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut8 = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut9 = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+
  h_invMass_lwCut_inv = new TH1F ("InvMass_lwCut_inv", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv1 = new TH1F ("InvMass_lwCut_inv1", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv2 = new TH1F ("InvMass_lwCut_inv2", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv3 = new TH1F ("InvMass_lwCut_inv3", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv4 = new TH1F ("InvMass_lwCut_inv4", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv5 = new TH1F ("InvMass_lwCut_inv5", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv6 = new TH1F ("InvMass_lwCut_inv6", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv7 = new TH1F ("InvMass_lwCut_inv7", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv8 = new TH1F ("InvMass_lwCut_inv8", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv9 = new TH1F ("InvMass_lwCut_inv9", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMass_LC = new TH1F ("InvMass_LC", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_lxy_err = new TH1F ("Lxy_err", "Transeverse decay length",20,0,20); 	  
  h_dotP = new TH1F ("dotP", "vertex-momentum dot product",50,-10,10); 	  
