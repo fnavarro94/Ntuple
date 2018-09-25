@@ -537,7 +537,7 @@ SimuMuonAnalyzer::beginJob()
  h_invMass_LC = new TH1F ("InvMass_LC", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_lxy_err = new TH1F ("Lxy_err", "Transeverse decay length",20,0,20); 	  
  h_dotP = new TH1F ("dotP", "vertex-momentum dot product",50,-10,10); 	  
- h_theta = new TH1F ("theta", "primary-secondary vertex displacement and lepton total momentum angle",50,0,4); 	  
+ h_theta = new TH1F ("theta", "primary-secondary vertex displacement and lepton total momentum angle",200,0,4); 	  
  nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
 		
 		
