@@ -90,17 +90,53 @@ class MuonAnalyzer : public edm::EDAnalyzer {
      double invMass(double , double , double , double  , double ,  double );
      double dotProduct(double , double , double , double );
      bool impactParameterCut(reco::TrackCollection::const_iterator, reco::TrackCollection::const_iterator, reco::BeamSpot );
-    //   TTree * mtree;
+   //   TTree * mtree;
       TFile * mfile;
      // TH1F * h_;
       TH1F * h_invMass;
+      TH1F * h_invMassPt50;
+      TH1F * h_invMassPt60;
+      TH1F * h_invMassPt70;
+      TH1F * h_invMassPt80;
+      TH1F * h_invMassPt90;
+      TH1F * h_invMassPt100;
+      TH1F * h_invMassPt50Inv;
+      TH1F * h_invMassPt60Inv;
+      TH1F * h_invMassPt70Inv;
+      TH1F * h_invMassPt80Inv;
+      TH1F * h_invMassPt90Inv;
+      TH1F * h_invMassPt100Inv;
+      TH1F * h_invMassDotCuts;
+      TH1F * h_invMassDotCutsInv;
       TH1F * h_invMass_lwCut;
+      TH1F * h_invMass_lwCut1;
+      TH1F * h_invMass_lwCut2;
+      TH1F * h_invMass_lwCut3;
+      TH1F * h_invMass_lwCut4;
+      TH1F * h_invMass_lwCut5;
+      TH1F * h_invMass_lwCut6;
+      TH1F * h_invMass_lwCut7;
+      TH1F * h_invMass_lwCut8;
+      TH1F * h_invMass_lwCut9;
+      
       TH1F * h_invMass_lwCut_inv;
+      TH1F * h_invMass_lwCut_inv1;
+      TH1F * h_invMass_lwCut_inv2;
+      TH1F * h_invMass_lwCut_inv3;
+      TH1F * h_invMass_lwCut_inv4;
+      TH1F * h_invMass_lwCut_inv5;
+      TH1F * h_invMass_lwCut_inv6;
+      TH1F * h_invMass_lwCut_inv7;
+      TH1F * h_invMass_lwCut_inv8;
+      TH1F * h_invMass_lwCut_inv9;
       TH1F * h_invMass_LC;
       TH1F * h_lxy_err;
       TH1F * h_lxy;
       TH1F * h_dotP;
       TH1F * h_theta;
+      TH1F * h_pt;
+      TH1F * h_ptP;
+      TH1F * h_ptM;
       TH1F * nEvents;
       
       
@@ -109,8 +145,6 @@ class MuonAnalyzer : public edm::EDAnalyzer {
       int numJets2 = 0;
       double dotMax = 0;
       double dotMin = 0;
-    
-      
     
 		 
 
@@ -161,10 +195,10 @@ MuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    using namespace edm;
    using namespace reco;
    using namespace std;
-
+nEvents->Fill(1); 
 Handle<TrackCollection> tracks;
 iEvent.getByLabel(trackTags_,tracks);
-nEvents->Fill(1); 
+   
 edm::Handle<edm::TriggerResults> trigResults; 
 edm::InputTag trigResultsTag("TriggerResults","","HLT");
 edm::InputTag trigEventTag("hltTriggerSummaryAOD","","HLT");
@@ -252,6 +286,7 @@ else
 }
 
 //cout<<filterName<<endl;
+
 
 bool passTrig;
 int trigIndex = trigNames.triggerIndex(pathName);
@@ -374,44 +409,71 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   
 			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
 			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -vertex_x,  secVert_y-vertex_y);
+			   double px = itTrack1->px() + itTrack2->px();
+			   double py = itTrack1->py() + itTrack2->py();
+			   double pt = sqrt(px*px + py*py);
+			   
+			    bool IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
+					    //double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
+			    double secVertErrx = myVertex.positionError().cxx();
+			    double secVertErry = myVertex.positionError().cyy();
+				double tdl_x = secVert_x - vertex_x;
+				double tdl_y = secVert_y - vertex_y;
+				double tdl = sqrt(tdl_x*tdl_x + tdl_y*tdl_y);
+				double tdl_errx = secVertErrx + vertex_xError;
+				double tdl_erry = secVertErry + vertex_yError;
+						//double tdl_err = sqrt(tdl_errx*tdl_errx + tdl_erry*tdl_erry);
+				double difx = (secVert_x)/(sqrt((secVert_x*secVert_x)+(secVert_y*secVert_y)));
+				double dify = (secVert_y)/(sqrt((secVert_x*secVert_x)+(secVert_y*secVert_y)));
+				double tot_variance = difx*difx*tdl_errx +dify*dify*tdl_erry; 
+				double tdl_err = sqrt(tot_variance);
+				double invariantMass;
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
 			  cout<<"disp "<<secVert_x -beamX<<endl;
 			  cout<<"beam "<<beamX<<endl;
 			  cout<<"secVert "<<secVert_x<<endl;*/
-			  cout<<theta<<endl;
+			  double dot;
+			  dot = dotProduct(secVert_x-vertex_x, secVert_y-vertex_y, itTrack1->px()+itTrack2->px(),itTrack1->py()+itTrack2->py());
+			  invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
+			  //cout<<theta<<endl;
 			  h_theta->Fill(theta);
+			  h_pt->Fill(pt);
+			  if ((dot/tdl_err) <-3){h_ptM->Fill(pt);}
+			  if ((dot/tdl_err) > 3){h_ptP->Fill(pt);}
+			  if (pt > 50){h_invMassPt50Inv->Fill(invariantMass);}
+			  if (pt > 60){h_invMassPt60Inv->Fill(invariantMass);}
+			  if (pt > 70){h_invMassPt70Inv->Fill(invariantMass);}
+			  if (pt > 80){h_invMassPt80Inv->Fill(invariantMass);}
+			  if (pt > 90){h_invMassPt90Inv->Fill(invariantMass);}
+			  if (pt > 100){h_invMassPt100Inv->Fill(invariantMass);}
+			  h_dotP->Fill(dot/tdl_err);
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
-					    bool IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
-					    //double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
-					    double secVertErrx = myVertex.positionError().cxx();
-					    double secVertErry = myVertex.positionError().cyy();
-						double tdl_x = secVert_x - vertex_x;
-						double tdl_y = secVert_y - vertex_y;
-						double tdl = sqrt(tdl_x*tdl_x + tdl_y*tdl_y);
-						double tdl_errx = secVertErrx + vertex_xError;
-						double tdl_erry = secVertErry + vertex_yError;
-						//double tdl_err = sqrt(tdl_errx*tdl_errx + tdl_erry*tdl_erry);
-						double difx = (secVert_x)/(sqrt((secVert_x*secVert_x)+(secVert_y*secVert_y)));
-						double dify = (secVert_y)/(sqrt((secVert_x*secVert_x)+(secVert_y*secVert_y)));
-						double tot_variance = difx*difx*tdl_errx +dify*dify*tdl_erry; 
-						double tdl_err = sqrt(tot_variance);
+					   
 						cout<< tdl_err<<endl;
 				     //without lifetime related cuts
-						double invariantMass;
-						double dot;
-						dot = dotProduct(secVert_x-vertex_x, secVert_y-vertex_y, itTrack1->px()+itTrack2->px(),itTrack1->py()+itTrack2->py());
+						
+						
 						if(dot> dotMax){dotMax=dot;}
 						if (dot< dotMin){dotMin=dot;}
 						
 					     invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
-					     h_dotP->Fill(dot);
+					     
 				         h_invMass->Fill(invariantMass);
-				        
+				         if ((dot/tdl_err) >3){h_invMassDotCutsInv->Fill(invariantMass);}
 						 
 						 h_invMass_lwCut_inv->Fill(invariantMass);
+						 if (theta < 0.18){h_invMass_lwCut_inv1->Fill(invariantMass);}
+						 if (theta < 0.16){h_invMass_lwCut_inv2->Fill(invariantMass);}
+						 if (theta < 0.14){h_invMass_lwCut_inv3->Fill(invariantMass);}
+						 if (theta < 0.12){h_invMass_lwCut_inv4->Fill(invariantMass);}
+						 if (theta < 0.10){h_invMass_lwCut_inv5->Fill(invariantMass);}
+						 if (theta < 0.08){h_invMass_lwCut_inv6->Fill(invariantMass);}
+						 if (theta < 0.06){h_invMass_lwCut_inv7->Fill(invariantMass);}
+						 if (theta < 0.04){h_invMass_lwCut_inv8->Fill(invariantMass);}
+						 if (theta < 0.02){h_invMass_lwCut_inv9->Fill(invariantMass);}
 						 
 				         double lxy_err = tdl/(tdl_err);
 				         if (lxy_err > 20)
@@ -426,13 +488,30 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 						 
 				    
 				 }
-				 if ((conePt_var < 4 && cosAlpha > -0.95 && (theta >3.1514 -0.2 )))
+				 if ((conePt_var < 4 && cosAlpha > -0.95 && (theta >3.1514- 0.2 )))
 					
 					{
 				
 					   double invariantMass;
 					   invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 					   h_invMass_lwCut->Fill(invariantMass);
+					   if (pt > 50){h_invMassPt50->Fill(invariantMass);}
+			           if (pt > 60){h_invMassPt60->Fill(invariantMass);}
+					   if (pt > 70){h_invMassPt70->Fill(invariantMass);}
+					   if (pt > 80){h_invMassPt80->Fill(invariantMass);}
+				       if (pt > 90){h_invMassPt90->Fill(invariantMass);}
+					   if (pt > 100){h_invMassPt100->Fill(invariantMass);}
+					   if ((dot/tdl_err) <-3){h_invMassDotCuts->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.18){h_invMass_lwCut1->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.16){h_invMass_lwCut2->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.14){h_invMass_lwCut3->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.12){h_invMass_lwCut4->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.10){h_invMass_lwCut5->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.08){h_invMass_lwCut6->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.06){h_invMass_lwCut7->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.04){h_invMass_lwCut8->Fill(invariantMass);}
+					   if (theta > 3.1514 -0.02){h_invMass_lwCut9->Fill(invariantMass);}
+					  
 		    
 				   }
 			   
@@ -475,12 +554,49 @@ MuonAnalyzer::beginJob()
  mfile = new TFile(of, "recreate");
  
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMassPt50 = new TH1F ("InvMassPt50", "Lepton Pair Invariant Mass (Pt >50, lw cut)", 100, 0 , 600);
+ h_invMassPt60 = new TH1F ("InvMassPt60", "Lepton Pair Invariant Mass (Pt >60, lw cut)", 100, 0 , 600);
+ h_invMassPt70 = new TH1F ("InvMassPt70", "Lepton Pair Invariant Mass (Pt >70, lw cut)", 100, 0 , 600);
+ h_invMassPt80 = new TH1F ("InvMassPt80", "Lepton Pair Invariant Mass (Pt >80, lw cut)", 100, 0 , 600);
+ h_invMassPt90 = new TH1F ("InvMassPt90", "Lepton Pair Invariant Mass (Pt >90, lw cut)", 100, 0 , 600);
+ h_invMassPt100 = new TH1F ("InvMassPt100", "Lepton Pair Invariant Mass (Pt >100 lw cut)", 100, 0 , 600);
+ h_invMassPt50Inv = new TH1F ("InvMassPt50Inv", "Lepton Pair Invariant Mass (Pt >50)", 100, 0 , 600);
+ h_invMassPt60Inv = new TH1F ("InvMassPt60Inv", "Lepton Pair Invariant Mass (Pt >60)", 100, 0 , 600);
+ h_invMassPt70Inv = new TH1F ("InvMassPt70Inv", "Lepton Pair Invariant Mass (Pt >70)", 100, 0 , 600);
+ h_invMassPt80Inv = new TH1F ("InvMassPt80Inv", "Lepton Pair Invariant Mass (Pt >80)", 100, 0 , 600);
+ h_invMassPt90Inv = new TH1F ("InvMassPt90Inv", "Lepton Pair Invariant Mass (Pt >90)", 100, 0 , 600);
+ h_invMassPt100Inv = new TH1F ("InvMassPt100Inv", "Lepton Pair Invariant Mass (Pt >100)", 100, 0 , 600);
+ h_invMassDotCuts = new TH1F ("InvMassDotCuts", "Lepton Pair Invariant Mass (dot product cut)", 100, 0 , 600);
+ h_invMassDotCutsInv = new TH1F ("InvMassDotCutsInv", "Lepton Pair Invariant Mass  (inverted dot product cut)", 100, 0 , 600);
+ h_pt = new TH1F ("pt", "Lepton Pair Transverse momentum", 100, 0 , 450);
+ h_ptP = new TH1F ("ptP", "Lepton Pair Transverse momentum dot > 1.5", 100, 0 , 450);
+ h_ptM = new TH1F ("ptM", "Lepton Pair Transverse momentum dot < -1.5", 100, 0 , 450);
  h_invMass_lwCut = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut1 = new TH1F ("InvMass_lwCut1", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut2 = new TH1F ("InvMass_lwCut2", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut3 = new TH1F ("InvMass_lwCut3", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut4 = new TH1F ("InvMass_lwCut4", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut5 = new TH1F ("InvMass_lwCut5", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut6 = new TH1F ("InvMass_lwCut6", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut7 = new TH1F ("InvMass_lwCut7", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut8 = new TH1F ("InvMass_lwCut8", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut9 = new TH1F ("InvMass_lwCut9", "Lepton Pair Invariant Mass", 100, 0 , 600);
+
+
  h_invMass_lwCut_inv = new TH1F ("InvMass_lwCut_inv", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv1 = new TH1F ("InvMass_lwCut_inv1", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv2 = new TH1F ("InvMass_lwCut_inv2", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv3 = new TH1F ("InvMass_lwCut_inv3", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv4 = new TH1F ("InvMass_lwCut_inv4", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv5 = new TH1F ("InvMass_lwCut_inv5", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv6 = new TH1F ("InvMass_lwCut_inv6", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv7 = new TH1F ("InvMass_lwCut_inv7", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv8 = new TH1F ("InvMass_lwCut_inv8", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMass_lwCut_inv9 = new TH1F ("InvMass_lwCut_inv9", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMass_LC = new TH1F ("InvMass_LC", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_lxy_err = new TH1F ("Lxy_err", "Transeverse decay length",20,0,20); 	  
  h_dotP = new TH1F ("dotP", "vertex-momentum dot product",50,-10,10); 	  
- h_theta = new TH1F ("theta", "primary-secondary vertex displacement and lepton total momentum angle",50,0,4); 	  
+ h_theta = new TH1F ("theta", "primary-secondary vertex displacement and lepton total momentum angle",200,0,4); 	  
  nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
 		
 		
@@ -749,4 +865,3 @@ MuonAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(MuonAnalyzer);
-
