@@ -423,8 +423,8 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  //cout<<theta<<endl;
 			  h_theta->Fill(theta);
 			  h_pt->Fill(pt);
-			  if (dot <-1.5){h_ptM->Fill(pt);}
-			  if (dot >1.5){h_ptM->Fill(pt);}
+			  if ((dot/tdl_err) <-1.5){h_ptM->Fill(pt);}
+			  if ((dot/tdl_err) >1.5){h_ptP->Fill(pt);}
 			  h_dotP->Fill(dot/tdl_err);
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
