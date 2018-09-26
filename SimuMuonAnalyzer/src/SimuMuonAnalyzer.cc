@@ -396,6 +396,21 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   double px = itTrack1->px() + itTrack2->px();
 			   double py = itTrack1->py() + itTrack2->py();
 			   double pt = sqrt(px*px + py*py);
+			   
+			    bool IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
+					    //double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
+			    double secVertErrx = myVertex.positionError().cxx();
+			    double secVertErry = myVertex.positionError().cyy();
+				double tdl_x = secVert_x - vertex_x;
+				double tdl_y = secVert_y - vertex_y;
+				double tdl = sqrt(tdl_x*tdl_x + tdl_y*tdl_y);
+				double tdl_errx = secVertErrx + vertex_xError;
+				double tdl_erry = secVertErry + vertex_yError;
+						//double tdl_err = sqrt(tdl_errx*tdl_errx + tdl_erry*tdl_erry);
+				double difx = (secVert_x)/(sqrt((secVert_x*secVert_x)+(secVert_y*secVert_y)));
+				double dify = (secVert_y)/(sqrt((secVert_x*secVert_x)+(secVert_y*secVert_y)));
+				double tot_variance = difx*difx*tdl_errx +dify*dify*tdl_erry; 
+				double tdl_err = sqrt(tot_variance);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
 			  cout<<"disp "<<secVert_x -beamX<<endl;
@@ -406,24 +421,11 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  //cout<<theta<<endl;
 			  h_theta->Fill(theta);
 			  h_pt->Fill(pt);
-			  h_dotP->Fill(dot);
+			  h_dotP->Fill(dot/tdl_err);
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
-					    bool IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
-					    //double IPC = impactParameterCut(itTrack1, itTrack2, beamSpot);
-					    double secVertErrx = myVertex.positionError().cxx();
-					    double secVertErry = myVertex.positionError().cyy();
-						double tdl_x = secVert_x - vertex_x;
-						double tdl_y = secVert_y - vertex_y;
-						double tdl = sqrt(tdl_x*tdl_x + tdl_y*tdl_y);
-						double tdl_errx = secVertErrx + vertex_xError;
-						double tdl_erry = secVertErry + vertex_yError;
-						//double tdl_err = sqrt(tdl_errx*tdl_errx + tdl_erry*tdl_erry);
-						double difx = (secVert_x)/(sqrt((secVert_x*secVert_x)+(secVert_y*secVert_y)));
-						double dify = (secVert_y)/(sqrt((secVert_x*secVert_x)+(secVert_y*secVert_y)));
-						double tot_variance = difx*difx*tdl_errx +dify*dify*tdl_erry; 
-						double tdl_err = sqrt(tot_variance);
+					   
 						cout<< tdl_err<<endl;
 				     //without lifetime related cuts
 						double invariantMass;
