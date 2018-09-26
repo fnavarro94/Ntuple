@@ -394,7 +394,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
 			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -vertex_x,  secVert_y-vertex_y);
 			   double px = itTrack1->px() + itTrack2->px();
-			   double px = itTrack1->py() + itTrack2->py();
+			   double py = itTrack1->py() + itTrack2->py();
 			   double pt = sqrt(px*px + py*py);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
