@@ -120,6 +120,7 @@ class SimuMuonAnalyzer : public edm::EDAnalyzer {
       TH1F * h_lxy;
       TH1F * h_dotP;
       TH1F * h_theta;
+      TH1F * h_pt;
       TH1F * nEvents;
       
       
@@ -392,6 +393,9 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   
 			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
 			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -vertex_x,  secVert_y-vertex_y);
+			   double px = itTrack1->px() + itTrack2->px();
+			   double px = itTrack1->py() + itTrack2->py();
+			   double pt = sqrt(px*px + py*py);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
 			  cout<<"disp "<<secVert_x -beamX<<endl;
@@ -399,6 +403,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  cout<<"secVert "<<secVert_x<<endl;*/
 			  cout<<theta<<endl;
 			  h_theta->Fill(theta);
+			  h_pt->Fill();
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
@@ -513,6 +518,7 @@ SimuMuonAnalyzer::beginJob()
  mfile = new TFile(of, "recreate");
  
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_pt = new TH1F ("pt", "Lepton Pair Transverse momentum", 100, 0 , 450);
  h_invMass_lwCut = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMass_lwCut1 = new TH1F ("InvMass_lwCut1", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMass_lwCut2 = new TH1F ("InvMass_lwCut2", "Lepton Pair Invariant Mass", 100, 0 , 600);
