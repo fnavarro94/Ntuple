@@ -121,6 +121,8 @@ class SimuMuonAnalyzer : public edm::EDAnalyzer {
       TH1F * h_dotP;
       TH1F * h_theta;
       TH1F * h_pt;
+      TH1F * h_ptP;
+      TH1F * h_ptM;
       TH1F * nEvents;
       
       
@@ -421,6 +423,8 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  //cout<<theta<<endl;
 			  h_theta->Fill(theta);
 			  h_pt->Fill(pt);
+			  if (dot <-1.5){h_ptM->Fill(pt);}
+			  if (dot >1.5){h_ptM->Fill(pt);}
 			  h_dotP->Fill(dot/tdl_err);
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
@@ -523,6 +527,8 @@ SimuMuonAnalyzer::beginJob()
  
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_pt = new TH1F ("pt", "Lepton Pair Transverse momentum", 100, 0 , 450);
+ h_ptP = new TH1F ("ptP", "Lepton Pair Transverse momentum dot > 1.5", 100, 0 , 450);
+ h_ptM = new TH1F ("ptM", "Lepton Pair Transverse momentum dot < -1.5", 100, 0 , 450);
  h_invMass_lwCut = new TH1F ("InvMass_lwCut", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMass_lwCut1 = new TH1F ("InvMass_lwCut1", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMass_lwCut2 = new TH1F ("InvMass_lwCut2", "Lepton Pair Invariant Mass", 100, 0 , 600);
