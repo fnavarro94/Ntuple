@@ -401,9 +401,12 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  cout<<"disp "<<secVert_x -beamX<<endl;
 			  cout<<"beam "<<beamX<<endl;
 			  cout<<"secVert "<<secVert_x<<endl;*/
-			  cout<<theta<<endl;
+			  double dot;
+			  dot = dotProduct(secVert_x-vertex_x, secVert_y-vertex_y, itTrack1->px()+itTrack2->px(),itTrack1->py()+itTrack2->py());
+			  //cout<<theta<<endl;
 			  h_theta->Fill(theta);
-			  h_pt->Fill();
+			  h_pt->Fill(pt);
+			  h_dotP->Fill(dot);
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
@@ -424,13 +427,12 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 						cout<< tdl_err<<endl;
 				     //without lifetime related cuts
 						double invariantMass;
-						double dot;
-						dot = dotProduct(secVert_x-vertex_x, secVert_y-vertex_y, itTrack1->px()+itTrack2->px(),itTrack1->py()+itTrack2->py());
+						
 						if(dot> dotMax){dotMax=dot;}
 						if (dot< dotMin){dotMin=dot;}
 						
 					     invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
-					     h_dotP->Fill(dot);
+					     
 				         h_invMass->Fill(invariantMass);
 				        
 						 
