@@ -94,8 +94,20 @@ class SimuMuonAnalyzer : public edm::EDAnalyzer {
       TFile * mfile;
      // TH1F * h_;
       TH1F * h_invMass;
-      TH1F * h_invMassAllCuts;
-      TH1F * h_invMassAllCutsInv;
+      TH1F * h_invMassPt50;
+      TH1F * h_invMassPt60;
+      TH1F * h_invMassPt70;
+      TH1F * h_invMassPt80;
+      TH1F * h_invMassPt90;
+      TH1F * h_invMassPt100;
+      TH1F * h_invMassPt50Inv;
+      TH1F * h_invMassPt60Inv;
+      TH1F * h_invMassPt70Inv;
+      TH1F * h_invMassPt80Inv;
+      TH1F * h_invMassPt90Inv;
+      TH1F * h_invMassPt100Inv;
+      TH1F * h_invMassDotCuts;
+      TH1F * h_invMassDotCutsInv;
       TH1F * h_invMass_lwCut;
       TH1F * h_invMass_lwCut1;
       TH1F * h_invMass_lwCut2;
@@ -415,6 +427,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				double dify = (secVert_y)/(sqrt((secVert_x*secVert_x)+(secVert_y*secVert_y)));
 				double tot_variance = difx*difx*tdl_errx +dify*dify*tdl_erry; 
 				double tdl_err = sqrt(tot_variance);
+				double invariantMass;
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
 			  cout<<"disp "<<secVert_x -beamX<<endl;
@@ -422,11 +435,17 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  cout<<"secVert "<<secVert_x<<endl;*/
 			  double dot;
 			  dot = dotProduct(secVert_x-vertex_x, secVert_y-vertex_y, itTrack1->px()+itTrack2->px(),itTrack1->py()+itTrack2->py());
+			  invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 			  //cout<<theta<<endl;
 			  h_theta->Fill(theta);
 			  h_pt->Fill(pt);
 			  if ((dot/tdl_err) <-3){h_ptM->Fill(pt);}
-			  
+			  if (pt > 50){h_invMassPt50Inv->Fill(invariantMass);}
+			  if (pt > 60){h_invMassPt60Inv->Fill(invariantMass);}
+			  if (pt > 70){h_invMassPt70Inv->Fill(invariantMass);}
+			  if (pt > 80){h_invMassPt80Inv->Fill(invariantMass);}
+			  if (pt > 90){h_invMassPt90Inv->Fill(invariantMass);}
+			  if (pt > 100){h_invMassPt100Inv->Fill(invariantMass);}
 			  h_dotP->Fill(dot/tdl_err);
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
@@ -434,7 +453,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					   
 						cout<< tdl_err<<endl;
 				     //without lifetime related cuts
-						double invariantMass;
+						
 						
 						if(dot> dotMax){dotMax=dot;}
 						if (dot< dotMin){dotMin=dot;}
@@ -442,7 +461,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					     invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 					     
 				         h_invMass->Fill(invariantMass);
-				         if ((dot/tdl_err) >3){h_invMassAllCutsInv->Fill(invariantMass);}
+				         if ((dot/tdl_err) >3){h_invMassDotCutsInv->Fill(invariantMass);}
 						 
 						 h_invMass_lwCut_inv->Fill(invariantMass);
 						 if (theta < 0.18){h_invMass_lwCut_inv1->Fill(invariantMass);}
@@ -475,7 +494,13 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					   double invariantMass;
 					   invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 					   h_invMass_lwCut->Fill(invariantMass);
-					   if ((dot/tdl_err) <-3){h_invMassAllCuts->Fill(invariantMass);}
+					   if (pt > 50){h_invMassPt50->Fill(invariantMass);}
+			           if (pt > 60){h_invMassPt60->Fill(invariantMass);}
+					   if (pt > 70){h_invMassPt70->Fill(invariantMass);}
+					   if (pt > 80){h_invMassPt80->Fill(invariantMass);}
+				       if (pt > 90){h_invMassPt90->Fill(invariantMass);}
+					   if (pt > 100){h_invMassPt100->Fill(invariantMass);}
+					   if ((dot/tdl_err) <-3){h_invMassDotCuts->Fill(invariantMass);}
 					   if (theta > 3.1514 -0.18){h_invMass_lwCut1->Fill(invariantMass);}
 					   if (theta > 3.1514 -0.16){h_invMass_lwCut2->Fill(invariantMass);}
 					   if (theta > 3.1514 -0.14){h_invMass_lwCut3->Fill(invariantMass);}
@@ -528,8 +553,20 @@ SimuMuonAnalyzer::beginJob()
  mfile = new TFile(of, "recreate");
  
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
- h_invMassAllCuts = new TH1F ("InvMassAllCuts", "Lepton Pair Invariant Mass all cuts implemented", 100, 0 , 600);
- h_invMassAllCutsInv = new TH1F ("InvMassAllCutsInv", "Lepton Pair Invariant Mass all cuts implemented (inverted dot)", 100, 0 , 600);
+ h_invMassPt50 = new TH1F ("InvMassPt50", "Lepton Pair Invariant Mass (Pt >50, lw cut)", 100, 0 , 600);
+ h_invMassPt60 = new TH1F ("InvMassPt60", "Lepton Pair Invariant Mass (Pt >60, lw cut)", 100, 0 , 600);
+ h_invMassPt70 = new TH1F ("InvMassPt70", "Lepton Pair Invariant Mass (Pt >70, lw cut)", 100, 0 , 600);
+ h_invMassPt80 = new TH1F ("InvMassPt80", "Lepton Pair Invariant Mass (Pt >80, lw cut)", 100, 0 , 600);
+ h_invMassPt90 = new TH1F ("InvMassPt90", "Lepton Pair Invariant Mass (Pt >90, lw cut)", 100, 0 , 600);
+ h_invMassPt100 = new TH1F ("InvMassPt100", "Lepton Pair Invariant Mass (Pt >100 lw cut)", 100, 0 , 600);
+ h_invMassPt50Inv = new TH1F ("InvMassPt50Inv", "Lepton Pair Invariant Mass (Pt >50)", 100, 0 , 600);
+ h_invMassPt60Inv = new TH1F ("InvMassPt60Inv", "Lepton Pair Invariant Mass (Pt >60)", 100, 0 , 600);
+ h_invMassPt70Inv = new TH1F ("InvMassPt70Inv", "Lepton Pair Invariant Mass (Pt >70)", 100, 0 , 600);
+ h_invMassPt80Inv = new TH1F ("InvMassPt80Inv", "Lepton Pair Invariant Mass (Pt >80)", 100, 0 , 600);
+ h_invMassPt90Inv = new TH1F ("InvMassPt90Inv", "Lepton Pair Invariant Mass (Pt >90)", 100, 0 , 600);
+ h_invMassPt100Inv = new TH1F ("InvMassPt100Inv", "Lepton Pair Invariant Mass (Pt >100)", 100, 0 , 600);
+ h_invMassDotCuts = new TH1F ("InvMassDotCuts", "Lepton Pair Invariant Mass (dot product cut)", 100, 0 , 600);
+ h_invMassDotCutsInv = new TH1F ("InvMassDotCutsInv", "Lepton Pair Invariant Mass  (inverted dot product cut)", 100, 0 , 600);
  h_pt = new TH1F ("pt", "Lepton Pair Transverse momentum", 100, 0 , 450);
  h_ptP = new TH1F ("ptP", "Lepton Pair Transverse momentum dot > 1.5", 100, 0 , 450);
  h_ptM = new TH1F ("ptM", "Lepton Pair Transverse momentum dot < -1.5", 100, 0 , 450);
