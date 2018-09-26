@@ -440,6 +440,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  h_theta->Fill(theta);
 			  h_pt->Fill(pt);
 			  if ((dot/tdl_err) <-3){h_ptM->Fill(pt);}
+			  if ((dot/tdl_err) > 3){h_ptP->Fill(pt);}
 			  if (pt > 50){h_invMassPt50Inv->Fill(invariantMass);}
 			  if (pt > 60){h_invMassPt60Inv->Fill(invariantMass);}
 			  if (pt > 70){h_invMassPt70Inv->Fill(invariantMass);}
