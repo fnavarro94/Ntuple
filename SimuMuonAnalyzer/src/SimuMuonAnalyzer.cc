@@ -94,6 +94,8 @@ class SimuMuonAnalyzer : public edm::EDAnalyzer {
       TFile * mfile;
      // TH1F * h_;
       TH1F * h_invMass;
+      TH1F * h_invMassAllCuts;
+      TH1F * h_invMassAllCutsInv;
       TH1F * h_invMass_lwCut;
       TH1F * h_invMass_lwCut1;
       TH1F * h_invMass_lwCut2;
@@ -423,8 +425,8 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  //cout<<theta<<endl;
 			  h_theta->Fill(theta);
 			  h_pt->Fill(pt);
-			  if ((dot/tdl_err) <-1.5){h_ptM->Fill(pt);}
-			  if ((dot/tdl_err) >1.5){h_ptP->Fill(pt);}
+			  if ((dot/tdl_err) <-3){h_ptM->Fill(pt);}
+			  
 			  h_dotP->Fill(dot/tdl_err);
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
@@ -440,7 +442,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					     invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 					     
 				         h_invMass->Fill(invariantMass);
-				        
+				         if ((dot/tdl_err) >3){h_invMassAllCutsInv->Fill(invariantMass);}
 						 
 						 h_invMass_lwCut_inv->Fill(invariantMass);
 						 if (theta < 0.18){h_invMass_lwCut_inv1->Fill(invariantMass);}
@@ -473,7 +475,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					   double invariantMass;
 					   invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 					   h_invMass_lwCut->Fill(invariantMass);
-					   
+					   if ((dot/tdl_err) <-3){h_invMassAllCuts->Fill(invariantMass);}
 					   if (theta > 3.1514 -0.18){h_invMass_lwCut1->Fill(invariantMass);}
 					   if (theta > 3.1514 -0.16){h_invMass_lwCut2->Fill(invariantMass);}
 					   if (theta > 3.1514 -0.14){h_invMass_lwCut3->Fill(invariantMass);}
@@ -526,6 +528,8 @@ SimuMuonAnalyzer::beginJob()
  mfile = new TFile(of, "recreate");
  
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMassAllCuts = new TH1F ("InvMassAllCuts", "Lepton Pair Invariant Mass all cuts implemented", 100, 0 , 600);
+ h_invMassAllCutsInv = new TH1F ("InvMassAllCutsInv", "Lepton Pair Invariant Mass all cuts implemented (inverted dot)", 100, 0 , 600);
  h_pt = new TH1F ("pt", "Lepton Pair Transverse momentum", 100, 0 , 450);
  h_ptP = new TH1F ("ptP", "Lepton Pair Transverse momentum dot > 1.5", 100, 0 , 450);
  h_ptM = new TH1F ("ptM", "Lepton Pair Transverse momentum dot < -1.5", 100, 0 , 450);
