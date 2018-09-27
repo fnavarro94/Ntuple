@@ -12,12 +12,12 @@ THStack *hs_InvMass_lwCut_full = new THStack("hs_InvMass_lwCut", "");
 
 
 
-TFile *fZZ = new TFile("ZZJM2.root");
-TFile *fWZ = new TFile("WZM2.root");
-TFile *fWW = new TFile("WWJM2.root");
-TFile *fDY = new TFile("DYM2.root");
+TFile *fZZ = new TFile("ZZJM.root");
+TFile *fWZ = new TFile("WZM.root");
+TFile *fWW = new TFile("WWJM.root");
+TFile *fDY = new TFile("DYM.root");
 TFile *fll = new TFile("lw2.root");
-TFile *fDat = new TFile("DatM2.root");
+TFile *fDat = new TFile("DatM.root");
  
  
 
@@ -40,12 +40,12 @@ TH1F * hll_InvMass= (TH1F*)fll->Get("InvMass");
 TH1F * hDat_InvMass= (TH1F*)fDat->Get("InvMass");
 
 
-TH1F * hZZ_InvMass_lwCut= (TH1F*)fZZ->Get("InvMass_lwCut");
-TH1F * hWZ_InvMass_lwCut= (TH1F*)fWZ->Get("InvMass_lwCut");
-TH1F * hWW_InvMass_lwCut= (TH1F*)fWW->Get("InvMass_lwCut");
-TH1F * hDY_InvMass_lwCut= (TH1F*)fDY->Get("InvMass_lwCut");
-TH1F * hll_InvMass_lwCut= (TH1F*)fll->Get("InvMass_lwCut_inv");
-TH1F * hDat_InvMass_lwCut= (TH1F*)fDat->Get("InvMass_lwCut");
+TH1F * hZZ_InvMass_lwCut= (TH1F*)fZZ->Get("InvMass_lwCut9");
+TH1F * hWZ_InvMass_lwCut= (TH1F*)fWZ->Get("InvMass_lwCut9");
+TH1F * hWW_InvMass_lwCut= (TH1F*)fWW->Get("InvMass_lwCut9");
+TH1F * hDY_InvMass_lwCut= (TH1F*)fDY->Get("InvMass_lwCut9");
+TH1F * hll_InvMass_lwCut= (TH1F*)fll->Get("InvMass_lwCut_inv9");
+TH1F * hDat_InvMass_lwCut= (TH1F*)fDat->Get("InvMass");
 
 
 
