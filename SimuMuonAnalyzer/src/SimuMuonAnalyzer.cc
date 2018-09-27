@@ -134,7 +134,9 @@ class SimuMuonAnalyzer : public edm::EDAnalyzer {
       TH1F * h_lxy_err;
       TH1F * h_lxy;
       TH1F * h_dotP;
+      TH1F * h_dotP_err;
       TH1F * h_dotPLw;
+      TH1F * h_dotPLw_err;
       TH1F * h_theta;
       TH1F * h_thetaLw;
       TH1F * h_thetaLwCut;
@@ -454,8 +456,10 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  if (pt > 80){h_invMassPt80Inv->Fill(invariantMass);}
 			  if (pt > 90){h_invMassPt90Inv->Fill(invariantMass);}
 			  if (pt > 250){h_invMassPt250Inv->Fill(invariantMass); h_thetaCut->Fill(theta); h_thetaLwCut->Fill(3.1514-theta);}
-			  h_dotP->Fill(dot/tdl_err);
-			  h_dotPLw->Fill(-dot/tdl_err);
+			  h_dotP->Fill(dot);
+			  h_dotPLw>Fill(dot);
+			  h_dotP_err->Fill(dot/tdl_err);
+			  h_dotPLw_err->Fill(-dot/tdl_err);
 			  h_invMassLoose->Fill(invariantMass);
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
@@ -606,7 +610,9 @@ SimuMuonAnalyzer::beginJob()
  h_invMass_LC = new TH1F ("InvMass_LC", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_lxy_err = new TH1F ("Lxy_err", "Transeverse decay length",20,0,20); 	  
  h_dotP = new TH1F ("dotP", "vertex-momentum dot product",50,-600,600); 	  
+ h_dotP_err = new TH1F ("dotP_err", "vertex-momentum dot product/error",50,-600,600); 	  
  h_dotPLw = new TH1F ("dotPLw", "vertex-momentum dot product (lw)",50,-600,600); 	  
+ h_dotPLw_err = new TH1F ("dotPLw_err", "vertex-momentum dot product /error (lw)",50,-600,600); 	  
  h_theta = new TH1F ("theta", "primary-secondary vertex displacement and lepton total momentum angle",200,0,4); 	  
  h_thetaCut = new TH1F ("thetaCut", "primary-secondary vertex displacement and lepton total momentum angle with pt > 250",200,0,4); 	  
  h_thetaLw = new TH1F ("thetaLw", "primary-secondary vertex displacement and lepton total momentum angle for lw particles",200,0,4); 	  
