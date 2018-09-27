@@ -51,7 +51,7 @@ hDY_InvMass->SetFillColor(6);
 
 double ZZ_InvMass_scale = lumi*5.9/(hZZ_nEvents->Integral());
 hZZ_InvMass->Scale(ZZ_InvMass_scale);
-double WZ_InvMass_scale = lumi*18.2/(hWZ_nEvents->Integral());
+double WZ_InvMass_scale = lumi*0.868/(hWZ_nEvents->Integral());
 hWZ_InvMass->Scale(WZ_InvMass_scale);
 double WW_InvMass_scale = lumi*42/(hWW_nEvents->Integral());
 hWW_InvMass->Scale(WW_InvMass_scale);

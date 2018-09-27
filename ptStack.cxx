@@ -51,7 +51,7 @@ hDY_pt->SetFillColor(6);
 
 double ZZ_pt_scale = lumi*5.9/(hZZ_nEvents->Integral());
 hZZ_pt->Scale(ZZ_pt_scale);
-double WZ_pt_scale = lumi*18.2/(hWZ_nEvents->Integral());
+double WZ_pt_scale = lumi*0.868/(hWZ_nEvents->Integral());
 hWZ_pt->Scale(WZ_pt_scale);
 double WW_pt_scale = lumi*42/(hWW_nEvents->Integral());
 hWW_pt->Scale(WW_pt_scale);

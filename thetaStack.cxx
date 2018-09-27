@@ -21,7 +21,7 @@ TH1F * hWZ_theta= (TH1F*)fWZ->Get("theta");
 TH1F * hWW_theta= (TH1F*)fWW->Get("theta");
 TH1F * hDY_theta= (TH1F*)fDY->Get("theta");
 TH1F * hll_theta= (TH1F*)fll->Get("theta");
-TH1F * hlw_theta= (TH1F*)flw->Get("theta");
+TH1F * hlw_theta= (TH1F*)flw->Get("thetaLw");
 TH1F * hDat_theta= (TH1F*)fDat->Get("theta"); 
 
 
@@ -51,7 +51,7 @@ hDY_theta->SetFillColor(6);
 
 double ZZ_theta_scale = lumi*5.9/(hZZ_nEvents->Integral());
 hZZ_theta->Scale(ZZ_theta_scale);
-double WZ_theta_scale = lumi*18.2/(hWZ_nEvents->Integral());
+double WZ_theta_scale = lumi*0.868/(hWZ_nEvents->Integral());
 hWZ_theta->Scale(WZ_theta_scale);
 double WW_theta_scale = lumi*42/(hWW_nEvents->Integral());
 hWW_theta->Scale(WW_theta_scale);
