@@ -457,7 +457,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  if (pt > 90){h_invMassPt90Inv->Fill(invariantMass);}
 			  if (pt > 250){h_invMassPt250Inv->Fill(invariantMass); h_thetaCut->Fill(theta); h_thetaLwCut->Fill(3.1514-theta);}
 			  h_dotP->Fill(dot);
-			  h_dotPLw>Fill(dot);
+			  h_dotPLw->Fill(dot);
 			  h_dotP_err->Fill(dot/tdl_err);
 			  h_dotPLw_err->Fill(-dot/tdl_err);
 			  h_invMassLoose->Fill(invariantMass);
