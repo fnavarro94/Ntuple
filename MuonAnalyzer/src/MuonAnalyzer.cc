@@ -94,18 +94,19 @@ class MuonAnalyzer : public edm::EDAnalyzer {
       TFile * mfile;
      // TH1F * h_;
       TH1F * h_invMass;
+      TH1F * h_invMassLoose;
       TH1F * h_invMassPt50;
       TH1F * h_invMassPt60;
       TH1F * h_invMassPt70;
       TH1F * h_invMassPt80;
       TH1F * h_invMassPt90;
-      TH1F * h_invMassPt100;
+      TH1F * h_invMassPt250;
       TH1F * h_invMassPt50Inv;
       TH1F * h_invMassPt60Inv;
       TH1F * h_invMassPt70Inv;
       TH1F * h_invMassPt80Inv;
       TH1F * h_invMassPt90Inv;
-      TH1F * h_invMassPt100Inv;
+      TH1F * h_invMassPt250Inv;
       TH1F * h_invMassDotCuts;
       TH1F * h_invMassDotCutsInv;
       TH1F * h_invMass_lwCut;
@@ -133,7 +134,14 @@ class MuonAnalyzer : public edm::EDAnalyzer {
       TH1F * h_lxy_err;
       TH1F * h_lxy;
       TH1F * h_dotP;
+      TH1F * h_dotP_err;
+      TH1F * h_dotPLw;
+      TH1F * h_dotPLw_err;
       TH1F * h_theta;
+      TH1F * h_thetaLw;
+      TH1F * h_thetaLwCut;
+      TH1F * h_thetaCut;
+      
       TH1F * h_pt;
       TH1F * h_ptP;
       TH1F * h_ptM;
@@ -438,6 +446,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 			  //cout<<theta<<endl;
 			  h_theta->Fill(theta);
+			  h_thetaLw->Fill(3.1514-theta);
 			  h_pt->Fill(pt);
 			  if ((dot/tdl_err) <-3){h_ptM->Fill(pt);}
 			  if ((dot/tdl_err) > 3){h_ptP->Fill(pt);}
@@ -446,8 +455,12 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  if (pt > 70){h_invMassPt70Inv->Fill(invariantMass);}
 			  if (pt > 80){h_invMassPt80Inv->Fill(invariantMass);}
 			  if (pt > 90){h_invMassPt90Inv->Fill(invariantMass);}
-			  if (pt > 100){h_invMassPt100Inv->Fill(invariantMass);}
-			  h_dotP->Fill(dot/tdl_err);
+			  if (pt > 250){h_invMassPt250Inv->Fill(invariantMass); h_thetaCut->Fill(theta); h_thetaLwCut->Fill(3.1514-theta);}
+			  h_dotP->Fill(dot);
+			  h_dotPLw->Fill(dot);
+			  h_dotP_err->Fill(dot/tdl_err);
+			  h_dotPLw_err->Fill(-dot/tdl_err);
+			  h_invMassLoose->Fill(invariantMass);
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
@@ -459,7 +472,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 						if(dot> dotMax){dotMax=dot;}
 						if (dot< dotMin){dotMin=dot;}
 						
-					     invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
+					    
 					     
 				         h_invMass->Fill(invariantMass);
 				         if ((dot/tdl_err) >3){h_invMassDotCutsInv->Fill(invariantMass);}
@@ -500,7 +513,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 					   if (pt > 70){h_invMassPt70->Fill(invariantMass);}
 					   if (pt > 80){h_invMassPt80->Fill(invariantMass);}
 				       if (pt > 90){h_invMassPt90->Fill(invariantMass);}
-					   if (pt > 100){h_invMassPt100->Fill(invariantMass);}
+					   if (pt > 100){h_invMassPt250->Fill(invariantMass);}
 					   if ((dot/tdl_err) <-3){h_invMassDotCuts->Fill(invariantMass);}
 					   if (theta > 3.1514 -0.18){h_invMass_lwCut1->Fill(invariantMass);}
 					   if (theta > 3.1514 -0.16){h_invMass_lwCut2->Fill(invariantMass);}
@@ -554,18 +567,19 @@ MuonAnalyzer::beginJob()
  mfile = new TFile(of, "recreate");
  
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+ h_invMassLoose = new TH1F ("InvMassLoose", "Lepton Pair Invariant Mass with no theta cut", 100, 0 , 600);
  h_invMassPt50 = new TH1F ("InvMassPt50", "Lepton Pair Invariant Mass (Pt >50, lw cut)", 100, 0 , 600);
  h_invMassPt60 = new TH1F ("InvMassPt60", "Lepton Pair Invariant Mass (Pt >60, lw cut)", 100, 0 , 600);
  h_invMassPt70 = new TH1F ("InvMassPt70", "Lepton Pair Invariant Mass (Pt >70, lw cut)", 100, 0 , 600);
  h_invMassPt80 = new TH1F ("InvMassPt80", "Lepton Pair Invariant Mass (Pt >80, lw cut)", 100, 0 , 600);
  h_invMassPt90 = new TH1F ("InvMassPt90", "Lepton Pair Invariant Mass (Pt >90, lw cut)", 100, 0 , 600);
- h_invMassPt100 = new TH1F ("InvMassPt100", "Lepton Pair Invariant Mass (Pt >100 lw cut)", 100, 0 , 600);
+ h_invMassPt250 = new TH1F ("InvMassPt250", "Lepton Pair Invariant Mass (Pt >100 lw cut)", 100, 0 , 600);
  h_invMassPt50Inv = new TH1F ("InvMassPt50Inv", "Lepton Pair Invariant Mass (Pt >50)", 100, 0 , 600);
  h_invMassPt60Inv = new TH1F ("InvMassPt60Inv", "Lepton Pair Invariant Mass (Pt >60)", 100, 0 , 600);
  h_invMassPt70Inv = new TH1F ("InvMassPt70Inv", "Lepton Pair Invariant Mass (Pt >70)", 100, 0 , 600);
  h_invMassPt80Inv = new TH1F ("InvMassPt80Inv", "Lepton Pair Invariant Mass (Pt >80)", 100, 0 , 600);
  h_invMassPt90Inv = new TH1F ("InvMassPt90Inv", "Lepton Pair Invariant Mass (Pt >90)", 100, 0 , 600);
- h_invMassPt100Inv = new TH1F ("InvMassPt100Inv", "Lepton Pair Invariant Mass (Pt >100)", 100, 0 , 600);
+ h_invMassPt250Inv = new TH1F ("InvMassPt250Inv", "Lepton Pair Invariant Mass (Pt >100)", 100, 0 , 600);
  h_invMassDotCuts = new TH1F ("InvMassDotCuts", "Lepton Pair Invariant Mass (dot product cut)", 100, 0 , 600);
  h_invMassDotCutsInv = new TH1F ("InvMassDotCutsInv", "Lepton Pair Invariant Mass  (inverted dot product cut)", 100, 0 , 600);
  h_pt = new TH1F ("pt", "Lepton Pair Transverse momentum", 100, 0 , 450);
@@ -595,8 +609,14 @@ MuonAnalyzer::beginJob()
  h_invMass_lwCut_inv9 = new TH1F ("InvMass_lwCut_inv9", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMass_LC = new TH1F ("InvMass_LC", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_lxy_err = new TH1F ("Lxy_err", "Transeverse decay length",20,0,20); 	  
- h_dotP = new TH1F ("dotP", "vertex-momentum dot product",50,-10,10); 	  
+ h_dotP = new TH1F ("dotP", "vertex-momentum dot product",50,-30,30); 	  
+ h_dotP_err = new TH1F ("dotP_err", "vertex-momentum dot product/error",50,-600,600); 	  
+ h_dotPLw = new TH1F ("dotPLw", "vertex-momentum dot product (lw)",50,-30,30); 	  
+ h_dotPLw_err = new TH1F ("dotPLw_err", "vertex-momentum dot product /error (lw)",50,-600,600); 	  
  h_theta = new TH1F ("theta", "primary-secondary vertex displacement and lepton total momentum angle",200,0,4); 	  
+ h_thetaCut = new TH1F ("thetaCut", "primary-secondary vertex displacement and lepton total momentum angle with pt > 250",200,0,4); 	  
+ h_thetaLw = new TH1F ("thetaLw", "primary-secondary vertex displacement and lepton total momentum angle for lw particles",200,0,4); 	  
+ h_thetaLwCut = new TH1F ("thetaLwCut", "primary-secondary vertex displacement and lepton total momentum angle for lw particles with pt > 250",200,0,4); 	  
  nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
 		
 		
