@@ -298,6 +298,8 @@ for (unsigned int i = 0; i< trigNames.size(); i++)
 std::string filterName = "none";
 std::cout<<"path name: "<<pathName<<endl; 
 std::cout<<"prescale "<<hltConfig_.prescaleValue(iEvent,iSetup,pathName)<<std::endl;
+int prescale = hltConfig_.prescaleValue(iEvent,iSetup,pathName) ;
+
 //cout<<filterName<<endl;
 
 if (triggerFound == 0)
@@ -463,22 +465,22 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  dot = dotProduct(secVert_x-vertex_x, secVert_y-vertex_y, itTrack1->px()+itTrack2->px(),itTrack1->py()+itTrack2->py());
 			  invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 			  //cout<<theta<<endl;
-			  h_theta->Fill(theta);
-			  h_thetaLw->Fill(3.1514-theta);
-			  h_pt->Fill(pt);
-			  if ((dot/tdl_err) <-3){h_ptM->Fill(pt);}
-			  if ((dot/tdl_err) > 3){h_ptP->Fill(pt);}
-			  if (pt > 50){h_invMassPt50Inv->Fill(invariantMass);}
-			  if (pt > 60){h_invMassPt60Inv->Fill(invariantMass);}
-			  if (pt > 70){h_invMassPt70Inv->Fill(invariantMass);}
-			  if (pt > 80){h_invMassPt80Inv->Fill(invariantMass);}
-			  if (pt > 90){h_invMassPt90Inv->Fill(invariantMass);}
-			  if (pt > 250){h_invMassPt250Inv->Fill(invariantMass); h_thetaCut->Fill(theta); h_thetaLwCut->Fill(3.1514-theta);}
-			  h_dotP->Fill(dot);
-			  h_dotPLw->Fill(dot);
-			  h_dotP_err->Fill(dot/tdl_err);
-			  h_dotPLw_err->Fill(-dot/tdl_err);
-			  h_invMassLoose->Fill(invariantMass);
+			  h_theta->Fill(theta,prescale);
+			  h_thetaLw->Fill(3.1514-theta, prescale);
+			  h_pt->Fill(pt, prescale);
+			  if ((dot/tdl_err) <-3){h_ptM->Fill(pt, prescale);}
+			  if ((dot/tdl_err) > 3){h_ptP->Fill(pt, prescale);}
+			  if (pt > 50){h_invMassPt50Inv->Fill(invariantMass, prescale);}
+			  if (pt > 60){h_invMassPt60Inv->Fill(invariantMass, prescale);}
+			  if (pt > 70){h_invMassPt70Inv->Fill(invariantMass, prescale);}
+			  if (pt > 80){h_invMassPt80Inv->Fill(invariantMass, prescale);}
+			  if (pt > 90){h_invMassPt90Inv->Fill(invariantMass, prescale);}
+			  if (pt > 250){h_invMassPt250Inv->Fill(invariantMass, prescale); h_thetaCut->Fill(theta, prescale); h_thetaLwCut->Fill(3.1514-theta, prescale);}
+			  h_dotP->Fill(dot, prescale);
+			  h_dotPLw->Fill(dot, prescale);
+			  h_dotP_err->Fill(dot/tdl_err, prescale);
+			  h_dotPLw_err->Fill(-dot/tdl_err, prescale);
+			  h_invMassLoose->Fill(invariantMass, prescale);
 			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
 					
 					{
@@ -492,29 +494,29 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 						
 					    
 					     
-				         h_invMass->Fill(invariantMass);
-				         if ((dot/tdl_err) >3){h_invMassDotCutsInv->Fill(invariantMass);}
+				         h_invMass->Fill(invariantMass, prescale);
+				         if ((dot/tdl_err) >3){h_invMassDotCutsInv->Fill(invariantMass, prescale);}
 						 
-						 h_invMass_lwCut_inv->Fill(invariantMass);
-						 if (theta < 0.18){h_invMass_lwCut_inv1->Fill(invariantMass);}
-						 if (theta < 0.16){h_invMass_lwCut_inv2->Fill(invariantMass);}
-						 if (theta < 0.14){h_invMass_lwCut_inv3->Fill(invariantMass);}
-						 if (theta < 0.12){h_invMass_lwCut_inv4->Fill(invariantMass);}
-						 if (theta < 0.10){h_invMass_lwCut_inv5->Fill(invariantMass);}
-						 if (theta < 0.08){h_invMass_lwCut_inv6->Fill(invariantMass);}
-						 if (theta < 0.06){h_invMass_lwCut_inv7->Fill(invariantMass);}
-						 if (theta < 0.04){h_invMass_lwCut_inv8->Fill(invariantMass);}
-						 if (theta < 0.02){h_invMass_lwCut_inv9->Fill(invariantMass);}
+						 h_invMass_lwCut_inv->Fill(invariantMass, prescale);
+						 if (theta < 0.18){h_invMass_lwCut_inv1->Fill(invariantMass, prescale);}
+						 if (theta < 0.16){h_invMass_lwCut_inv2->Fill(invariantMass, prescale);}
+						 if (theta < 0.14){h_invMass_lwCut_inv3->Fill(invariantMass, prescale);}
+						 if (theta < 0.12){h_invMass_lwCut_inv4->Fill(invariantMass, prescale);}
+						 if (theta < 0.10){h_invMass_lwCut_inv5->Fill(invariantMass, prescale);}
+						 if (theta < 0.08){h_invMass_lwCut_inv6->Fill(invariantMass, prescale);}
+						 if (theta < 0.06){h_invMass_lwCut_inv7->Fill(invariantMass, prescale);}
+						 if (theta < 0.04){h_invMass_lwCut_inv8->Fill(invariantMass, prescale);}
+						 if (theta < 0.02){h_invMass_lwCut_inv9->Fill(invariantMass, prescale);}
 						 
 				         double lxy_err = tdl/(tdl_err);
 				         if (lxy_err > 20)
 				         {lxy_err = 19;}
-				         h_lxy_err->Fill(lxy_err);
+				         h_lxy_err->Fill(lxy_err, prescale);
 				         
 				    //with lifetime related cuts
 				         if (IPC && tdl/tdl_err > 5)
 				         {
-							 h_invMass_LC->Fill(invariantMass);
+							 h_invMass_LC->Fill(invariantMass, prescale);
 						 }
 						 
 				    
@@ -525,23 +527,23 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				
 					   double invariantMass;
 					   invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
-					   h_invMass_lwCut->Fill(invariantMass);
-					   if (pt > 50){h_invMassPt50->Fill(invariantMass);}
-			           if (pt > 60){h_invMassPt60->Fill(invariantMass);}
-					   if (pt > 70){h_invMassPt70->Fill(invariantMass);}
-					   if (pt > 80){h_invMassPt80->Fill(invariantMass);}
-				       if (pt > 90){h_invMassPt90->Fill(invariantMass);}
-					   if (pt > 100){h_invMassPt250->Fill(invariantMass);}
-					   if ((dot/tdl_err) <-3){h_invMassDotCuts->Fill(invariantMass);}
-					   if (theta > 3.1514 -0.18){h_invMass_lwCut1->Fill(invariantMass);}
-					   if (theta > 3.1514 -0.16){h_invMass_lwCut2->Fill(invariantMass);}
-					   if (theta > 3.1514 -0.14){h_invMass_lwCut3->Fill(invariantMass);}
-					   if (theta > 3.1514 -0.12){h_invMass_lwCut4->Fill(invariantMass);}
-					   if (theta > 3.1514 -0.10){h_invMass_lwCut5->Fill(invariantMass);}
-					   if (theta > 3.1514 -0.08){h_invMass_lwCut6->Fill(invariantMass);}
-					   if (theta > 3.1514 -0.06){h_invMass_lwCut7->Fill(invariantMass);}
-					   if (theta > 3.1514 -0.04){h_invMass_lwCut8->Fill(invariantMass);}
-					   if (theta > 3.1514 -0.02){h_invMass_lwCut9->Fill(invariantMass);}
+					   h_invMass_lwCut->Fill(invariantMass, prescale);
+					   if (pt > 50){h_invMassPt50->Fill(invariantMass, prescale);}
+			           if (pt > 60){h_invMassPt60->Fill(invariantMass, prescale);}
+					   if (pt > 70){h_invMassPt70->Fill(invariantMass, prescale);}
+					   if (pt > 80){h_invMassPt80->Fill(invariantMass, prescale);}
+				       if (pt > 90){h_invMassPt90->Fill(invariantMass, prescale);}
+					   if (pt > 100){h_invMassPt250->Fill(invariantMass, prescale);}
+					   if ((dot/tdl_err) <-3){h_invMassDotCuts->Fill(invariantMass, prescale);}
+					   if (theta > 3.1514 -0.18){h_invMass_lwCut1->Fill(invariantMass, prescale);}
+					   if (theta > 3.1514 -0.16){h_invMass_lwCut2->Fill(invariantMass, prescale);}
+					   if (theta > 3.1514 -0.14){h_invMass_lwCut3->Fill(invariantMass, prescale);}
+					   if (theta > 3.1514 -0.12){h_invMass_lwCut4->Fill(invariantMass, prescale);}
+					   if (theta > 3.1514 -0.10){h_invMass_lwCut5->Fill(invariantMass, prescale);}
+					   if (theta > 3.1514 -0.08){h_invMass_lwCut6->Fill(invariantMass, prescale);}
+					   if (theta > 3.1514 -0.06){h_invMass_lwCut7->Fill(invariantMass, prescale);}
+					   if (theta > 3.1514 -0.04){h_invMass_lwCut8->Fill(invariantMass, prescale);}
+					   if (theta > 3.1514 -0.02){h_invMass_lwCut9->Fill(invariantMass, prescale);}
 					  
 		    
 				   }
