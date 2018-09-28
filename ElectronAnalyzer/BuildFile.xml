@@ -6,6 +6,9 @@
 <use name="PhysicsTools/UtilAlgos"/>
 <use name="DataFormats/JetReco"/>
 
+<use name="HLTrigger/HLTcore"/>
+<use name="DataFormats/Common"/>
+<use name="DataFormats/HLTReco"/>
 <use name="RecoVertex/KalmanVertexFit"/>
 <use name="TrackingTools/TransientTrack"/>
 <use name="TrackingTools/Records"/>
