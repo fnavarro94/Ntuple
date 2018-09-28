@@ -51,6 +51,11 @@
 #include "DataFormats/JetReco/interface/Jet.h"
 #include "DataFormats/JetReco/interface/PFJet.h"
 
+
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/HLTReco/interface/TriggerEvent.h"
+
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/TrackReco/interface/Track.h"
@@ -103,13 +108,17 @@ class ElectronAnalyzer : public edm::EDAnalyzer {
       TH1F * h_theta;
       TH1F * nEvents;
       
-      
+      std::string   processName_;
+      std::string   triggerName_;
+      std::string   datasetName_;
+      edm::InputTag triggerResultsTag_;
+      edm::InputTag triggerEventTag_;
       int vuelta;
       int NvertTracks = 0, Ntracks = 0;
       int numJets2 = 0;
       double dotMax = 0;
       double dotMin = 0;
-		 
+	  HLTConfigProvider hltConfig_;
 
       // ----------member data ---------------------------
       edm::InputTag trackTags_; //used to select what tracks to read from configuration file
@@ -129,9 +138,14 @@ class ElectronAnalyzer : public edm::EDAnalyzer {
 //
 ElectronAnalyzer::ElectronAnalyzer(const edm::ParameterSet& iConfig)
 :
- trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks")),
+ 
+processName_(iConfig.getParameter<std::string>("processName")),
+triggerName_(iConfig.getParameter<std::string>("triggerName")),
+datasetName_(iConfig.getParameter<std::string>("datasetName")),
+triggerResultsTag_(iConfig.getParameter<edm::InputTag>("triggerResults")),
+triggerEventTag_(iConfig.getParameter<edm::InputTag>("triggerEvent")),
+trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks")),
  outFile_(iConfig.getParameter<std::string>("outFile"))
-
 {
    //now do what ever initialization is needed
 
@@ -702,8 +716,54 @@ ElectronAnalyzer::impactParameterCut(reco::TrackCollection::const_iterator it1, 
 }
 // ------------ method called when starting to processes a run  ------------
 void 
-ElectronAnalyzer::beginRun(edm::Run const&, edm::EventSetup const&)
-{
+ElectronAnalyzer::beginRun(edm::Run const& iRun, edm::EventSetup const& iSetup)
+{ bool changed = true;
+	if (hltConfig_.init(iRun,iSetup,processName_,changed)) {
+    if (changed) {
+		//hltConfig_.dump("Triggers");
+		//std::cout<<"prescale table"<<std::endl;
+		//hltConfig_.dump("PrescaleTable");
+		//std::cout<<"	Molude Labels	"<<std::endl;
+//		for (unsigned int i = 0; i < hltConfig_.moduleLabels("HLT_DoublePhoton33_v2").size(); i++){   //  for data
+		//for (unsigned int i = 0; i < hltConfig_.moduleLabels("HLT_L2DoubleMu23_NoVertex_v9").size(); i++){  // for simulation
+//			std::cout<<hltConfig_.moduleLabels("HLT_DoublePhoton33_v2")[i]<<std::endl;
+			
+//			}
+      // check if trigger name in (new) config
+      if (triggerName_!="@") { // "@" means: analyze all triggers in config
+	const unsigned int n(hltConfig_.size());
+	const unsigned int triggerIndex(hltConfig_.triggerIndex(triggerName_));
+	if (triggerIndex>=n) {
+	  //cout << "HLTEventAnalyzerAOD::analyze:"
+	   //    << " TriggerName " << triggerName_ 
+	    //   << " not available in (new) config!" << endl;
+	  //cout << "Available TriggerNames are: " << endl;
+	  //hltConfig_.dump("Triggers");
+	}
+      }
+
+      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      //EXAMPLE: How to dump information from the Provenance
+      // Uncomment the following lines if needed.
+      //the hltConfig has many accessors
+      //For details see the header of the class,HLTConfigProvider.h
+      //To check the example, uncomment the lines below
+      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      //hltConfig_.dump("Streams");
+      //hltConfig_.dump("Datasets"); 
+      //hltConfig_.dump("PrescaleTable");
+      //hltConfig_.dump("ProcessPSet");
+      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    }
+
+
+  
+  } else {
+   // cout << "HLTEventAnalyzerAOD::analyze:"
+	// << " config extraction failure with process name "
+	 //<< processName_ << endl;
+  }
+  
 }
 
 // ------------ method called when ending the processing of a run  ------------
