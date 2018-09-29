@@ -101,6 +101,8 @@ legend_pt->SetBorderSize(0);
 
 hs_pt->Draw(" hist eX0"); 
 hs_pt->GetXaxis()->SetTitle("PT [GeV/c]");
+hs_pt->GetYaxis()->SetTitle("Eventos");
+hs_pt->GetYaxis()->SetTitleOffset(1.4);
 cs_pt->Update(); 
 
 legend_pt->Draw();

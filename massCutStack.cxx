@@ -100,7 +100,9 @@ legend_InvMassPt250->SetBorderSize(0);
 
 
 hs_InvMassPt250->Draw(" hist eX0"); 
-hs_InvMassPt250->GetXaxis()->SetTitle("PT [GeV/c]");
+hs_InvMassPt250->GetXaxis()->SetTitle("M_{#mu#mu} [GeV/c^{2}]");
+hs_InvMassPt250->GetYaxis()->SetTitleOffset(1.5);
+hs_InvMassPt250->GetYaxis()->SetTitle("Eventos");
 cs_InvMassPt250->Update(); 
 
 legend_InvMassPt250->Draw();

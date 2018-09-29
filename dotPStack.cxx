@@ -100,7 +100,8 @@ legend_dotP->SetBorderSize(0);
 
 
 hs_dotP->Draw(" hist eX0"); 
-hs_dotP->GetXaxis()->SetTitle("PT [GeV/c]");
+hs_dotP->GetXaxis()->SetTitle("Pt #dot L_{xy}");
+hs_dotP->GetYaxis()->SetTitle("Entries");
 cs_dotP->Update(); 
 
 legend_dotP->Draw();

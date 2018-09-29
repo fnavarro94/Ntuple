@@ -100,7 +100,9 @@ legend_InvMass->SetBorderSize(0);
 
 
 hs_InvMass->Draw(" hist eX0"); 
-hs_InvMass->GetXaxis()->SetTitle("PT [GeV/c]");
+hs_InvMass->GetXaxis()->SetTitle("M_{#mu#mu} [GeV/c]");
+hs_InvMass->GetYaxis()->SetTitleOffset(1.5);
+hs_InvMass->GetYaxis()->SetTitle("Eventos");
 cs_InvMass->Update(); 
 
 legend_InvMass->Draw();

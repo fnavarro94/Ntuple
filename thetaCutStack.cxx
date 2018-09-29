@@ -100,7 +100,9 @@ legend_thetaCut->SetBorderSize(0);
 
 
 hs_thetaCut->Draw(" hist eX0"); 
-hs_thetaCut->GetXaxis()->SetTitle("PT [GeV/c]");
+hs_thetaCut->GetXaxis()->SetTitle(" #theta");
+hs_thetaCut->GetYaxis()->SetTitleOffset(1.5);
+hs_thetaCut->GetYaxis()->SetTitle("Eventos");
 cs_thetaCut->Update(); 
 
 legend_thetaCut->Draw();
