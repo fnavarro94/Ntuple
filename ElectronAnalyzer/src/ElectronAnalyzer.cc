@@ -401,7 +401,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
        itTrack2 != tracks->end();                      
        ++itTrack2) 
        {
-		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1   && deltaR(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta())> 0.2 )
+		   if(itTrack2->charge() ==-1 && matchedTrack[j] ==1    )
 		   {  
 			   
  // Secondary vertex is reconstructed
@@ -481,7 +481,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  h_dotP_err->Fill(dot/tdl_err, prescale);
 			  h_dotPLw_err->Fill(-dot/tdl_err, prescale);
 			  h_invMassLoose->Fill(invariantMass, prescale);
-			   if ((conePt_var < 4 && cosAlpha > -0.95 && (theta < 0.2 )))
+			   if ((conePt_var < 4  && (theta < 0.8 )))
 					
 					{
 					   
@@ -521,7 +521,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 						 
 				    
 				 }
-				 if ((conePt_var < 4 && cosAlpha > -0.95 && (theta >3.1514- 0.2 )))
+				 if ((conePt_var < 4  && (theta >3.1514- 0.8 )))
 					
 					{
 				
@@ -748,7 +748,7 @@ ElectronAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D, do
 	
 	
 		
-	  if(purity && pt > 33 && hits >= 6   && eta < 2  && hits3D >1)
+	  if(purity && pt > 41 && hits >= 6   && eta < 2  && hits3D >1)
 	  if(true)
 	  
 	  {
