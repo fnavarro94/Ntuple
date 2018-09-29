@@ -435,7 +435,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			   //cout<<secVert_x<<secVert_y<<endl;
 			   double conePt_var=conePt(i , j, itTrack1->eta(), itTrack1->phi(),  tracks->size(), iEvent,iSetup);
 			   
-			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
+			  // double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
 			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -vertex_x,  secVert_y-vertex_y);
 			   double px = itTrack1->px() + itTrack2->px();
 			   double py = itTrack1->py() + itTrack2->py();
