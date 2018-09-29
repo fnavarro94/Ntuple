@@ -16,20 +16,20 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 
 
-from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag,'FT_53_LV5_AN1::All', '')
+#from Configuration.AlCa.GlobalTag import GlobalTag
+#process.GlobalTag = GlobalTag(process.GlobalTag,'FT_53_LV5_AN1::All', '')
 
 
 
-#process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/FT_53_LV5_AN1_RUNA.db')
+process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/FT_53_LV5_AN1_RUNA.db')
 #process.GlobalTag.connect = cms.string('sqlite_file:/cvmfs/cms-opendata-conddb.cern.ch/START53_LV6A1.db')
-#process.GlobalTag.globaltag = 'FT_53_LV5_AN1::All'
+process.GlobalTag.globaltag = 'FT_53_LV5_AN1::All'
 #process.GlobalTag.globaltag = 'START53_LV6A1::All'
 
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
-'root://eospublic.cern.ch//eos/opendata/cms/Run2011A/DoubleMu/AOD/12Oct2013-v1/10000/000D143E-9535-E311-B88B-002618943934.root'
+'root://eospublic.cern.ch//eos/opendata/cms/Run2011A/Photon/AOD/12Oct2013-v1/20000/02B69E3F-8239-E311-8297-003048F0E39E.root'
 #'root://eospublic.cern.ch//eos/opendata/cms/Run2011A/DoubleMu/AOD/12Oct2013-v1/10000/0020AF81-A835-E311-97DC-00261894398C.root',
 #'root://eospublic.cern.ch//eos/opendata/cms/Run2011A/DoubleMu/AOD/12Oct2013-v1/10000/0062BD79-9235-E311-9320-003048FFCC2C.root',
 #'root://eospublic.cern.ch//eos/opendata/cms/Run2011A/DoubleMu/AOD/12Oct2013-v1/10000/008B0182-5E35-E311-B039-003048FFD71E.root',3'root://eospublic.cern.ch//eos/opendata/cms/Run2011A/DoubleMu/AOD/12Oct2013-v1/10000/009A5FA1-0D36-E311-B603-00261894388A.root',
@@ -60,8 +60,22 @@ process.source = cms.Source("PoolSource",
 
 process.demo = cms.EDAnalyzer('ElectronAnalyzer'
     , tracks = cms.untracked.InputTag('generalTracks'),
-      outFile = cms.string("electron.root")
+      outFile = cms.string("electron.root"),
+      processName = cms.string("HLT"),
+                              triggerName = cms.string("@"),         
+                              datasetName = cms.string("SingleMu"),           
+                              triggerResults = cms.InputTag("TriggerResults","","HLT"),
+                              triggerEvent   = cms.InputTag("hltTriggerSummaryAOD","","HLT")        
 )
 
+#process.gettriggerinfo = cms.EDAnalyzer('TriggerInfoAnalyzer',
+#                              processName = cms.string("HLT"),
+#                              triggerName = cms.string("@"),         
+#                              datasetName = cms.string("SingleMu"),           
+#                              triggerResults = cms.InputTag("TriggerResults","","HLT"),
+#                              triggerEvent   = cms.InputTag("hltTriggerSummaryAOD","","HLT")                             
+#                              )
 
+
+#process.triggerinfo = cms.Path(process.gettriggerinfo)
 process.p = cms.Path(process.demo)
