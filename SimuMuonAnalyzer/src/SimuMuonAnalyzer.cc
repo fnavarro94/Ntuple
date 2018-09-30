@@ -130,6 +130,88 @@ class SimuMuonAnalyzer : public edm::EDAnalyzer {
       TH1F * h_invMass_lwCut8;
       TH1F * h_invMass_lwCut9;
       
+
+TH1F * h_invMassDPCut10;
+TH1F * h_invMassDPCut20;
+TH1F * h_invMassDPCut30;
+TH1F * h_invMassDPCut40;
+TH1F * h_invMassDPCut50;
+TH1F * h_invMassDPCut60;
+TH1F * h_invMassDPCut70;
+TH1F * h_invMassDPCut80;
+TH1F * h_invMassDPCut90;
+TH1F * h_invMassDPCut100;
+TH1F * h_invMassDPCut110;
+TH1F * h_invMassDPCut120;
+TH1F * h_invMassDPCut130;
+TH1F * h_invMassDPCut140;
+TH1F * h_invMassDPCut150;
+TH1F * h_invMassDPCut160;
+TH1F * h_invMassDPCut170;
+TH1F * h_invMassDPCut180;
+TH1F * h_invMassDPCut190;
+TH1F * h_invMassDPCut200;
+TH1F * h_invMassDPCut210;
+TH1F * h_invMassDPCut220;
+TH1F * h_invMassDPCut230;
+TH1F * h_invMassDPCut240;
+TH1F * h_invMassDPCut250;
+TH1F * h_invMassDPCut260;
+TH1F * h_invMassDPCut270;
+TH1F * h_invMassDPCut280;
+TH1F * h_invMassDPCut290;
+TH1F * h_invMassDPCut300;
+TH1F * h_invMassDPCut310;
+TH1F * h_invMassDPCut320;
+TH1F * h_invMassDPCut330;
+TH1F * h_invMassDPCut340;
+TH1F * h_invMassDPCut350;
+TH1F * h_invMassDPCut360;
+TH1F * h_invMassDPCut370;
+TH1F * h_invMassDPCut380;
+TH1F * h_invMassDPCut390;
+TH1F * h_invMassDPCut400;
+TH1F * h_invMassDPCutLw10;
+TH1F * h_invMassDPCutLw20;
+TH1F * h_invMassDPCutLw30;
+TH1F * h_invMassDPCutLw40;
+TH1F * h_invMassDPCutLw50;
+TH1F * h_invMassDPCutLw60;
+TH1F * h_invMassDPCutLw70;
+TH1F * h_invMassDPCutLw80;
+TH1F * h_invMassDPCutLw90;
+TH1F * h_invMassDPCutLw100;
+TH1F * h_invMassDPCutLw110;
+TH1F * h_invMassDPCutLw120;
+TH1F * h_invMassDPCutLw130;
+TH1F * h_invMassDPCutLw140;
+TH1F * h_invMassDPCutLw150;
+TH1F * h_invMassDPCutLw160;
+TH1F * h_invMassDPCutLw170;
+TH1F * h_invMassDPCutLw180;
+TH1F * h_invMassDPCutLw190;
+TH1F * h_invMassDPCutLw200;
+TH1F * h_invMassDPCutLw210;
+TH1F * h_invMassDPCutLw220;
+TH1F * h_invMassDPCutLw230;
+TH1F * h_invMassDPCutLw240;
+TH1F * h_invMassDPCutLw250;
+TH1F * h_invMassDPCutLw260;
+TH1F * h_invMassDPCutLw270;
+TH1F * h_invMassDPCutLw280;
+TH1F * h_invMassDPCutLw290;
+TH1F * h_invMassDPCutLw300;
+TH1F * h_invMassDPCutLw310;
+TH1F * h_invMassDPCutLw320;
+TH1F * h_invMassDPCutLw330;
+TH1F * h_invMassDPCutLw340;
+TH1F * h_invMassDPCutLw350;
+TH1F * h_invMassDPCutLw360;
+TH1F * h_invMassDPCutLw370;
+TH1F * h_invMassDPCutLw380;
+TH1F * h_invMassDPCutLw390;
+TH1F * h_invMassDPCutLw400;
+      
       TH1F * h_invMass_lwCut_inv;
       TH1F * h_invMass_lwCut_inv1;
       TH1F * h_invMass_lwCut_inv2;
@@ -481,6 +563,9 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  h_pt->Fill(pt);
 			  if ((dot/tdl_err) <-3){h_ptM->Fill(pt);}
 			  if ((dot/tdl_err) > 3){h_ptP->Fill(pt);}
+			  
+			  
+			  
 			  if (pt > 250){h_invMassPt250Inv->Fill(invariantMass);h_thetaCut250->Fill(theta); h_thetaLwCut250->Fill(3.1514-theta);}
 			  if (pt > 260){h_invMassPt260Inv->Fill(invariantMass);h_thetaCut260->Fill(theta); h_thetaLwCut260->Fill(3.1514-theta);}
 			  if (pt > 270){h_invMassPt270Inv->Fill(invariantMass);h_thetaCut270->Fill(theta); h_thetaLwCut270->Fill(3.1514-theta);}
@@ -492,8 +577,92 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  if (pt > 330){h_invMassPt330Inv->Fill(invariantMass); h_thetaCut330->Fill(theta); h_thetaLwCut330->Fill(3.1514-theta);}
 			  if (pt > 340){h_invMassPt340Inv->Fill(invariantMass); h_thetaCut340->Fill(theta); h_thetaLwCut340->Fill(3.1514-theta);}
 			  if (pt > 350){h_invMassPt350Inv->Fill(invariantMass); h_thetaCut350->Fill(theta); h_thetaLwCut350->Fill(3.1514-theta);}
+			  
+							  
+							  
+				if ((dot/tdl_err) <-10){h_invMassDPCut10->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-20){h_invMassDPCut20->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-30){h_invMassDPCut30->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-40){h_invMassDPCut40->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-50){h_invMassDPCut50->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-60){h_invMassDPCut60->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-70){h_invMassDPCut70->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-80){h_invMassDPCut80->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-90){h_invMassDPCut90->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-100){h_invMassDPCut100->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-110){h_invMassDPCut110->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-120){h_invMassDPCut120->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-130){h_invMassDPCut130->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-140){h_invMassDPCut140->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-150){h_invMassDPCut150->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-160){h_invMassDPCut160->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-170){h_invMassDPCut170->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-180){h_invMassDPCut180->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-190){h_invMassDPCut190->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-200){h_invMassDPCut200->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-210){h_invMassDPCut210->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-220){h_invMassDPCut220->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-230){h_invMassDPCut230->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-240){h_invMassDPCut240->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-250){h_invMassDPCut250->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-260){h_invMassDPCut260->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-270){h_invMassDPCut270->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-280){h_invMassDPCut280->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-290){h_invMassDPCut290->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-300){h_invMassDPCut300->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-310){h_invMassDPCut310->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-320){h_invMassDPCut320->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-330){h_invMassDPCut330->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-340){h_invMassDPCut340->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-350){h_invMassDPCut350->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-360){h_invMassDPCut360->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-370){h_invMassDPCut370->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-380){h_invMassDPCut380->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-390){h_invMassDPCut390->Fill(invariantMass);} 
+				if ((dot/tdl_err) <-400){h_invMassDPCut400->Fill(invariantMass);} 
+				if ((-dot/tdl_err) <-10){h_invMassDPCutLw10->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-20){h_invMassDPCutLw20->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-30){h_invMassDPCutLw30->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-40){h_invMassDPCutLw40->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-50){h_invMassDPCutLw50->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-60){h_invMassDPCutLw60->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-70){h_invMassDPCutLw70->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-80){h_invMassDPCutLw80->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-90){h_invMassDPCutLw90->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-100){h_invMassDPCutLw100->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-110){h_invMassDPCutLw110->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-120){h_invMassDPCutLw120->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-130){h_invMassDPCutLw130->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-140){h_invMassDPCutLw140->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-150){h_invMassDPCutLw150->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-160){h_invMassDPCutLw160->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-170){h_invMassDPCutLw170->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-180){h_invMassDPCutLw180->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-190){h_invMassDPCutLw190->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-200){h_invMassDPCutLw200->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-210){h_invMassDPCutLw210->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-220){h_invMassDPCutLw220->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-230){h_invMassDPCutLw230->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-240){h_invMassDPCutLw240->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-250){h_invMassDPCutLw250->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-260){h_invMassDPCutLw260->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-270){h_invMassDPCutLw270->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-280){h_invMassDPCutLw280->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-290){h_invMassDPCutLw290->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-300){h_invMassDPCutLw300->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-310){h_invMassDPCutLw310->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-320){h_invMassDPCutLw320->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-330){h_invMassDPCutLw330->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-340){h_invMassDPCutLw340->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-350){h_invMassDPCutLw350->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-360){h_invMassDPCutLw360->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-370){h_invMassDPCutLw370->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-380){h_invMassDPCutLw380->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-390){h_invMassDPCutLw390->Fill(invariantMass);}
+				if ((-dot/tdl_err) <-400){h_invMassDPCutLw400->Fill(invariantMass);}
+			  
 			  h_dotP->Fill(dot);
-			  h_dotPLw->Fill(dot);
+			  h_dotPLw->Fill(-dot);
 			  h_dotP_err->Fill(dot/tdl_err);
 			  h_dotPLw_err->Fill(-dot/tdl_err);
 			  h_invMassLoose->Fill(invariantMass);
@@ -690,7 +859,92 @@ SimuMuonAnalyzer::beginJob()
  h_thetaLwCut320 = new TH1F ("thetaLwCut320", "primary-secondary vertex displacement and lepton total momentum angle for lw particles with pt > 320",200,0,4); 	  
  h_thetaLwCut330 = new TH1F ("thetaLwCut330", "primary-secondary vertex displacement and lepton total momentum angle for lw particles with pt > 330",200,0,4); 	  
  h_thetaLwCut340 = new TH1F ("thetaLwCut340", "primary-secondary vertex displacement and lepton total momentum angle for lw particles with pt > 340",200,0,4); 	  
- h_thetaLwCut350 = new TH1F ("thetaLwCut350", "primary-secondary vertex displacement and lepton total momentum angle for lw particles with pt > 350",200,0,4); 	  
+ h_thetaLwCut350 = new TH1F ("thetaLwCut350", "primary-secondary vertex displacement and lepton total momentum angle for lw particles with pt > 350",200,0,4); 	
+ 
+ 
+ 
+ 
+ h_invMassDPCut10 = new TH1F ("InvMassDPCut10", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut20 = new TH1F ("InvMassDPCut20", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut30 = new TH1F ("InvMassDPCut30", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut40 = new TH1F ("InvMassDPCut40", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut50 = new TH1F ("InvMassDPCut50", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut60 = new TH1F ("InvMassDPCut60", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut70 = new TH1F ("InvMassDPCut70", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut80 = new TH1F ("InvMassDPCut80", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut90 = new TH1F ("InvMassDPCut90", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut100 = new TH1F ("InvMassDPCut100", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut110 = new TH1F ("InvMassDPCut110", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut120 = new TH1F ("InvMassDPCut120", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut130 = new TH1F ("InvMassDPCut130", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut140 = new TH1F ("InvMassDPCut140", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut150 = new TH1F ("InvMassDPCut150", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut160 = new TH1F ("InvMassDPCut160", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut170 = new TH1F ("InvMassDPCut170", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut180 = new TH1F ("InvMassDPCut180", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut190 = new TH1F ("InvMassDPCut190", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut200 = new TH1F ("InvMassDPCut200", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut210 = new TH1F ("InvMassDPCut210", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut220 = new TH1F ("InvMassDPCut220", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut230 = new TH1F ("InvMassDPCut230", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut240 = new TH1F ("InvMassDPCut240", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut250 = new TH1F ("InvMassDPCut250", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut260 = new TH1F ("InvMassDPCut260", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut270 = new TH1F ("InvMassDPCut270", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut280 = new TH1F ("InvMassDPCut280", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut290 = new TH1F ("InvMassDPCut290", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut300 = new TH1F ("InvMassDPCut300", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut310 = new TH1F ("InvMassDPCut310", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut320 = new TH1F ("InvMassDPCut320", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut330 = new TH1F ("InvMassDPCut330", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut340 = new TH1F ("InvMassDPCut340", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut350 = new TH1F ("InvMassDPCut350", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut360 = new TH1F ("InvMassDPCut360", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut370 = new TH1F ("InvMassDPCut370", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut380 = new TH1F ("InvMassDPCut380", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut390 = new TH1F ("InvMassDPCut390", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCut400 = new TH1F ("InvMassDPCut400", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw10 = new TH1F ("InvMassDPCut10", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw20 = new TH1F ("InvMassDPCut20", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw30 = new TH1F ("InvMassDPCut30", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw40 = new TH1F ("InvMassDPCut40", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw50 = new TH1F ("InvMassDPCut50", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw60 = new TH1F ("InvMassDPCut60", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw70 = new TH1F ("InvMassDPCut70", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw80 = new TH1F ("InvMassDPCut80", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw90 = new TH1F ("InvMassDPCut90", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw100 = new TH1F ("InvMassDPCut100", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw110 = new TH1F ("InvMassDPCut110", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw120 = new TH1F ("InvMassDPCut120", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw130 = new TH1F ("InvMassDPCut130", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw140 = new TH1F ("InvMassDPCut140", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw150 = new TH1F ("InvMassDPCut150", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw160 = new TH1F ("InvMassDPCut160", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw170 = new TH1F ("InvMassDPCut170", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw180 = new TH1F ("InvMassDPCut180", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw190 = new TH1F ("InvMassDPCut190", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw200 = new TH1F ("InvMassDPCut200", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw210 = new TH1F ("InvMassDPCut210", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw220 = new TH1F ("InvMassDPCut220", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw230 = new TH1F ("InvMassDPCut230", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw240 = new TH1F ("InvMassDPCut240", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw250 = new TH1F ("InvMassDPCut250", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw260 = new TH1F ("InvMassDPCut260", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw270 = new TH1F ("InvMassDPCut270", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw280 = new TH1F ("InvMassDPCut280", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw290 = new TH1F ("InvMassDPCut290", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw300 = new TH1F ("InvMassDPCut300", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw310 = new TH1F ("InvMassDPCut310", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw320 = new TH1F ("InvMassDPCut320", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw330 = new TH1F ("InvMassDPCut330", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw340 = new TH1F ("InvMassDPCut340", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw350 = new TH1F ("InvMassDPCut350", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw360 = new TH1F ("InvMassDPCut360", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw370 = new TH1F ("InvMassDPCut370", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw380 = new TH1F ("InvMassDPCut380", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw390 = new TH1F ("InvMassDPCut390", "Lepton Pair Invariant Mass", 100, 0 , 600);
+h_invMassDPCutLw400 = new TH1F ("InvMassDPCut400", "Lepton Pair Invariant Mass", 100, 0 , 600);
+   
  nEvents = new TH1F ("nEvents", "Number of Events", 5, -5,5);
 		
 		
