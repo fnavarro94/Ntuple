@@ -270,13 +270,13 @@ if ( beamSpotHandle.isValid() )
  
  
 std::string pathName = "none";
-std::string toFind[3] = {"HLT_DoublePhoton33_v","HLT_DoublePhoton33_HEVT", "HLT_DoublePhoton38_HEVT"};
+std::string toFind[4] = {"HLT_DoublePhoton33_v","HLT_DoublePhoton33_HEVT", "HLT_DoublePhoton38_HEVT", "none"};
 
 
    
 int trigPathSize = trigNames.size();
 int triggerFound=9;
-for(int j = 0; j < 4; j++){
+for(int j = 0; j < 5; j++){
 for (unsigned int i = 0; i< trigNames.size(); i++)
 {
 	
@@ -288,7 +288,7 @@ for (unsigned int i = 0; i< trigNames.size(); i++)
 		triggerFound=j;
 		pathName = trig;
 		i = trigNames.size();
-		j = 4;
+		j = 5;
 		
 		}
 		
