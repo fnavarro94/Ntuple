@@ -43,7 +43,7 @@ process.source = cms.Source("PoolSource",
    )
 )
 
-process.demo = cms.EDAnalyzer('SimuElectronAnalyzer'
+process.demo = cms.EDAnalyzer('SimuElectronAnalyzer2'
     , tracks = cms.untracked.InputTag('generalTracks'),
       outFile = cms.string("file:simu.root")
 )
