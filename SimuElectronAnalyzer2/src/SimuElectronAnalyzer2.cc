@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    SimuElectronAnalyzer
-// Class:      SimuElectronAnalyzer
+// Package:    SimuElectronAnalyzer2
+// Class:      SimuElectronAnalyzer2
 // 
-/**\class SimuElectronAnalyzer SimuElectronAnalyzer.cc Ntuple/SimuElectronAnalyzer/src/SimuElectronAnalyzer.cc
+/**\class SimuElectronAnalyzer2 SimuElectronAnalyzer2.cc Ntuple/SimuElectronAnalyzer2/src/SimuElectronAnalyzer2.cc
 
  Description: [one line class summary]
 
@@ -64,10 +64,10 @@
 // class declaration
 //
 
-class SimuElectronAnalyzer : public edm::EDAnalyzer {
+class SimuElectronAnalyzer2 : public edm::EDAnalyzer {
    public:
-      explicit SimuElectronAnalyzer(const edm::ParameterSet&);
-      ~SimuElectronAnalyzer();
+      explicit SimuElectronAnalyzer2(const edm::ParameterSet&);
+      ~SimuElectronAnalyzer2();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -131,7 +131,7 @@ class SimuElectronAnalyzer : public edm::EDAnalyzer {
 //
 // constructors and destructor  
 //
-SimuElectronAnalyzer::SimuElectronAnalyzer(const edm::ParameterSet& iConfig)
+SimuElectronAnalyzer2::SimuElectronAnalyzer2(const edm::ParameterSet& iConfig)
 :
  trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks")),
  outFile_(iConfig.getParameter<std::string>("outFile"))
@@ -142,7 +142,7 @@ SimuElectronAnalyzer::SimuElectronAnalyzer(const edm::ParameterSet& iConfig)
 }
 
 
-SimuElectronAnalyzer::~SimuElectronAnalyzer()
+SimuElectronAnalyzer2::~SimuElectronAnalyzer2()
 {
  
    // do anything here that needs to be done at desctruction time
@@ -157,7 +157,7 @@ SimuElectronAnalyzer::~SimuElectronAnalyzer()
 
 // ------------ method called for each event  ------------
 void
-SimuElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+SimuElectronAnalyzer2::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
    using namespace reco;
@@ -296,7 +296,7 @@ trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filter
   
 if ((standardCuts && passTrig && beamSpotHandle.isValid()) )
 {
- int i = 0;
+ int j = 0;
  for(TrackCollection::const_iterator itTrack = tracks->begin();
        itTrack != tracks->end();                      
        ++itTrack) 
@@ -315,7 +315,7 @@ if ((standardCuts && passTrig && beamSpotHandle.isValid()) )
 		   { 
 			    if(deltaR(itTrack->phi(), itTrack->eta(), p.phi(), p.eta())< 0.1 )
 			   {  
-				   matchedTrack[i] = 1;
+				   matchedTrack[j] = 1;
 				   
 			      
 			   }
@@ -323,7 +323,7 @@ if ((standardCuts && passTrig && beamSpotHandle.isValid()) )
 		   } 
 		}  
 		  }
-		  i++;
+		  j++;
 	   }
 	
 	
@@ -472,7 +472,7 @@ i++;
 
 // ------------ method called once each job just before starting event loop  ------------
 void 
-SimuElectronAnalyzer::beginJob()
+SimuElectronAnalyzer2::beginJob()
 {TH1::AddDirectory(true);
  vuelta = 0;
  const char* of = outFile_.c_str();
@@ -500,7 +500,7 @@ SimuElectronAnalyzer::beginJob()
 
 // ------------ method called once each job just after ending the event loop  ------------
 void 
-SimuElectronAnalyzer::endJob() {
+SimuElectronAnalyzer2::endJob() {
 
 //mtree->Write();
 //std::cout<<"num traks "<<Ntracks<<" num vertTraks "<<NvertTracks<<std::endl;
@@ -512,7 +512,7 @@ mfile->Close();
 
 
 bool
-SimuElectronAnalyzer::cmsStandardCuts(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+SimuElectronAnalyzer2::cmsStandardCuts(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
  bool ret = false;
  int disp = 0;
@@ -586,7 +586,7 @@ SimuElectronAnalyzer::cmsStandardCuts(const edm::Event& iEvent, const edm::Event
 
 
 double
-SimuElectronAnalyzer::dotProduct(double x1, double y1 , double x2, double y2)
+SimuElectronAnalyzer2::dotProduct(double x1, double y1 , double x2, double y2)
 {
 	double ret;
 	ret = x1*x2+y1*y2;
@@ -594,7 +594,7 @@ SimuElectronAnalyzer::dotProduct(double x1, double y1 , double x2, double y2)
 }
 
 bool 
-SimuElectronAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D, double eta, double dxy, double dxyError)
+SimuElectronAnalyzer2::matchingCuts( bool purity, double pt, int hits, int hits3D, double eta, double dxy, double dxyError)
 {
 	bool ret = false;
 	
@@ -614,7 +614,7 @@ SimuElectronAnalyzer::matchingCuts( bool purity, double pt, int hits, int hits3D
 	return ret;
 }
 double 
-SimuElectronAnalyzer::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, double obj2Eta)
+SimuElectronAnalyzer2::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, double obj2Eta)
 {
 	double dPhi = obj1Phi - obj2Phi;
 	if (abs(dPhi)>3.1415/2)
@@ -626,7 +626,7 @@ SimuElectronAnalyzer::deltaR(double obj1Phi, double obj1Eta, double obj2Phi, dou
 	return dR;
 }
 double 
-SimuElectronAnalyzer::conePt(int forbiddenIndex1, int forbiddenIndex2, double eta, double phi, int numTracks,const edm::Event& iEvent, const edm::EventSetup& iSetup )
+SimuElectronAnalyzer2::conePt(int forbiddenIndex1, int forbiddenIndex2, double eta, double phi, int numTracks,const edm::Event& iEvent, const edm::EventSetup& iSetup )
 {  
 	using namespace edm;
 	using namespace reco;
@@ -648,13 +648,13 @@ SimuElectronAnalyzer::conePt(int forbiddenIndex1, int forbiddenIndex2, double et
 	return sumPt;
 }
 double 
-SimuElectronAnalyzer::mCos(double phi1, double eta1, double phi2, double eta2 )
+SimuElectronAnalyzer2::mCos(double phi1, double eta1, double phi2, double eta2 )
 {double cosAlpha = cos(eta1)*cos(phi1)*cos(eta2)*cos(phi2) + cos(eta1)*sin(phi1)*cos(eta2)*sin(phi2) + sin(eta1)*cos(eta2);
 	
 	return cosAlpha;
 }
 double 
-SimuElectronAnalyzer::mTheta(double ax, double ay, double bx, double by)
+SimuElectronAnalyzer2::mTheta(double ax, double ay, double bx, double by)
 {
     double cosAlpha = ax*bx + ay*by;
 	double theta;
@@ -668,7 +668,7 @@ SimuElectronAnalyzer::mTheta(double ax, double ay, double bx, double by)
 	return theta;
 }
 double 
-SimuElectronAnalyzer::invMass(double px1, double py1, double pz1, double px2 , double py2,  double pz2)
+SimuElectronAnalyzer2::invMass(double px1, double py1, double pz1, double px2 , double py2,  double pz2)
 {
   double E1 =  sqrt(px1*px1 + py1*py1 + pz1*pz1);  // asummes rest mass energy to be negligible
   double E2 =  sqrt(px2*px2 + py2*py2 + pz2*pz2);
@@ -686,7 +686,7 @@ SimuElectronAnalyzer::invMass(double px1, double py1, double pz1, double px2 , d
 	
 }
 bool
-SimuElectronAnalyzer::impactParameterCut(reco::TrackCollection::const_iterator it1, reco::TrackCollection::const_iterator it2, reco::BeamSpot beamSpot)
+SimuElectronAnalyzer2::impactParameterCut(reco::TrackCollection::const_iterator it1, reco::TrackCollection::const_iterator it2, reco::BeamSpot beamSpot)
 {    
 	double dxy1, dxy1Err, dxy2, dxy2Err, sig1, sig2;
 	bool ret = false;
@@ -708,31 +708,31 @@ SimuElectronAnalyzer::impactParameterCut(reco::TrackCollection::const_iterator i
 }
 // ------------ method called when starting to processes a run  ------------
 void 
-SimuElectronAnalyzer::beginRun(edm::Run const&, edm::EventSetup const&)
+SimuElectronAnalyzer2::beginRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a run  ------------
 void 
-SimuElectronAnalyzer::endRun(edm::Run const&, edm::EventSetup const&)
+SimuElectronAnalyzer2::endRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when starting to processes a luminosity block  ------------
 void 
-SimuElectronAnalyzer::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+SimuElectronAnalyzer2::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a luminosity block  ------------
 void 
-SimuElectronAnalyzer::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+SimuElectronAnalyzer2::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-SimuElectronAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+SimuElectronAnalyzer2::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -747,4 +747,4 @@ SimuElectronAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descripti
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(SimuElectronAnalyzer);
+DEFINE_FWK_MODULE(SimuElectronAnalyzer2);
