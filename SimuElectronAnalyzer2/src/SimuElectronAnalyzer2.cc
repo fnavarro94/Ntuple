@@ -270,6 +270,7 @@ else
 {
 	passTrig=false;
 }
+if (passTrig){}
    
 bool standardCuts = cmsStandardCuts(iEvent, iSetup);
 
@@ -294,7 +295,7 @@ trigger::size_type e_filterIndex = trigEvent->filterIndex(edm::InputTag(e_filter
 //const trigger::TriggerObjectCollection & e_trigObjColl(trigEvent->getObjects());
      
   
-if ((standardCuts && passTrig && beamSpotHandle.isValid()) )
+if (standardCuts )
 {
  int j = 0;
  for(TrackCollection::const_iterator itTrack = tracks->begin();
