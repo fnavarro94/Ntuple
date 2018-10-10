@@ -1,0 +1,22 @@
+<use name="FWCore/Framework"/>
+<use name="FWCore/PluginManager"/>
+<use name="root"/>
+
+<use name="CommonTools/UtilAlgos"/>
+<use name="PhysicsTools/UtilAlgos"/>
+<use name="DataFormats/JetReco"/>
+
+<use name="RecoVertex/KalmanVertexFit"/>
+<use name="TrackingTools/TransientTrack"/>
+<use name="TrackingTools/Records"/>
+<use name="FWCore/ParameterSet"/>
+<flags EDM_PLUGIN="1"/>
+<use name="DataFormats/TrackReco"/>
+<use name="DataFormats/VertexReco"/>
+
+<use name="DataFormats/HepMCCandidate"/>
+
+<export>
+   <lib name="1"/>
+</export>
+~              
