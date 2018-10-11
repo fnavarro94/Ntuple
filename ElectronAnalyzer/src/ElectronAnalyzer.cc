@@ -299,7 +299,22 @@ std::string filterName = "none";
 std::cout<<"path name: "<<pathName<<endl; 
 std::cout<<"prescale "<<hltConfig_.prescaleValue(iEvent,iSetup,pathName)<<std::endl;
 int prescale = hltConfig_.prescaleValue(iEvent,iSetup,pathName) ;
+// find lowest trigger prescale from  of all activated triggers
 
+
+
+for (unsigned int i = 0; i< trigNames.size(); i++)
+{
+	std::string trig = trigNames.triggerName(i);
+	
+	if (trigResults->accept(trigNames.triggerIndex(trig)))
+	{
+		if (prescale > (int)hltConfig_.prescaleValue(iEvent,iSetup,trig))
+		{
+			prescale = hltConfig_.prescaleValue(iEvent,iSetup,trig);
+		}
+	}
+}
 //cout<<filterName<<endl;
 
 if (triggerFound == 0)
