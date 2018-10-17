@@ -938,7 +938,7 @@ MuonAnalyzer::beginJob()
  const char* of = outFile_.c_str();
  mfile = new TFile(of, "recreate");
  
- h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
+
  h_invMassLoose = new TH1F ("InvMassLoose", "Lepton Pair Invariant Mass with no theta cut", 100, 0 , 600);
  
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
