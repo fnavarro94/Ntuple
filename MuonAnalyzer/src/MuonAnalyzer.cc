@@ -27,6 +27,7 @@
 #include "vector"
 #include "algorithm"
 #include <TH1.h>
+#include <TH2.h>
 #include <TFile.h>
 #include <TTree.h>
 #include <TROOT.h>
@@ -93,6 +94,9 @@ class MuonAnalyzer : public edm::EDAnalyzer {
    //   TTree * mtree;
       TFile * mfile;
      // TH1F * h_;
+     
+      TH2F *h_ptVsErr;
+      
       TH1F * h_invMass;
       TH1F * h_invMassLoose;
       TH1F * h_invMassPt250;
@@ -632,6 +636,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				double tot_variance = difx*difx*tdl_errx +dify*dify*tdl_erry; 
 				double tdl_err = sqrt(tot_variance);
 				double invariantMass;
+				h_ptVsErr->Fill(pt,tdl_err);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
 			  cout<<"disp "<<secVert_x -beamX<<endl;
@@ -938,7 +943,7 @@ MuonAnalyzer::beginJob()
  const char* of = outFile_.c_str();
  mfile = new TFile(of, "recreate");
  
-
+ h_ptVsErr = new TH2F("h2","",100, 0 , 450,100,-1,1);
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMassLoose = new TH1F ("InvMassLoose", "Lepton Pair Invariant Mass with no theta cut", 100, 0 , 600);
  h_invMassPt250 = new TH1F ("InvMassPt250", "Lepton Pair Invariant Mass (Pt >250, lw cut)", 100, 0 , 600);

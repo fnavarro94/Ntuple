@@ -613,7 +613,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				  
               if (myVertex.isValid() && myVertex.normalisedChiSquared() < 5)
 					 {
-			   double secVert_x =(double)myVertex.position().x();
+			    double secVert_x =(double)myVertex.position().x();
 			   double secVert_y =(double)myVertex.position().y();
 			   //cout<<secVert_x<<secVert_y<<endl;
 			   double conePt_var=conePt(i , j, itTrack1->eta(), itTrack1->phi(),  tracks->size(), iEvent,iSetup);
@@ -640,6 +640,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				double tdl_err = sqrt(tot_variance);
 				double invariantMass;
 				h_ptVsErr->Fill(pt,tdl_err);
+				cout<<"Err :"<<tdl_err<<endl;
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
 			  cout<<"disp "<<secVert_x -beamX<<endl;
@@ -871,7 +872,6 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				         if (lxy_err > 20)
 				         {lxy_err = 19;}
 				         h_lxy_err->Fill(lxy_err);
-				         
 				    //with lifetime related cuts
 				         if (IPC && tdl/tdl_err > 5)
 				         {

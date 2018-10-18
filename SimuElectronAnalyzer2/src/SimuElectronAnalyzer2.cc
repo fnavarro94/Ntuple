@@ -610,12 +610,12 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				  
               if (myVertex.isValid() && myVertex.normalisedChiSquared() < 5)
 					 {
-			    double secVert_x =(double)myVertex.position().x();
+			     double secVert_x =(double)myVertex.position().x();
 			   double secVert_y =(double)myVertex.position().y();
 			   //cout<<secVert_x<<secVert_y<<endl;
 			   double conePt_var=conePt(i , j, itTrack1->eta(), itTrack1->phi(),  tracks->size(), iEvent,iSetup);
 			   
-			   double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
+			  // double cosAlpha = mCos(itTrack1->phi(), itTrack1->eta(), itTrack2->phi(), itTrack2->eta());
 			   double theta = mTheta(itTrack1->px()+itTrack2->px(), itTrack1->py()+itTrack2->py(),secVert_x -vertex_x,  secVert_y-vertex_y);
 			   double px = itTrack1->px() + itTrack2->px();
 			   double py = itTrack1->py() + itTrack2->py();
@@ -838,7 +838,43 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  h_dotP_err->Fill(dot/tdl_err);
 			  h_dotPLw_err->Fill(-dot/tdl_err);
 			  h_invMassLoose->Fill(invariantMass);
-				    
+			   if ((conePt_var < 4 && (theta < 0.8 )))
+					
+					{
+					   
+						cout<< tdl_err<<endl;
+				     //without lifetime related cuts
+						
+						
+						if(dot> dotMax){dotMax=dot;}
+						if (dot< dotMin){dotMin=dot;}
+						
+					    
+					     
+				         h_invMass->Fill(invariantMass);
+				         if ((dot/tdl_err) >3){h_invMassDotCutsInv->Fill(invariantMass);}
+						 
+						 h_invMass_lwCut_inv->Fill(invariantMass);
+						 if (theta < 0.18){h_invMass_lwCut_inv1->Fill(invariantMass);}
+						 if (theta < 0.16){h_invMass_lwCut_inv2->Fill(invariantMass);}
+						 if (theta < 0.14){h_invMass_lwCut_inv3->Fill(invariantMass);}
+						 if (theta < 0.12){h_invMass_lwCut_inv4->Fill(invariantMass);}
+						 if (theta < 0.10){h_invMass_lwCut_inv5->Fill(invariantMass);}
+						 if (theta < 0.08){h_invMass_lwCut_inv6->Fill(invariantMass);}
+						 if (theta < 0.06){h_invMass_lwCut_inv7->Fill(invariantMass);}
+						 if (theta < 0.04){h_invMass_lwCut_inv8->Fill(invariantMass);}
+						 if (theta < 0.02){h_invMass_lwCut_inv9->Fill(invariantMass);}
+						 
+				         double lxy_err = tdl/(tdl_err);
+				         if (lxy_err > 20)
+				         {lxy_err = 19;}
+				         h_lxy_err->Fill(lxy_err);
+				    //with lifetime related cuts
+				         if (IPC && tdl/tdl_err > 5)
+				         {
+							 h_invMass_LC->Fill(invariantMass);
+						 }
+						 
 				 }
 				 if ((conePt_var < 4 && (theta >3.1514 -0.8 )))
 					
