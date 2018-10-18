@@ -27,6 +27,7 @@
 #include "vector"
 #include "algorithm"
 #include <TH1.h>
+#include <TH2.h>
 #include <TFile.h>
 #include <TTree.h>
 #include <TROOT.h>
