@@ -27,6 +27,7 @@
 #include "vector"
 #include "algorithm"
 #include <TH1.h>
+#include <TH2.h>
 #include <TFile.h>
 #include <TTree.h>
 #include <TROOT.h>
@@ -93,6 +94,7 @@ class SimuMuonAnalyzer2 : public edm::EDAnalyzer {
    //   TTree * mtree;
       TFile * mfile;
      // TH1F * h_;
+      TH2F *h_ptVsErr;
       TH1F * h_invMass;
       TH1F * h_invMassLoose;
        TH1F * h_invMassPt250;
@@ -347,6 +349,7 @@ TH1F * h_invMassDPCutLw_noErr200;
       int numJets2 = 0;
       double dotMax = 0;
       double dotMin = 0;
+		 
     
 		 
 
@@ -636,6 +639,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				double tot_variance = difx*difx*tdl_errx +dify*dify*tdl_erry; 
 				double tdl_err = sqrt(tot_variance);
 				double invariantMass;
+				h_ptVsErr->Fill(pt,tdl_err);
 			  // cout<<conePt_var<<cosAlpha<<vertex_x<<vertex_y<<theta<<endl;
 			 /* cout<<"theta: "<<theta*180/3.1415<<endl;
 			  cout<<"disp "<<secVert_x -beamX<<endl;
