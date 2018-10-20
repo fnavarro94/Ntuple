@@ -93,12 +93,14 @@ class SimuElectronAnalyzer2 : public edm::EDAnalyzer {
      double dotProduct(double , double , double , double );
      bool impactParameterCut(reco::TrackCollection::const_iterator, reco::TrackCollection::const_iterator, reco::BeamSpot );
      struct mEvent {
-		 Int_t eventNumer = 0;
+	     static const Int_t entryMax = 10000;
 		 Double_t pt = 0.0; 
 		 Double_t theta = 0.0; 
 		 Double_t invMass = 0.0; 
 		 Double_t dotP_err = 0.0; 
+		 Double_t dotP_errLw = 0.0; 
 		 Double_t dotP = 0.0; 
+		 Double_t dotPLw = 0.0; 
 		 Double_t lxy_err = 0.0; 
 	 }event,eventReset;
   //   TTree * mtree;
@@ -847,9 +849,11 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  
 			  h_dotP->Fill(dot);
 			  event.dotP = dot;
+			  event.dotPLw = -dot;
 			  h_dotPLw->Fill(-dot);
 			  h_dotP_err->Fill(dot/tdl_err);
 			  event.dotP_err = (dot/tdl_err);
+			  event.dotP_errLw = (-dot/tdl_err);
 			  h_dotPLw_err->Fill(-dot/tdl_err);
 			  h_invMassLoose->Fill(invariantMass);
 			  event.invMass = invariantMass;
@@ -938,10 +942,11 @@ SimuElectronAnalyzer2::beginJob()
 {TH1::AddDirectory(true);
  vuelta = 0;
  const char* of = outFile_.c_str();
- mtree->Branch("Ev_Branch",&event ,"eventNumber/I: pt/D:theta/D:invMass/D:dotP_err/D:dotP/D:lxy_err");
-          
+ 
  mfile = new TFile(of, "recreate");
  mtree = new TTree("mtree","Ntuple");
+ mtree->Branch("Ev_Branch",&event ,"pt/D:theta/D:invMass/D:dotP_err/D:dotP_errLw/D:dotP/D:dotPLw:lxy_err/D");
+          
  h_ptVsErr = new TH2F("h2","",100, 0 , 450,100,-1,1);
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMassLoose = new TH1F ("InvMassLoose", "Lepton Pair Invariant Mass with no theta cut", 100, 0 , 600);
