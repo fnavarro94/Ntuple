@@ -92,8 +92,18 @@ class SimuElectronAnalyzer2 : public edm::EDAnalyzer {
      double invMass(double , double , double , double  , double ,  double );
      double dotProduct(double , double , double , double );
      bool impactParameterCut(reco::TrackCollection::const_iterator, reco::TrackCollection::const_iterator, reco::BeamSpot );
+     struct mEvent {
+		 Int_t eventNumer = 0;
+		 Double_t pt = 0.0; 
+		 Double_t theta = 0.0; 
+		 Double_t invMass = 0.0; 
+		 Double_t dotP_err = 0.0; 
+		 Double_t dotP = 0.0; 
+		 Double_t lxy_err = 0.0; 
+	 }event,eventReset;
   //   TTree * mtree;
       TFile * mfile;
+      TTree * mtree;
      // TH1F * h_;
       TH2F *h_ptVsErr;
       TH1F * h_invMass;
@@ -398,7 +408,7 @@ SimuElectronAnalyzer2::analyze(const edm::Event& iEvent, const edm::EventSetup& 
    using namespace edm;
    using namespace reco;
    using namespace std;
-
+event = eventReset;
 Handle<TrackCollection> tracks;
 iEvent.getByLabel(trackTags_,tracks);
 nEvents->Fill(1); 
@@ -648,8 +658,10 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 			  invariantMass = invMass(itTrack1->px(), itTrack1->py(), itTrack1->pz(),itTrack2->px(), itTrack2->py(), itTrack2->pz());
 			  //cout<<theta<<endl;
 			  h_theta->Fill(theta);
+			  event.theta = theta;
 			  h_thetaLw->Fill(3.1514-theta);
 			  h_pt->Fill(pt);
+			  event.pt = pt;
 			  if ((dot/tdl_err) <-3){h_ptM->Fill(pt);}
 			  if ((dot/tdl_err) > 3){h_ptP->Fill(pt);}
 			  
@@ -834,10 +846,13 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 				
 			  
 			  h_dotP->Fill(dot);
+			  event.dotP = dot;
 			  h_dotPLw->Fill(-dot);
 			  h_dotP_err->Fill(dot/tdl_err);
+			  event.dotP_err = (dot/tdl_err);
 			  h_dotPLw_err->Fill(-dot/tdl_err);
 			  h_invMassLoose->Fill(invariantMass);
+			  event.invMass = invariantMass;
 			   if ((conePt_var < 4 && (theta < 0.8 )))
 					
 					{
@@ -866,6 +881,7 @@ for(TrackCollection::const_iterator itTrack1 = tracks->begin();
 						 if (theta < 0.02){h_invMass_lwCut_inv9->Fill(invariantMass);}
 						 
 				         double lxy_err = tdl/(tdl_err);
+				         event.lxy_err = lxy_err;
 				         if (lxy_err > 20)
 				         {lxy_err = 19;}
 				         h_lxy_err->Fill(lxy_err);
@@ -912,7 +928,7 @@ i++;
    ESHandle<SetupData> pSetup;
    iSetup.get<SetupRecord>().get(pSetup);
 #endif
-//mtree->Fill();
+mtree->Fill();
 
 }
 
@@ -922,7 +938,10 @@ SimuElectronAnalyzer2::beginJob()
 {TH1::AddDirectory(true);
  vuelta = 0;
  const char* of = outFile_.c_str();
+ mtree->Branch("Ev_Branch",&event ,"eventNumber/I: pt/D:theta/D:invMass/D:dotP_err/D:dotP/D:lxy_err");
+          
  mfile = new TFile(of, "recreate");
+ mtree = new TTree("mtree","Ntuple");
  h_ptVsErr = new TH2F("h2","",100, 0 , 450,100,-1,1);
  h_invMass = new TH1F ("InvMass", "Lepton Pair Invariant Mass", 100, 0 , 600);
  h_invMassLoose = new TH1F ("InvMassLoose", "Lepton Pair Invariant Mass with no theta cut", 100, 0 , 600);
